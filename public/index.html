@@ -25,6 +25,13 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+
+    <!-- CSS Front Template -->
+    <!-- bundlecss:theme [@@autopath] @@vars.version -->
+    <link rel="stylesheet" href="%PUBLIC_URL%/assets/css/theme.css">
+    <link rel="stylesheet" href="%PUBLIC_URL%/assets/css/docs.css">
+    <link rel="stylesheet" href="%PUBLIC_URL%/assets/css/chart.min.css">
+
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -39,5 +46,51 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+
+  <!-- ========== END SECONDARY CONTENTS ========== -->
+
+  <!-- JS Global Compulsory  -->
+<script src="%PUBLIC_URL%/assets/vendor/jquery/dist/jquery.min.js"></script>
+<script src="%PUBLIC_URL%/assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
+<script src="%PUBLIC_URL%/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- JS Implementing Plugins -->
+<script src="%PUBLIC_URL%/assets/vendor/chart.js/dist/Chart.min.js"></script>
+<script src="%PUBLIC_URL%/assets/vendor/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="%PUBLIC_URL%/assets/vendor/hs-unfold/dist/hs-unfold.min.js"></script>
+<script src="%PUBLIC_URL%/assets/vendor/hs-form-search/dist/hs-form-search.min.js"></script>
+<script src="%PUBLIC_URL%/assets/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside.min.js"></script>
+<script src="%PUBLIC_URL%/assets/vendor/hs-nav-scroller/dist/hs-nav-scroller.min.js"></script>
+<script src="%PUBLIC_URL%/assets/vendor/hs-go-to/dist/hs-go-to.min.js"></script>
+<script src="%PUBLIC_URL%/assets/vendor/list.js/dist/list.min.js"></script>
+<script src="%PUBLIC_URL%/assets/vendor/prism/prism.js"></script>
+
+
+
+<!-- JS Front -->
+<script src="%PUBLIC_URL%/assets/js/theme.min.js"></script>
+<script src="%PUBLIC_URL%/assets/js/hs.chartjs-matrix.js"></script> 
+
+<!-- JS Plugins Init.-->
+<script>
+  $(document).on('click', function () {
+      
+  // initialization of form search
+  $('.js-form-search').each(function () {
+        new HSFormSearch($(this)).init()
+      });
+    
+  Chart.plugins.unregister(ChartDataLabels);
+
+  $('.js-chart').each(function () {
+  $.HSCore.components.HSChartJS.init($(this));
+  });
+  
+  
+  });
+
+
+  </script>
+
+</body>
 </html>
