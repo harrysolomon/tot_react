@@ -2,16 +2,20 @@
 //contents in the input field should register in an html list after being submitted
 
 import React from "react";
-import FinalModal from "./modal/modal_handler"
 import data from "./data.json"
-import Pageheader from "./page_header"
 
 const Overview = (props) => {
   const tiles = data
 
   return (
     <div class="content container-fluid">
-            <Pageheader />
+        <div class="page-header">
+            <div class ="row align-items-center">
+                <div class="col-sm mb-2 mb-sm-0">
+                    <h1 class="page-header-title">This or That?</h1>
+                </div>
+            </div>
+        </div>
         <div class="row gx-2 gx-lg-3">
             {tiles.map(item => (
                 <div className="col-4 mb-3 mb-lg-5">
@@ -29,7 +33,7 @@ const Overview = (props) => {
                                     <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
                                 </small>
                             </p>
-                            <a href="/success" /*data-toggle="modal" data-target="#exampleModal"*/ className="stretched-link"></a>
+                            <a href="/success" className="stretched-link"></a>
                         </div>
                     </div>
                 </div>

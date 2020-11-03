@@ -1,31 +1,12 @@
 import React, { Component } from "react";
-import LineChart from "./charts/line_chart";
-import Summary from "./charts/summary";
-import PageHeader from "./page_header";
-import ModalInputs from "./modal/modal_inputs";
 import { Link } from 'react-router-dom';
-import { multiply } from "./functions/generate_results"
-import NavForm from "./form_inputs/nav_form"
-import lineData from "./line_chart.json"
 
-//import payments from './functions/loan_payment';
-const lineDataString = JSON.stringify(lineData);
-const lineDataLoc = lineData.data.datasets[0].data;
 
 class FinalResult extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          rate: .03,
-          presentValue: 500000,
-          numPeriods: 60,
-          savedData: lineData,
-          dataString: lineDataString,
-          //data: lineDataLoc,
-          forecastRange: [1,2,3,4,5,6,7,8,9,10],
           newData: [-3,0,2,5,7,9,15,20,30,40,50,100],
-          //formModal: true,
-          //successModal: false,
           percentLoan: "",
           percentScholarship: "",
           percentOutOfPocket: "",
@@ -106,8 +87,6 @@ class FinalResult extends Component {
             }
       };
       this.handleChange = this.handleChange.bind(this);
-
-
     }
 
 
@@ -124,50 +103,110 @@ class FinalResult extends Component {
             result: newResult,
         });
     }
-   
-    /*componentDidUpdate() {
-
-    };*/
 
 
 render() {
 
-        console.log(JSON.stringify(this.state.result))
-        //const { result } = this.state
+    const chartStyle = {
+        height: "18rem;"
+    };
         return(
             <div class="content container-fluid">
+                    
                     <Link to="/">
-                        <PageHeader />
+                        <div class="page-header">
+                            <div class ="row align-items-center">
+                                <div class="col-sm mb-2 mb-sm-0">
+                                    <h1 class="page-header-title">This or That?</h1>
+                                </div>
+                            </div>
+                        </div>
                     </Link>
                     
-                    <Summary />
+                    <section class="jumbotron text-center">
+                        <div class="container">
+                            <p class="lead text-muted">According to BLS, great investment!</p>
+                        </div>
+                    </section>
+                    {/* start of second row*/}
                     <div class="row gx-2 gx-lg-3">
-                        <LineChart 
-                            lineData={JSON.stringify(this.state.result)}/>
+                        {/*Line Chart*/}
+                        <div class="col-8">
+                            <div class="card">
+                                <div class="tab-content" id="navTabContent1">
+                                    <div class="tab-pane fade p-4 show active" id="nav-result1" role="tabpanel" aria-labelledby="nav-resultTab1">
+                                        {/*Chart Legends*/}
+                                        <div class="row align-items-sm-center mb-4">
+                                            <div class="col-sm mb-3 mb-sm-0"></div>
+                                            <div class="col-sm-auto">
+                                                <div class="row font-size-sm">
+                                                    <div class="col-auto">
+                                                        <span class="legend-indicator bg-primary"></span> College Diploma
+                                                    </div>
+                                        
+                                                    <div class="col-auto">
+                                                        <span class="legend-indicator bg-info"></span> HS Diploma
+                                                    </div>
+                                                </div>
+                                            </div>
+                                         </div>
+                                
+                                        <div class="chartjs-custom" style={{height: '18rem'}}>
+                                            <canvas class="js-chart" data-hs-chartjs-options={JSON.stringify(this.state.result)}>
+                                            </canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/*Chart End*/}
+
                         <div class="col-4">
                             <div class="card">
                                 <div class="card-header">
                                     Bachelors Degree
                                 </div>
                                 <div class="card-body">
-                                    <ModalInputs 
-                                        label="Percent Loan"
-                                        name="percentLoan"
-                                        submitVal={this.state.percentLoan}
-                                        changedVal={this.handleChange}/>
-                                    <ModalInputs 
-                                        label="Percent Scholarship"
-                                        name="percentScholarship"
-                                        submitVal={this.state.percentScholarship}
-                                        changedVal={this.handleChange}/>
-                                    <ModalInputs 
-                                        label="Percent Out of Pocket"
-                                        name="percentOutOfPocket"
-                                        submitVal={this.state.percentOutOfPocket}
-                                        changedVal={this.handleChange}/>
+                                    <div class="form-group">
+                                        <label for="percentLoan" class="input-label">Percent Loan
+                                        </label>
+                                        <div class="input-group">
+                                            <input name="percentLoan" type="text" class="form-control" id="percentLoan" value={this.state.percentLoan} onChange={this.handleChange} placeholder="Ex: 20" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            </input>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="basic-addon2">%</span>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    
+                                    <div class="form-group">
+                                        <label for="percentScholarship" class="input-label">Percent Scholarship
+                                        </label>
+                                        <div class="input-group">
+                                            <input name="percentScholarship" type="text" class="form-control" id="percentScholarship" value={this.state.percentScholarship} onChange={this.handleChange} placeholder="Ex: 20" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            </input>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="basic-addon2">%</span>
+                                            </div>
+                                        </div>
+                                    </div> 
+
+                                    <div class="form-group">
+                                        <label for="percentOutOfPocket" class="input-label">Percent Out of Pocket
+                                        </label>
+                                        <div class="input-group">
+                                            <input name="percentOutOfPocket" type="text" class="form-control" id="percentOutOfPocket" value={this.state.percentOutOfPocket} onChange={this.handleChange} placeholder="Ex: 20" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            </input>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="basic-addon2">%</span>
+                                            </div>
+                                        </div>
+                                    </div> 
+
                                 </div>
                                 <div class="card-footer">
-                                    <NavForm onClick={this.onSubmitTask} title="Submit"/>
+                                    <button type="button" class="btn btn-primary" onClick={this.onSubmitTask}>Submit</button>
                                 </div>
                                 
                             </div>
