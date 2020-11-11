@@ -1,12 +1,30 @@
+
 //there will be an input field and a submit button
 //contents in the input field should register in an html list after being submitted
 
-import React from "react";
-import data from "./data.json"
+import React, { Component } from "react";
+import axios from "axios";
+//import data from "./data.json"
 
-const Overview = (props) => {
-  const tiles = data
+class Overview extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            //error: null,
+            //isLoaded: false,
+            tiles: []
+        };
+    }
 
+componentDidMount() {
+    axios.get(`http://localhost:3000`)
+      .then(res => {
+        const tiles = res.data;
+        this.setState({ tiles });
+      })
+  }
+
+render() {
   return (
     <div class="content container-fluid">
         <div class="page-header">
@@ -17,7 +35,7 @@ const Overview = (props) => {
             </div>
         </div>
         <div class="row gx-2 gx-lg-3">
-            {tiles.map(item => (
+            {this.state.tiles.map(item => (
                 <div className="col-4 mb-3 mb-lg-5">
                     <div className="card card-hover-shadow">
                         <div className="card-body card-body-height">
@@ -43,5 +61,7 @@ const Overview = (props) => {
     </div>
   );
 };
+
+}
 
 export default Overview;
