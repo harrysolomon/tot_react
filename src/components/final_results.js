@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
-import { Line } from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2';
+import axios from "axios";
 
 
 class FinalResult extends Component {
@@ -8,9 +9,11 @@ class FinalResult extends Component {
       super(props);
       this.state = {
           newData: [-3,0,2,5,7,9,15,20,30,40,50,100],
-          percentLoan: "",
-          percentScholarship: "",
-          percentOutOfPocket: "",
+          input0: "",
+          input1: "",
+          input2: "",
+          form_inputs: [],
+          data_loaded: false,
           data: {
             labels: ["Y0","Y1","Y2","Y3","Y4","Y5","Y6","Y7","Y8","Y9","Y10","Y11"],
             datasets: [
@@ -107,13 +110,31 @@ class FinalResult extends Component {
         });
     }
 
+    componentDidMount() {
+        axios.get(`http://localhost:3000/5fac52be03ff66099d9a8ef4`)
+          .then(res => {
+            const form_inputs = res.data;
+            this.setState({ 
+                form_inputs,
+                data_loaded: true 
+            });
+          })
+      }
+
 
 render() {
 
     const chartStyle = {
         height: "18rem;"
     };
-        return(
+
+    const datasetKeyProvider=()=>{ 
+        return btoa(Math.random()).substring(0,12)
+    } 
+
+    if(this.state.data_loaded) {
+
+        return( 
             <div class="content container-fluid">
                     
                     <Link to="/">
@@ -154,7 +175,7 @@ render() {
                                             </div>
                                          </div>
                                 
-                                        <Line data={this.state.data} options={this.state.options} />
+                                        <Line data={this.state.data} datasetKeyProvider={datasetKeyProvider} options={this.state.options} />
                                     </div>
                                 </div>
                             </div>
@@ -168,19 +189,21 @@ render() {
                                     Bachelors Degree
                                 </div>
                                 <div class="card-body">
+                                    {this.state.form_inputs.map(item => (
                                     <div class="form-group">
-                                        <label for="percentLoan" class="input-label">Percent Loan
+                                        <label for={item.form_id} class="input-label">{item.form_name}
                                         </label>
                                         <div class="input-group">
-                                            <input name="percentLoan" type="text" class="form-control" id="percentLoan" value={this.state.percentLoan} onChange={this.handleChange} placeholder="Ex: 20" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            <input name={item.form_id} type="text" class="form-control" id={item.form_id} value={this.state.percentLoan} onChange={this.handleChange} placeholder={item.default_value} aria-label="Recipient's username" aria-describedby="basic-addon2">
                                             </input>
                                             <div class="input-group-append">
                                                 <span class="input-group-text" id="basic-addon2">%</span>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>))}
+                                </div>
                                     
-                                    <div class="form-group">
+                                    {/*<div class="form-group">
                                         <label for="percentScholarship" class="input-label">Percent Scholarship
                                         </label>
                                         <div class="input-group">
@@ -202,9 +225,8 @@ render() {
                                                 <span class="input-group-text" id="basic-addon2">%</span>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div> */}
 
-                                </div>
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-primary" onClick={this.onSubmitTask}>Submit</button>
                                 </div>
@@ -214,7 +236,12 @@ render() {
                     </div>
             </div>
         );
-    }
+    } else {
+        return (
+            <div>
+            </div>
+        )}
+}
 }
 
 export default FinalResult;

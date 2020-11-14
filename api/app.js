@@ -33,6 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// will want to fix later but this is to allow calls from the same origin
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   next();
