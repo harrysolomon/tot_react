@@ -91,16 +91,29 @@ class FinalResult extends Component {
         }
             
       };
-      this.handleChange = this.handleChange.bind(this);
+      //this.handleChange = this.handleChange.bind(this);
 
     }
+    createForm(){
+        return this.state.form_inputs.map((item,i) => (
+            <div class="form-group" key={i}>
+                <label for={item.form_id} class="input-label">{item.form_name}
+                </label>
+                <div class="input-group">
+                    <input name={item.form_id} type="text" class="form-control" id={item.form_id} value={item.state||''} onChange={this.handleChange.bind(this, i)} placeholder={item.default_value} aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    </input>
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">%</span>
+                    </div>
+                </div>
+            </div>))        
+     }
 
-
-    handleChange = (e) => {
-        this.setState({ 
-            [e.target.name]: e.target.value
-        });
-    }
+     handleChange(i, event) {
+        let values = [...this.state.form_inputs];
+        values[i].state = event.target.value;
+        this.setState({ values });
+     }
     
     onSubmitTask = (e) => {
         let newResult = JSON.parse(JSON.stringify(this.state.result));
@@ -127,6 +140,8 @@ render() {
     const chartStyle = {
         height: "18rem;"
     };
+
+    console.log(this.state.form_inputs);
 
     const datasetKeyProvider=()=>{ 
         return btoa(Math.random()).substring(0,12)
@@ -189,44 +204,8 @@ render() {
                                     Bachelors Degree
                                 </div>
                                 <div class="card-body">
-                                    {this.state.form_inputs.map(item => (
-                                    <div class="form-group">
-                                        <label for={item.form_id} class="input-label">{item.form_name}
-                                        </label>
-                                        <div class="input-group">
-                                            <input name={item.form_id} type="text" class="form-control" id={item.form_id} value={this.state.percentLoan} onChange={this.handleChange} placeholder={item.default_value} aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                            </input>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="basic-addon2">%</span>
-                                            </div>
-                                        </div>
-                                    </div>))}
+                                    {this.createForm()}   
                                 </div>
-                                    
-                                    {/*<div class="form-group">
-                                        <label for="percentScholarship" class="input-label">Percent Scholarship
-                                        </label>
-                                        <div class="input-group">
-                                            <input name="percentScholarship" type="text" class="form-control" id="percentScholarship" value={this.state.percentScholarship} onChange={this.handleChange} placeholder="Ex: 20" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                            </input>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="basic-addon2">%</span>
-                                            </div>
-                                        </div>
-                                    </div> 
-
-                                    <div class="form-group">
-                                        <label for="percentOutOfPocket" class="input-label">Percent Out of Pocket
-                                        </label>
-                                        <div class="input-group">
-                                            <input name="percentOutOfPocket" type="text" class="form-control" id="percentOutOfPocket" value={this.state.percentOutOfPocket} onChange={this.handleChange} placeholder="Ex: 20" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                            </input>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="basic-addon2">%</span>
-                                            </div>
-                                        </div>
-                                    </div> */}
-
                                 <div class="card-footer">
                                     <button type="button" class="btn btn-primary" onClick={this.onSubmitTask}>Submit</button>
                                 </div>
