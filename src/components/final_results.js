@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
-import axios from "axios";
 
 
 class FinalResult extends Component {
@@ -14,34 +13,8 @@ class FinalResult extends Component {
           input2: "",
           form_inputs: [],
           data_loaded: false,
-          data: {
-            labels: ["Y0","Y1","Y2","Y3","Y4","Y5","Y6","Y7","Y8","Y9","Y10","Y11"],
-            datasets: [
-                {
-                data: [-1,-3,-5,-7,5,11,20,45,70,100,115,140],
-                backgroundColor: "transparent",
-                borderColor: "#377dff",
-                borderWidth: 2,
-                pointRadius: 0,
-                hoverBorderColor: "#377dff",
-                pointBackgroundColor: "#377dff",
-                pointBorderColor: "#fff",
-                pointHoverRadius: 0
-                },
-                {
-                data: [0,10,20,30,40,50,60,70,90,100,110,120],
-                backgroundColor: "transparent",
-                borderColor: "#00c9db",
-                borderWidth: 2,
-                pointRadius: 0,
-                hoverBorderColor: "#00c9db",
-                pointBackgroundColor: "#00c9db",
-                pointBorderColor: "#fff",
-                pointHoverRadius: 0
-                }
-            ]
-        },
-        options: {
+          data: {},
+          options: {
             legend: {
                 display:false
             },
@@ -116,33 +89,36 @@ class FinalResult extends Component {
      }
     
     onSubmitTask = (e) => {
-        let newResult = JSON.parse(JSON.stringify(this.state.result));
-        newResult.data.datasets[0].data = this.state.newData;
-        this.setState({
-            result: newResult,
-        });
+        Promise.all([
+            fetch('http://localhost:3000/line_chart')
+        ])
+        .then(([res1]) => Promise.all([res1.json()]))
+        .then(([data1]) => this.setState({
+            data: data1,
+        }))
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:3000/5fac52be03ff66099d9a8ef4`)
-          .then(res => {
-            const form_inputs = res.data;
-            this.setState({ 
-                form_inputs,
-                data_loaded: true 
-            });
-          })
-      }
+        Promise.all([
+            fetch(`http://localhost:3000/5fac52be03ff66099d9a8ef4`),
+            fetch('http://localhost:3000/line_chart')
+        ])
+        .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
+        .then(([data1, data2]) => this.setState({
+            form_inputs: data1,
+            data: data2,
+            data_loaded: true
+        }))
+    }
 
 
 render() {
-
+// React requirement for adding the style element in html
     const chartStyle = {
         height: "18rem;"
     };
 
-    console.log(this.state.form_inputs);
-
+// React Chart js requirement for having each dataset be represented by a unique key
     const datasetKeyProvider=()=>{ 
         return btoa(Math.random()).substring(0,12)
     } 
@@ -190,7 +166,7 @@ render() {
                                             </div>
                                          </div>
                                 
-                                        <Line data={this.state.data} datasetKeyProvider={datasetKeyProvider} options={this.state.options} />
+                                        <Line data={this.state.data} datasetKeyProvider={datasetKeyProvider} options={this.state.options}/>
                                     </div>
                                 </div>
                             </div>
