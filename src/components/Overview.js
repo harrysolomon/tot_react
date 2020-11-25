@@ -4,7 +4,6 @@
 
 import React, { Component } from "react";
 import axios from "axios";
-//import data from "./data.json"
 
 class Overview extends Component {
     constructor(props) {
@@ -51,7 +50,7 @@ render() {
                                     <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
                                 </small>
                             </p>
-                            <a href="/success" className="stretched-link"></a>
+                            <a href="/5fac52be03ff66099d9a8ef4" className="stretched-link"></a>
                         </div>
                     </div>
                 </div>

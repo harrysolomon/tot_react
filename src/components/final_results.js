@@ -101,7 +101,7 @@ class FinalResult extends Component {
     componentDidMount() {
         Promise.all([
             fetch(`http://localhost:3000/5fac52be03ff66099d9a8ef4`),
-            fetch('http://localhost:3000/line_chart')
+            fetch('http://localhost:3000/5fac52be03ff66099d9a8ef4/line_chart')
         ])
         .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
         .then(([data1, data2]) => this.setState({

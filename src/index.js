@@ -9,7 +9,7 @@ ReactDOM.render(
   <Router>
     <div>
       <Route exact path="/" component={Overview} />
-      <Route path="/success" component={FinalResult} />
+      <Route path="/5fac52be03ff66099d9a8ef4" component={FinalResult} />
     </div>
   </Router>,
   document.getElementById('root')
