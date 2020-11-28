@@ -27,8 +27,8 @@ class FinalResult extends Component {
                 },
                 ticks: {
                     min: 0,
-                    max: 160,
-                    stepSize: 20,
+                    max: 1000000, // can use the api call to determine max and min
+                    stepSize: 100000, // can use the api call to determine step size,
                     fontColor: "#97a4af",
                     fontFamily: "Open Sans, sans-serif",
                     padding: 10,
