@@ -69,14 +69,14 @@ class FinalResult extends Component {
     }
     createForm(){
         return this.state.form_inputs.map((item,i) => (
-            <div class="form-group" key={i}>
-                <label for={item.form_id} class="input-label">{item.form_name}
+            <div className="form-group" key={i}>
+                <label htmlFor={item.form_id} className="input-label">{item.form_name}
                 </label>
-                <div class="input-group">
-                    <input name={item.form_id} type="text" class="form-control" id={item.form_id} value={item.state||''} onChange={this.handleChange.bind(this, i)} placeholder={item.default_value} aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <div className="input-group">
+                    <input name={item.form_id} type="text" className="form-control" id={item.form_id} value={item.state||''} onChange={this.handleChange.bind(this, i)} placeholder={item.default_value} aria-label="Recipient's username" aria-describedby="basic-addon2">
                     </input>
-                    <div class="input-group-append">
-                        <span class="input-group-text" id="basic-addon2">%</span>
+                    <div className="input-group-append">
+                        <span className="input-group-text" id="basic-addon2">%</span>
                     </div>
                 </div>
             </div>))        
@@ -89,8 +89,14 @@ class FinalResult extends Component {
      }
     
     onSubmitTask = (e) => {
+        const requestOptions = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.state.form_inputs)
+        };
+
         Promise.all([
-            fetch('http://localhost:3000/line_chart')
+            fetch('http://localhost:3000/5fac52be03ff66099d9a8ef4/line_chart',requestOptions)
         ])
         .then(([res1]) => Promise.all([res1.json()]))
         .then(([data1]) => this.setState({
@@ -99,9 +105,14 @@ class FinalResult extends Component {
     }
 
     componentDidMount() {
+
+        const requestOptions = {
+            method: "POST"
+        };
+
         Promise.all([
             fetch(`http://localhost:3000/5fac52be03ff66099d9a8ef4`),
-            fetch('http://localhost:3000/5fac52be03ff66099d9a8ef4/line_chart')
+            fetch('http://localhost:3000/5fac52be03ff66099d9a8ef4/line_chart',requestOptions)
         ])
         .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
         .then(([data1, data2]) => this.setState({
@@ -114,9 +125,6 @@ class FinalResult extends Component {
 
 render() {
 // React requirement for adding the style element in html
-    const chartStyle = {
-        height: "18rem;"
-    };
 
 // React Chart js requirement for having each dataset be represented by a unique key
     const datasetKeyProvider=()=>{ 
@@ -124,43 +132,47 @@ render() {
     } 
 
     if(this.state.data_loaded) {
+        /*this.state.form_inputs.map((item,i) => (
+            console.log(item)
+        ));*/
+        
 
         return( 
-            <div class="content container-fluid">
+            <div className="content container-fluid">
                     
                     <Link to="/">
-                        <div class="page-header">
-                            <div class ="row align-items-center">
-                                <div class="col-sm mb-2 mb-sm-0">
-                                    <h1 class="page-header-title">This or That?</h1>
+                        <div className="page-header">
+                            <div className ="row align-items-center">
+                                <div className="col-sm mb-2 mb-sm-0">
+                                    <h1 className="page-header-title">This or That?</h1>
                                 </div>
                             </div>
                         </div>
                     </Link>
                     
-                    <section class="jumbotron text-center">
-                        <div class="container">
-                            <p class="lead text-muted">According to BLS, great investment!</p>
+                    <section className="jumbotron text-center">
+                        <div className="container">
+                            <p className="lead text-muted">According to BLS, great investment!</p>
                         </div>
                     </section>
                     {/* start of second row*/}
-                    <div class="row gx-2 gx-lg-3">
+                    <div className="row gx-2 gx-lg-3">
                         {/*Line Chart*/}
-                        <div class="col-8">
-                            <div class="card">
-                                <div class="tab-content" id="navTabContent1">
-                                    <div class="tab-pane fade p-4 show active" id="nav-result1" role="tabpanel" aria-labelledby="nav-resultTab1">
+                        <div className="col-8">
+                            <div className="card">
+                                <div className="tab-content" id="navTabContent1">
+                                    <div className="tab-pane fade p-4 show active" id="nav-result1" role="tabpanel" aria-labelledby="nav-resultTab1">
                                         {/*Chart Legends*/}
-                                        <div class="row align-items-sm-center mb-4">
-                                            <div class="col-sm mb-3 mb-sm-0"></div>
-                                            <div class="col-sm-auto">
-                                                <div class="row font-size-sm">
-                                                    <div class="col-auto">
-                                                        <span class="legend-indicator bg-primary"></span> College Diploma
+                                        <div className="row align-items-sm-center mb-4">
+                                            <div className="col-sm mb-3 mb-sm-0"></div>
+                                            <div className="col-sm-auto">
+                                                <div className="row font-size-sm">
+                                                    <div className="col-auto">
+                                                        <span className="legend-indicator bg-primary"></span> College Diploma
                                                     </div>
                                         
-                                                    <div class="col-auto">
-                                                        <span class="legend-indicator bg-info"></span> HS Diploma
+                                                    <div className="col-auto">
+                                                        <span className="legend-indicator bg-info"></span> HS Diploma
                                                     </div>
                                                 </div>
                                             </div>
@@ -174,16 +186,16 @@ render() {
 
                         {/*Chart End*/}
 
-                        <div class="col-4">
-                            <div class="card">
-                                <div class="card-header">
+                        <div className="col-4">
+                            <div className="card">
+                                <div className="card-header">
                                     Bachelors Degree
                                 </div>
-                                <div class="card-body">
+                                <div className="card-body">
                                     {this.createForm()}   
                                 </div>
-                                <div class="card-footer">
-                                    <button type="button" class="btn btn-primary" onClick={this.onSubmitTask}>Submit</button>
+                                <div className="card-footer">
+                                    <button type="button" className="btn btn-primary" onClick={this.onSubmitTask}>Submit</button>
                                 </div>
                                 
                             </div>
