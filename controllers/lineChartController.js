@@ -60,13 +60,13 @@ exports.lineChart = (req, res, next) => {
             let total_cost = 200000
             let loan_eligible = 4
             let rev_1_eligible = 4
-            let start_rev_1 = 60000
-            let rev_1_increase = .02
+            let start_rev_1 = parseFloat(inputData["s1_revenue"])
+            let rev_1_increase = parseFloat(inputData["s1_revenue_increase"])/100
             let rev_2_eligible = 0
-            let start_rev_2 = 30000
-            let rev_2_increase = .01
+            let start_rev_2 = parseFloat(inputData["s2_revenue"])
+            let rev_2_increase = parseFloat(inputData["s2_revenue_increase"])/100
             let total_periods = 360
-            let forecast_length = 10
+            let forecast_length = 20
             //let yearly_periods = total_periods/12
             let loan_rate = (.03 /12)
             let reinvest_rate = .03
@@ -79,7 +79,7 @@ exports.lineChart = (req, res, next) => {
             final_result["salary_2"] = []
         
             for (let i = 0;i <= forecast_length;++i) {
-                //let period_result = {};
+                //consider changing the equal signs to match based on type too
                     final_result["period"].push("Y" + String(i))
         
                     if (draw_pct * (i + 1) <= 1) {
@@ -156,7 +156,7 @@ exports.lineChart = (req, res, next) => {
             for(let i = 0; i < final_result["total_opportunity_cash"].length; i++){
                 final_result["s2_income"].push(Math.round(final_result["cum_s2"][i] + final_result["total_opportunity_cash"][i]));
             }
-                
+                console.log(final_result)
 
                 data["labels"] = final_result["period"]
                 data["datasets"][0]["data"] = final_result["s1_income"]
