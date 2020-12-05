@@ -1,18 +1,18 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
+import Collapse from 'react-bootstrap/Collapse'
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
 
 
 class FinalResult extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          newData: [-3,0,2,5,7,9,15,20,30,40,50,100],
-          input0: "",
-          input1: "",
-          input2: "",
           form_inputs: [],
           data_loaded: false,
+          open: false,
           data: {},
           options: {
             legend: {
@@ -68,19 +68,75 @@ class FinalResult extends Component {
 
     }
     createForm(){
-        return this.state.form_inputs.map((item,i) => (
-            <div className="form-group" key={i}>
-                <label htmlFor={item.form_id} className="input-label">{item.form_name}
-                </label>
-                <div className="input-group">
-                    <input name={item.form_id} type="text" className="form-control" id={item.form_id} value={item.state||''} onChange={this.handleChange.bind(this, i)} placeholder={item.default_value} aria-label="Recipient's username" aria-describedby="basic-addon2">
-                    </input>
-                    <div className="input-group-append">
-                        <span className="input-group-text" id="basic-addon2">%</span>
-                    </div>
-                </div>
-            </div>))        
+        return(
+            <div>
+                {
+                    this.state.form_inputs.map((item,i) => {
+                        if(!item.hidden) {
+                            return(
+                            <div className="form-group" key={i}>
+                            <label htmlFor={item.form_id} className="input-label">{item.form_name}
+                            </label>
+                            <div className="input-group">
+                                <input name={item.form_id} type="text" className="form-control" id={item.form_id} value={item.state||''} onChange={this.handleChange.bind(this, i)} placeholder={item.default_value} aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                </input>
+                                <div className="input-group-append">
+                                    <span className="input-group-text" id="basic-addon2">%</span>
+                                </div>
+                            </div>
+                        </div>);}
+                    })
+                }
+            </div>
+        ); 
      }
+
+     Accordion() {
+        //Need some added padding below the additional inputs button
+        return (
+                    <>
+                    <Button 
+                        variant="light" 
+                        size="lg" 
+                        onClick={this.onOpenTask}
+                        aria-controls="example-collapse-text"
+                        aria-expanded={this.state.open}
+                        block
+                    >
+                        Additional Inputs
+                    </Button>
+                    <Collapse in={this.state.open}>
+                        <div>
+                            {
+                                this.state.form_inputs.map((item,i) => {
+                                    if(item.hidden) {
+                                        return(
+                                            <div className="form-group" key={i}>
+                                                <label htmlFor={item.form_id} className="input-label">{item.form_name}
+                                                </label>
+                                                <div className="input-group">
+                                                    <input name={item.form_id} type="text" className="form-control" id={item.form_id} value={item.state||''} onChange={this.handleChange.bind(this, i)} placeholder={item.default_value} aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                    </input>
+                                                    <div className="input-group-append">
+                                                        <span className="input-group-text" id="basic-addon2">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    }
+                                })
+                            }
+                        </div>
+                    </Collapse>
+                    </>
+        );
+    }
+
+    onOpenTask = (e) => {
+        this.setState(prevState => ({
+            open: !prevState.open
+          }));
+    }
 
      handleChange(i, event) {
         let values = [...this.state.form_inputs];
@@ -124,7 +180,6 @@ class FinalResult extends Component {
 
 
 render() {
-// React requirement for adding the style element in html
 
 // React Chart js requirement for having each dataset be represented by a unique key
     const datasetKeyProvider=()=>{ 
@@ -132,9 +187,6 @@ render() {
     } 
 
     if(this.state.data_loaded) {
-        /*this.state.form_inputs.map((item,i) => (
-            console.log(item)
-        ));*/
         
 
         return( 
@@ -168,11 +220,11 @@ render() {
                                             <div className="col-sm-auto">
                                                 <div className="row font-size-sm">
                                                     <div className="col-auto">
-                                                        <span className="legend-indicator bg-primary"></span> College Diploma
+                                                        <span className="legend-indicator bg-primary"></span> Bachelors Degree
                                                     </div>
                                         
                                                     <div className="col-auto">
-                                                        <span className="legend-indicator bg-info"></span> HS Diploma
+                                                        <span className="legend-indicator bg-info"></span> High School Diploma
                                                     </div>
                                                 </div>
                                             </div>
@@ -192,10 +244,11 @@ render() {
                                     Bachelors Degree
                                 </div>
                                 <div className="card-body">
-                                    {this.createForm()}   
-                                </div>
-                                <div className="card-footer">
-                                    <button type="button" className="btn btn-primary" onClick={this.onSubmitTask}>Submit</button>
+                                    {this.createForm()}
+                                    {this.Accordion()}
+                                    <div className="card-footer">
+                                        <button type="button" className="btn btn-primary" onClick={this.onSubmitTask}>Submit</button>
+                                    </div>
                                 </div>
                                 
                             </div>
