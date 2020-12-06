@@ -25,7 +25,8 @@ exports.lineChart = (req, res, next) => {
             ));
         }
 
-            let data = {
+        let result = {
+            data: {
                 labels:[],
                 datasets: [
                     {
@@ -49,9 +50,58 @@ exports.lineChart = (req, res, next) => {
                         pointBackgroundColor: "#00c9db",
                         pointBorderColor: "#fff",
                         pointHoverRadius: 0
+                    }]
+            },
+            options: {
+                legend: {
+                    display:false
+                },
+                scales: {
+                    yAxes: [{
+                    gridLines: {
+                        color: "#e7eaf3",
+                        drawBorder: false,
+                        zeroLineColor: "#e7eaf3"
+                    },
+                    ticks: {
+                        suggestedMin: -20000,
+                        suggestedMax: 430000, // can use the api call to determine max and min
+                        //stepSize: 47000, // can use the api call to determine step size,
+                        fontColor: "#97a4af",
+                        fontFamily: "Open Sans, sans-serif",
+                        padding: 10,
+                        postfix: "k"
                     }
-                ]
-            };
+                    }],
+                    xAxes: [{
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        fontSize: 12,
+                        fontColor: "#97a4af",
+                        fontFamily: "Open Sans, sans-serif",
+                        padding: 5
+                    }
+                    }]
+                },
+                tooltips: {
+                    //prefix: "$", deprecated
+                    //postfix: "k", deprecated
+                    hasIndicator: true,
+                    mode: "index",
+                    intersect: false,
+                    lineMode: true,
+                    lineWithLineColor: "rgba(19, 33, 68, 0.075)"
+                },
+                hover: {
+                mode: "nearest",
+                intersect: true
+                }
+            }
+            
+        };
 
             let final_result = {}
             let draw_pct = 0.25
@@ -65,11 +115,11 @@ exports.lineChart = (req, res, next) => {
             let rev_2_eligible = 0
             let start_rev_2 = parseFloat(inputData["s2_revenue"])
             let rev_2_increase = parseFloat(inputData["s2_revenue_increase"])/100
-            let total_periods = 360
-            let forecast_length = 20
+            let total_periods = parseFloat(inputData["loan_period"]) * 12
+            let forecast_length = parseFloat(inputData["forecast_length"])
             //let yearly_periods = total_periods/12
-            let loan_rate = (.03 /12)
-            let reinvest_rate = .03
+            let loan_rate = ((parseFloat(inputData["loan_rate"])/100) /12)
+            let reinvest_rate = parseFloat(inputData["out_of_pocket_investment_return"])/100
         
             final_result["period"] = []
             final_result["out_of_pocket"] = []
@@ -156,15 +206,29 @@ exports.lineChart = (req, res, next) => {
             for(let i = 0; i < final_result["total_opportunity_cash"].length; i++){
                 final_result["s2_income"].push(Math.round(final_result["cum_s2"][i] + final_result["total_opportunity_cash"][i]));
             }
-                console.log(final_result)
+                
 
-                data["labels"] = final_result["period"]
-                data["datasets"][0]["data"] = final_result["s1_income"]
-                data["datasets"][1]["data"] = final_result["s2_income"]
-            
-        res.json(data);      
+                result["data"]["labels"] = final_result["period"]
+                result["data"]["datasets"][0]["data"] = final_result["s1_income"]
+                result["data"]["datasets"][1]["data"] = final_result["s2_income"]
+
+                //determine suggested min max for the chart.
+                let combined_income = final_result["s1_income"].concat(final_result["s2_income"]);
+
+                let minimum_val = Math.min.apply(Math, combined_income);
+                let maximum_val = Math.max.apply(Math, combined_income);
+
+                result["options"]["scales"]["yAxes"][0]["ticks"]["suggestedMin"] = minimum_val
+                result["options"]["scales"]["yAxes"][0]["ticks"]["suggestedMax"] = maximum_val
+
+                console.log(result)
+        res.json(result);      
         
     });
 };
+
+/*
+
+*/
 
 

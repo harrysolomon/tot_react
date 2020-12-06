@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import Collapse from 'react-bootstrap/Collapse'
 import Button from 'react-bootstrap/Button'
-import Card from 'react-bootstrap/Card'
+//import Card from 'react-bootstrap/Card'
 
 
 class FinalResult extends Component {
@@ -14,58 +14,10 @@ class FinalResult extends Component {
           data_loaded: false,
           open: false,
           data: {},
-          options: {
-            legend: {
-                display:false
-            },
-            scales: {
-                yAxes: [{
-                gridLines: {
-                    color: "#e7eaf3",
-                    drawBorder: false,
-                    zeroLineColor: "#e7eaf3"
-                },
-                ticks: {
-                    min: 0,
-                    max: 1000000, // can use the api call to determine max and min
-                    stepSize: 100000, // can use the api call to determine step size,
-                    fontColor: "#97a4af",
-                    fontFamily: "Open Sans, sans-serif",
-                    padding: 10,
-                    postfix: "k"
-                }
-                }],
-                xAxes: [{
-                gridLines: {
-                    display: false,
-                    drawBorder: false
-                },
-                ticks: {
-                    fontSize: 12,
-                    fontColor: "#97a4af",
-                    fontFamily: "Open Sans, sans-serif",
-                    padding: 5
-                }
-                }]
-            },
-            tooltips: {
-                //prefix: "$", deprecated
-                //postfix: "k", deprecated
-                hasIndicator: true,
-                mode: "index",
-                intersect: false,
-                lineMode: true,
-                lineWithLineColor: "rgba(19, 33, 68, 0.075)"
-            },
-            hover: {
-            mode: "nearest",
-            intersect: true
-            }
-        }
-            
+          options: {}
       };
-      //this.handleChange = this.handleChange.bind(this);
 
+    //creates the list of inputs that are displayed upfront to the user
     }
     createForm(){
         return(
@@ -91,6 +43,7 @@ class FinalResult extends Component {
         ); 
      }
 
+     //creates the list of inputs that are hidden initially from the user
      Accordion() {
         //Need some added padding below the additional inputs button
         return (
@@ -156,7 +109,8 @@ class FinalResult extends Component {
         ])
         .then(([res1]) => Promise.all([res1.json()]))
         .then(([data1]) => this.setState({
-            data: data1,
+            data: data1["data"],
+            options: data1["options"],
         }))
     }
 
@@ -173,7 +127,8 @@ class FinalResult extends Component {
         .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
         .then(([data1, data2]) => this.setState({
             form_inputs: data1,
-            data: data2,
+            data: data2["data"],
+            options: data2["options"],
             data_loaded: true
         }))
     }
