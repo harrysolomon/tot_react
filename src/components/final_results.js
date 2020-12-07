@@ -1,9 +1,8 @@
 import React, { Component, useState } from "react";
 import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
-import Collapse from 'react-bootstrap/Collapse'
-import Button from 'react-bootstrap/Button'
-//import Card from 'react-bootstrap/Card'
+import { Card, FormControl, InputGroup, FormGroup, Container, Row, Col, Button, Collapse } from "react-bootstrap";
+
 
 
 class FinalResult extends Component {
@@ -26,17 +25,23 @@ class FinalResult extends Component {
                     this.state.form_inputs.map((item,i) => {
                         if(!item.hidden) {
                             return(
-                            <div className="form-group" key={i}>
-                            <label htmlFor={item.form_id} className="input-label">{item.form_name}
+                            <FormGroup key={i}>
+                            <label htmlFor={item.form_id}>{item.form_name}
                             </label>
-                            <div className="input-group">
-                                <input name={item.form_id} type="text" className="form-control" id={item.form_id} value={item.state||''} onChange={this.handleChange.bind(this, i)} placeholder={item.default_value} aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                </input>
-                                <div className="input-group-append">
-                                    <span className="input-group-text" id="basic-addon2">%</span>
-                                </div>
-                            </div>
-                        </div>);}
+                            <InputGroup>
+                                <FormControl 
+                                    name={item.form_id} 
+                                    type="text" 
+                                    id={item.form_id} 
+                                    value={item.state||''} 
+                                    onChange={this.handleChange.bind(this, i)} 
+                                    placeholder={item.default_value} 
+                                    aria-describedby="basic-addon2"/>
+                                <InputGroup.Append>
+                                    <InputGroup.Text id="basic-addon2">%</InputGroup.Text>
+                                </InputGroup.Append>
+                            </InputGroup>
+                        </FormGroup>);}
                     })
                 }
             </div>
@@ -64,17 +69,23 @@ class FinalResult extends Component {
                                 this.state.form_inputs.map((item,i) => {
                                     if(item.hidden) {
                                         return(
-                                            <div className="form-group" key={i}>
-                                                <label htmlFor={item.form_id} className="input-label">{item.form_name}
+                                            <FormGroup key={i}>
+                                                <label htmlFor={item.form_id}>{item.form_name}
                                                 </label>
-                                                <div className="input-group">
-                                                    <input name={item.form_id} type="text" className="form-control" id={item.form_id} value={item.state||''} onChange={this.handleChange.bind(this, i)} placeholder={item.default_value} aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                                    </input>
-                                                    <div className="input-group-append">
-                                                        <span className="input-group-text" id="basic-addon2">%</span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <InputGroup>
+                                                    <FormControl
+                                                        name={item.form_id} 
+                                                        type="text" id={item.form_id} 
+                                                        value={item.state||''} 
+                                                        onChange={this.handleChange.bind(this, i)} 
+                                                        placeholder={item.default_value} 
+                                                        aria-describedby="basic-addon2"
+                                                    />
+                                                    <InputGroup.Append>
+                                                        <InputGroup.Text id="basic-addon2">%</InputGroup.Text>
+                                                    </InputGroup.Append>
+                                                </InputGroup>
+                                            </FormGroup>
                                         );
                                     }
                                 })
@@ -145,8 +156,8 @@ render() {
         
 
         return( 
-            <div className="content container-fluid">
-                    
+            <Container fluid>
+                    {/*}
                     <Link to="/">
                         <div className="page-header">
                             <div className ="row align-items-center">
@@ -155,7 +166,7 @@ render() {
                                 </div>
                             </div>
                         </div>
-                    </Link>
+                    </Link>*/}
                     
                     <section className="jumbotron text-center">
                         <div className="container">
@@ -163,10 +174,10 @@ render() {
                         </div>
                     </section>
                     {/* start of second row*/}
-                    <div className="row gx-2 gx-lg-3">
+                    <Row>
                         {/*Line Chart*/}
-                        <div className="col-8">
-                            <div className="card">
+                        <Col md={8}>
+                            <Card>
                                 <div className="tab-content" id="navTabContent1">
                                     <div className="tab-pane fade p-4 show active" id="nav-result1" role="tabpanel" aria-labelledby="nav-resultTab1">
                                         {/*Chart Legends*/}
@@ -188,28 +199,30 @@ render() {
                                         <Line data={this.state.data} datasetKeyProvider={datasetKeyProvider} options={this.state.options}/>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </Card>
+                        </Col>
 
                         {/*Chart End*/}
 
-                        <div className="col-4">
-                            <div className="card">
-                                <div className="card-header">
+                        <Col sm={4}>
+                            <Card>
+                                <Card.Header>
                                     Bachelors Degree
-                                </div>
-                                <div className="card-body">
+                                </Card.Header>
+                                <Card.Body>
                                     {this.createForm()}
                                     {this.Accordion()}
-                                    <div className="card-footer">
-                                        <button type="button" className="btn btn-primary" onClick={this.onSubmitTask}>Submit</button>
-                                    </div>
-                                </div>
+                                    <Card.Footer>
+                                        <Button variant="primary" onClick={this.onSubmitTask}>
+                                            Submit
+                                        </Button>
+                                    </Card.Footer>
+                                </Card.Body>
                                 
-                            </div>
-                        </div>
-                    </div>
-            </div>
+                            </Card>
+                        </Col>
+                    </Row>
+            </Container>
         );
     } else {
         return (

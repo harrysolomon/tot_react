@@ -4,6 +4,7 @@
 
 import React, { Component } from "react";
 import axios from "axios";
+import { Container, Row, Col } from "react-bootstrap";
 
 class Overview extends Component {
     constructor(props) {
@@ -25,17 +26,17 @@ componentDidMount() {
 
 render() {
   return (
-    <div class="content container-fluid">
-        <div class="page-header">
-            <div class ="row align-items-center">
-                <div class="col-sm mb-2 mb-sm-0">
-                    <h1 class="page-header-title">This or That?</h1>
+    <Container fluid="true">
+        <div className="page-header">
+            <div className ="row align-items-center">
+                <div className="col-sm mb-2 mb-sm-0">
+                    <h1 className="page-header-title">This or That?</h1>
                 </div>
             </div>
         </div>
-        <div class="row gx-2 gx-lg-3">
+        <Row>
             {this.state.tiles.map(item => (
-                <div className="col-4 mb-3 mb-lg-5">
+                <Col md={4}>
                     <div className="card card-hover-shadow">
                         <div className="card-body card-body-height">
                             <div className="card-body-centered">
@@ -53,11 +54,11 @@ render() {
                             <a href="/5fac52be03ff66099d9a8ef4" className="stretched-link"></a>
                         </div>
                     </div>
-                </div>
+                </Col>
             ))}
             
-        </div>
-    </div>
+        </Row>
+    </Container>
   );
 };
 
