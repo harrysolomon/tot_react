@@ -1,7 +1,10 @@
 import React, { Component, useState } from "react";
 import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
-import { Card, FormControl, InputGroup, FormGroup, Container, Row, Col, Button, Collapse } from "react-bootstrap";
+import { Card, FormControl, InputGroup, FormGroup, Container, Row, Col, Button, Collapse, Spinner } from "react-bootstrap";
+import { Typeahead, ClearButton } from 'react-bootstrap-typeahead';
+import statesData from './data';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 
 
@@ -18,9 +21,34 @@ class FinalResult extends Component {
 
     //creates the list of inputs that are displayed upfront to the user
     }
+
+    /*filterBy(statesData, state) {
+        if (this.state.selected.length) {
+          return true;
+        }
+        return statesData.label.toLowerCase().indexOf(state.text.toLowerCase()) > -1;
+      }*/
+
     createForm(){
         return(
             <div>
+                <FormGroup>
+                    <label htmlFor="college_search">College
+                    </label>
+                    <Typeahead
+                        id="onclear-example"
+                        options={statesData}
+                        placeholder="Choose a College..."
+                        onInputChange={this.handleSearchInputChange}
+                        onChange={this.handleSearchChange}>
+                        {({ onClear, selected }) => (
+                        <div className="rbt-aux">
+                            {!!selected.length && <ClearButton onClick={onClear} />}
+                            {/*{!selected.length && <Spinner animation="grow" size="sm" />}*/}
+                        </div>
+                        )}
+                    </Typeahead>
+                </FormGroup>
                 {
                     this.state.form_inputs.map((item,i) => {
                         if(!item.hidden) {
@@ -102,6 +130,14 @@ class FinalResult extends Component {
           }));
     }
 
+    /*handleSearchInputChange(input, e) {
+        console.log("value", input)
+      }*/
+
+    handleSearchChange(selectedOptions) {
+        console.log(selectedOptions);
+      }
+
      handleChange(i, event) {
         let values = [...this.state.form_inputs];
         values[i].state = event.target.value;
@@ -153,8 +189,7 @@ render() {
     } 
 
     if(this.state.data_loaded) {
-        
-
+        console.log(this.selected);
         return( 
             <Container fluid>
                     {/*}
