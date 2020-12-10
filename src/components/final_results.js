@@ -5,6 +5,8 @@ import { Card, FormControl, InputGroup, FormGroup, Container, Row, Col, Button, 
 import { Typeahead, ClearButton } from 'react-bootstrap-typeahead';
 import statesData from './data';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import _ from 'lodash'
+
 
 
 
@@ -39,7 +41,7 @@ class FinalResult extends Component {
                         id="onclear-example"
                         options={statesData}
                         placeholder="Choose a College..."
-                        onInputChange={this.handleSearchInputChange}
+                        onInputChange={_.debounce(this.handleSearchInputChange,1000)}
                         onChange={this.handleSearchChange}>
                         {({ onClear, selected }) => (
                         <div className="rbt-aux">
@@ -130,12 +132,14 @@ class FinalResult extends Component {
           }));
     }
 
-    /*handleSearchInputChange(input, e) {
+    handleSearchInputChange(input, e) {
         console.log("value", input)
-      }*/
+        //need to think about encoding for words with spaces
+      }
 
     handleSearchChange(selectedOptions) {
         console.log(selectedOptions);
+        
       }
 
      handleChange(i, event) {
@@ -189,7 +193,7 @@ render() {
     } 
 
     if(this.state.data_loaded) {
-        console.log(this.selected);
+        //console.log(this.selected);
         return( 
             <Container fluid>
                     {/*}
