@@ -1,10 +1,9 @@
-var TilesFormInput = require('../models/tiles__form_inputs');
+var Cost = require('../models/cost');
 
-exports.form_input = (req, res, next) => {
-    TilesFormInput.find({ 
+exports.cost = (req, res, next) => {
+    Cost.find({ 
         tile_id: req.params.id
       })
-    .sort({rank: 'asc'})
       .exec((err, data) => {
         if (err) {
           return res.sendStatus(404);

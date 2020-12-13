@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Card, FormControl, InputGroup, FormGroup, Container, Row, Col, Button, Collapse, Spinner } from "react-bootstrap";
 import { Typeahead, ClearButton } from 'react-bootstrap-typeahead';
-import statesData from './data';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import _ from 'lodash'
 
@@ -18,42 +17,46 @@ class FinalResult extends Component {
           data_loaded: false,
           open: false,
           data: {},
-          options: {}
+          options: {},
+          search_result: [],
+          search_detail: []
       };
 
     //creates the list of inputs that are displayed upfront to the user
     }
-
-    /*filterBy(statesData, state) {
-        if (this.state.selected.length) {
-          return true;
-        }
-        return statesData.label.toLowerCase().indexOf(state.text.toLowerCase()) > -1;
-      }*/
-
+    
+    createSearch(){
+        return(
+            <FormGroup>
+                <label htmlFor="search">{this.state.search_detail[0]["search_name"]}
+                </label>
+                <Typeahead
+                    id="onclear-example"
+                    defaultInputValue={this.state.search_detail[0]["default_value"]}
+                    labelKey={this.state.search_detail[0]["label_key"]}
+                    options={this.state.search_result}
+                    placeholder="Choose a College..."
+                    onInputChange={_.debounce(this.handleSearchInputChange,300)}
+                    onChange={this.handleSearchChange}>
+                    {({ onClear, selected }) => (
+                    <div className="rbt-aux">
+                        {!!selected.length && <ClearButton onClick={onClear} />}
+                        {/*{!selected.length && <Spinner animation="grow" size="sm" />}*/}
+                    </div>
+                    )}
+                </Typeahead>
+            </FormGroup>
+        )
+    }
+                        
+    
     createForm(){
         return(
             <div>
-                <FormGroup>
-                    <label htmlFor="college_search">College
-                    </label>
-                    <Typeahead
-                        id="onclear-example"
-                        options={statesData}
-                        placeholder="Choose a College..."
-                        onInputChange={_.debounce(this.handleSearchInputChange,1000)}
-                        onChange={this.handleSearchChange}>
-                        {({ onClear, selected }) => (
-                        <div className="rbt-aux">
-                            {!!selected.length && <ClearButton onClick={onClear} />}
-                            {/*{!selected.length && <Spinner animation="grow" size="sm" />}*/}
-                        </div>
-                        )}
-                    </Typeahead>
-                </FormGroup>
                 {
                     this.state.form_inputs.map((item,i) => {
-                        if(!item.hidden) {
+                        //console.log(this.state.form_inputs.find(x => x.form_id == "search"))
+                        if(!item.hidden && item.form_id !== "search") {
                             return(
                             <FormGroup key={i}>
                             <label htmlFor={item.form_id}>{item.form_name}
@@ -97,7 +100,7 @@ class FinalResult extends Component {
                         <div>
                             {
                                 this.state.form_inputs.map((item,i) => {
-                                    if(item.hidden) {
+                                    if(item.hidden && item.form_id !== "search") {
                                         return(
                                             <FormGroup key={i}>
                                                 <label htmlFor={item.form_id}>{item.form_name}
@@ -127,23 +130,53 @@ class FinalResult extends Component {
     }
 
     onOpenTask = (e) => {
+        //This is the open action for the additional input accordion
         this.setState(prevState => ({
             open: !prevState.open
           }));
     }
 
-    handleSearchInputChange(input, e) {
-        console.log("value", input)
+    handleSearchInputChange = (i) => {
+        //I should have some data to start with via the component did mount function instead of a no results found field
+        //Need to add the text search string. The search is case insensitive so that's great! But something to consider next go-around
+        
+        let main = 'https://api.data.gov/ed/collegescorecard/v1/schools.json?'
+        let api_key = 'api_key=ro4hAT4oZs4MhyZDBrAqSEmg3vYCQOTJ2wAT0OEP'
+        let fixed_filter = '&school.degrees_awarded.predominant=2,3&school.name='
+        let variable_filter = encodeURI(i)
+        let fields = '&fields=school.name,latest.cost.tuition.in_state,latest.cost.tuition.out_of_state'
+        let url = main.concat(api_key,fixed_filter,variable_filter,fields)
+
+        Promise.all([
+            fetch(url)
+        ])
+        .then(([res1]) => Promise.all([res1.json()]))
+        .then(([data1]) => this.setState({
+            search_result: data1["results"]
+        }))
+
         //need to think about encoding for words with spaces
       }
 
-    handleSearchChange(selectedOptions) {
-        console.log(selectedOptions);
+    handleSearchChange = (selectedOptions) => {
+        //some schools do not have out of state tuition prices. How shall we handle?
+        //This loops through all of the search details and maps the result from the search to its dependent form input id
         
-      }
+        if(selectedOptions.length !== 0) {
+            this.state.search_detail[0]["dependencies"].map((item) => {
+                let index = this.state.form_inputs.findIndex(x => x._id === item.dependent_id);
+                let values = [...this.state.form_inputs];
+                    values[index].state = selectedOptions[0][item.col_ref]
+                this.setState({ values })
 
+            })
+        }
+        
+    }
+//this is for all the inputs besides the search bar
      handleChange(i, event) {
         let values = [...this.state.form_inputs];
+
         values[i].state = event.target.value;
         this.setState({ values });
      }
@@ -173,14 +206,19 @@ class FinalResult extends Component {
 
         Promise.all([
             fetch(`http://localhost:3000/5fac52be03ff66099d9a8ef4`),
-            fetch('http://localhost:3000/5fac52be03ff66099d9a8ef4/line_chart',requestOptions)
+            fetch('http://localhost:3000/5fac52be03ff66099d9a8ef4/line_chart',requestOptions),
+            fetch('https://api.data.gov/ed/collegescorecard/v1/schools.json?api_key=ro4hAT4oZs4MhyZDBrAqSEmg3vYCQOTJ2wAT0OEP&school.degrees_awarded.predominant=2,3&school.main_campus=1&fields=school.name,latest.cost.tuition.in_state,latest.cost.tuition.out_of_state'),
+            fetch('http://localhost:3000/5fac52be03ff66099d9a8ef4/search_detail')
         ])
-        .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
-        .then(([data1, data2]) => this.setState({
+        .then(([res1, res2, res3, res4]) => Promise.all([res1.json(), res2.json(), res3.json(), res4.json()]))
+        .then(([data1, data2, data3, data4]) => this.setState({
             form_inputs: data1,
             data: data2["data"],
             options: data2["options"],
-            data_loaded: true
+            data_loaded: true,
+            search_result: data3["results"],
+            search_detail: data4
+
         }))
     }
 
@@ -191,9 +229,8 @@ render() {
     const datasetKeyProvider=()=>{ 
         return btoa(Math.random()).substring(0,12)
     } 
-
+    console.log(this.state.search_detail)
     if(this.state.data_loaded) {
-        //console.log(this.selected);
         return( 
             <Container fluid>
                     {/*}
@@ -249,6 +286,7 @@ render() {
                                     Bachelors Degree
                                 </Card.Header>
                                 <Card.Body>
+                                    {this.createSearch()}
                                     {this.createForm()}
                                     {this.Accordion()}
                                     <Card.Footer>

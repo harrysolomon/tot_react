@@ -17,14 +17,16 @@ exports.lineChart = (req, res, next) => {
         if (JSON.stringify(req.body) === '{}') {
             for (let i = 0;i < tileData.length;++i) {
                 let key = tileData[i]["form_id"];
+                
                 inputData[key] = tileData[i]["state"];
+                console.log(tileData[i]["state"])
             }
         } else {
             req.body.map((item,i) => (
                 inputData[item.form_id] = item.state
             ));
         }
-
+//console.log(inputData)
         let result = {
             data: {
                 labels:[],
@@ -107,7 +109,7 @@ exports.lineChart = (req, res, next) => {
             let draw_pct = 0.25
             let out_of_pocket_pct = parseFloat(inputData["percentOutOfPocket"])/100
             let loan_pct = parseFloat(inputData["percentLoan"])/100
-            let total_cost = 200000
+            let total_cost = parseFloat(inputData["price"]) * parseFloat(inputData["quantity"])
             let loan_eligible = 4
             let rev_1_eligible = 4
             let start_rev_1 = parseFloat(inputData["s1_revenue"])
@@ -221,7 +223,7 @@ exports.lineChart = (req, res, next) => {
                 result["options"]["scales"]["yAxes"][0]["ticks"]["suggestedMin"] = minimum_val
                 result["options"]["scales"]["yAxes"][0]["ticks"]["suggestedMax"] = maximum_val
 
-                console.log(result)
+                //console.log(result)
         res.json(result);      
         
     });
