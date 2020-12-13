@@ -1,3 +1,5 @@
+//Is this tech debt to not define state in the schema?
+
 var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;

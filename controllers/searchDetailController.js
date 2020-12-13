@@ -1,10 +1,9 @@
-var TilesFormInput = require('../models/tiles__form_inputs');
+var SearchDetail = require('../models/search_detail');
 
-exports.form_input = (req, res, next) => {
-    TilesFormInput.find({ 
+exports.searchDetail = (req, res, next) => {
+    SearchDetail.find({ 
         tile_id: req.params.id
       })
-    .sort({rank: 'asc'})
       .exec((err, data) => {
         if (err) {
           return res.sendStatus(404);
