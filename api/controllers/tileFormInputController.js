@@ -4,7 +4,7 @@ exports.form_input = (req, res, next) => {
     TilesFormInput.find({ 
         tile_id: req.params.id
       })
-    .sort({rank: 'asc'})
+      .sort({parent_rank: 'asc', sibling_rank: 'asc'})
       .exec((err, data) => {
         if (err) {
           return res.sendStatus(404);

@@ -12,7 +12,11 @@ var TileFormInputSchema = new Schema(
     default_value: {type: String, required: true, maxlength: 100},
     rank: {type: Number, required: true},
     hidden: {type: Boolean, required: true},
-    state: {type: String, required: true, maxlength: 100}
+    state: {type: String, required: true, maxlength: 100},
+    parent_name: {type: String, required: true},
+    parent_rank: {type: Number, required: true},
+    sibling_rank: {type: Number, required: true},
+    type: {type: String, required: true}
   },
   {collection: 'tiles__form_inputs'}
 );

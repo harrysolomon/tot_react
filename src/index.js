@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Overview from './components/Overview';
 import FinalResult from './components/final_results';
+import TestingFormInput from './components/testing_form_options';
 
 
 ReactDOM.render(
@@ -10,6 +11,7 @@ ReactDOM.render(
     <div>
       <Route exact path="/" component={Overview} />
       <Route path="/5fac52be03ff66099d9a8ef4" component={FinalResult} />
+      <Route path="/testing" component={TestingFormInput} />
     </div>
   </Router>,
   document.getElementById('root')
