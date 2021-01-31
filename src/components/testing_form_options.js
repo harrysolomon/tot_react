@@ -1,10 +1,49 @@
 import React, { Component, useState } from "react";
 import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
-import { Card, FormControl, InputGroup, FormGroup, Container, Row, Col, Button, Collapse, Spinner } from "react-bootstrap";
+import { Card, FormControl, InputGroup, FormGroup, Container, Row, Col, Button, Nav, Navbar, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Typeahead, ClearButton } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import _ from 'lodash'
+import BootstrapTable from 'react-bootstrap-table-next';
+import { PencilFill } from 'react-bootstrap-icons'
+//import cellEditFactory from 'react-bootstrap-table2-editor';
+
+const columns = [{
+    dataField: 'period',
+    text: 'Year'
+  }, {
+    dataField: 'cost',
+    text: 'Cost'
+  }];
+
+  const products = [{
+      period: 1,
+      cost: 50000
+  },
+  {
+    period: 2,
+    cost: 50000
+},
+{
+    period: 3,
+    cost: 50000
+},
+{
+    period: 4,
+    cost: 50000
+},
+{
+    period: 5,
+    cost: 0
+}
+]
+
+const renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+        Edit your selections
+    </Tooltip>
+  );
 
 
 
@@ -16,6 +55,7 @@ class TestingFormInput extends Component {
           form_inputs: [],
           data_loaded: false,
           open: false,
+          costModalOpen: false,
           data: {},
           options: {},
           search_result: [],
@@ -104,59 +144,72 @@ class TestingFormInput extends Component {
         ); 
      }
 
-     //creates the list of inputs that are hidden initially from the user
-     /*Accordion() {
-        //Need some added padding below the additional inputs button
-        return (
-                    <>
-                    <Button 
-                        variant="light" 
-                        size="lg" 
-                        onClick={this.onOpenTask}
-                        aria-controls="example-collapse-text"
-                        aria-expanded={this.state.open}
-                        block
-                    >
-                        Additional Inputs
-                    </Button>
-                    <Collapse in={this.state.open}>
-                        <div>
-                            {
-                                this.state.form_inputs.map((item,i) => {
-                                    if(item.hidden && item.form_id !== "search") {
-                                        return(
-                                            <FormGroup key={i}>
-                                                <label htmlFor={item.form_id}>{item.form_name}
-                                                </label>
-                                                <InputGroup>
-                                                    <FormControl
-                                                        name={item.form_id} 
-                                                        type="text" id={item.form_id} 
-                                                        value={item.state||''} 
-                                                        onChange={this.handleChange.bind(this, i)} 
-                                                        placeholder={item.default_value} 
-                                                        aria-describedby="basic-addon2"
-                                                    />
-                                                    <InputGroup.Append>
-                                                        <InputGroup.Text id="basic-addon2">%</InputGroup.Text>
-                                                    </InputGroup.Append>
-                                                </InputGroup>
-                                            </FormGroup>
-                                        );
-                                    }
-                                })
-                            }
-                        </div>
-                    </Collapse>
-                    </>
-        );
-    }*/
+     createMgmtButtons() {
+         return (
+             <Row>
+                 <Col>
+                    <Button variant="outline-info" size="sm">Manage Loan</Button>
+                 </Col>
+                <Col>
+                    <Button variant="outline-info" size="sm" onClick={this.handleCostModal}>Manage Cost</Button>
+                </Col>
+                <Col>
+                    <Button variant="outline-info" size="sm">Manage Revenue</Button>
+                </Col>
+            </Row>
+
+         )
+     }
+
+     costModal() {
+         return (
+             <Modal 
+                size="lg"
+                show={this.state.costModalOpen}
+                onHide={this.handleCostModal}>
+                 <Modal.Header>
+                 <Container fluid>
+                    <Navbar expand="lg" variant="light" bg="light" fluid>
+                        <Nav fill variant="tabs" defaultActiveKey="link-1">
+                            <Nav.Item>
+                                <Nav.Link eventKey="link-1">Cost</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="link-2">Salary</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="link-3">Loan</Nav.Link>
+                            </Nav.Item>
+                        </Nav>
+                    </Navbar>
+                </Container>
+                 </Modal.Header>
+                 <Modal.Body>
+                     <BootstrapTable
+                        keyField="period"
+                        data={ products }
+                        columns={ columns }
+                        />
+                 </Modal.Body>
+             </Modal>
+         )
+     }
+
+
+
+     
 
     onOpenTask = (e) => {
         //This is the open action for the additional input accordion
         this.setState(prevState => ({
             open: !prevState.open
           }));
+    }
+
+    handleCostModal = (e) => {
+        this.setState(prevState => ({
+            costModalOpen: !prevState.costModalOpen
+        }))
     }
 
     handleSearchInputChange = (i) => {
@@ -253,77 +306,88 @@ render() {
     const datasetKeyProvider=()=>{ 
         return btoa(Math.random()).substring(0,12)
     } 
-    //console.log(this.state.form_inputs)
+    console.log(this.state.costModalOpen)
     if(this.state.data_loaded) {
         return( 
-            <Container fluid>
-                    {/*}
-                    <Link to="/">
-                        <div className="page-header">
-                            <div className ="row align-items-center">
-                                <div className="col-sm mb-2 mb-sm-0">
-                                    <h1 className="page-header-title">This or That?</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </Link>*/}
+            <div>
                     
                     <section className="jumbotron text-center">
                         <div className="container">
-                            <p className="lead text-muted">According to BLS, great investment!</p>
+                            <p className="lead text-muted">According to the Bureau of Labor Statistics, after 10 years, you will make more money going to Harvard vs not going to college at all.</p>
                         </div>
                     </section>
                     {/* start of second row*/}
-                    <Row>
-                        {/*Line Chart*/}
-                        <Col md={8}>
-                            <Card>
-                                <div className="tab-content" id="navTabContent1">
-                                    <div className="tab-pane fade p-4 show active" id="nav-result1" role="tabpanel" aria-labelledby="nav-resultTab1">
-                                        {/*Chart Legends*/}
-                                        <div className="row align-items-sm-center mb-4">
-                                            <div className="col-sm mb-3 mb-sm-0"></div>
-                                            <div className="col-sm-auto">
-                                                <div className="row font-size-sm">
-                                                    <div className="col-auto">
-                                                        <span className="legend-indicator bg-primary"></span> Bachelors Degree
-                                                    </div>
-                                        
-                                                    <div className="col-auto">
-                                                        <span className="legend-indicator bg-info"></span> High School Diploma
+                    <div className="container-fluid d-flex full-height align-items-center bg-light">
+                        <Row>
+                            {/*Line Chart*/}
+                            <Col md={8}>
+                                <div className="card h-100">
+                                    <div className="tab-content" id="navTabContent1">
+                                        <div className="tab-pane fade p-4 show active" id="nav-result1" role="tabpanel" aria-labelledby="nav-resultTab1">
+                                            {/*Chart Legends*/}
+                                            <div className="row align-items-sm-center mb-4">
+                                                <div className="col-sm mb-3 mb-sm-0"></div>
+                                                <div className="col-sm-auto">
+                                                    <div className="row font-size-sm">
+                                                        <div className="col-auto">
+                                                            <span className="legend-indicator bg-primary"></span> Bachelors Degree
+                                                        </div>
+                                            
+                                                        <div className="col-auto">
+                                                            <span className="legend-indicator bg-info"></span> High School Diploma
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                         </div>
-                                
-                                        <Line data={this.state.data} datasetKeyProvider={datasetKeyProvider} options={this.state.options}/>
+                                                </div>
+                                    
+                                            <Line data={this.state.data} datasetKeyProvider={datasetKeyProvider} options={this.state.options}/>
+                                        </div>
                                     </div>
                                 </div>
-                            </Card>
-                        </Col>
+                            </Col>
 
-                        {/*Chart End*/}
+                            {/*Chart End*/}
 
-                        <Col sm={4}>
-                            <Card>
-                                <Card.Header>
-                                    Bachelors Degree
-                                </Card.Header>
-                                <Card.Body>
-                                    {this.createSearch()}
-                                    {this.createForm()}
-                                    
+                            <Col sm={4}>
+                                <div className="card h-100">
+                                    <Card.Header>
+                                        Bachelors Degree
+                                        
+                                        <OverlayTrigger
+                                            placement="auto"
+                                            
+                                            overlay={renderTooltip}
+                                        >
+                                            <Button 
+                                                onClick={this.handleCostModal}
+                                                variant="outline-secondary"
+                                            >
+                                                <PencilFill/>
+                                            </Button>
+                                        </OverlayTrigger>
+                                        {this.costModal()}
+                                        
+                                    </Card.Header>
+                                    <Card.Body>
+                                        
+                                        {this.createSearch()}
+                                        {this.createForm()}
+                                        
+                                    </Card.Body>
                                     <Card.Footer>
                                         <Button variant="primary" onClick={this.onSubmitTask}>
-                                            Submit
-                                        </Button>
+                                                Submit
+                                        </Button>{' '}
+                                        <Button variant="secondary">
+                                                Save
+                                        </Button>{' '}
                                     </Card.Footer>
-                                </Card.Body>
-                                
-                            </Card>
-                        </Col>
-                    </Row>
-            </Container>
+                                    
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+            </div>
         );
     } else {
         return (

@@ -30,7 +30,7 @@ render() {
         <div className="page-header">
             <div className ="row align-items-center">
                 <div className="col-sm mb-2 mb-sm-0">
-                    <h1 className="page-header-title">This or That?</h1>
+                    <h1 className="page-header-title">Libra</h1>
                 </div>
             </div>
         </div>
