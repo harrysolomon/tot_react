@@ -306,7 +306,7 @@ render() {
     const datasetKeyProvider=()=>{ 
         return btoa(Math.random()).substring(0,12)
     } 
-    console.log(this.state.costModalOpen)
+    console.log(this.state.form_inputs)
     if(this.state.data_loaded) {
         return( 
             <div>
