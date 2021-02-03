@@ -13,43 +13,98 @@ const the_form_inputs = [{
         "inputs":[
             {
                 "form_label": "Name of Something",
-                "default_value": "",
+                "state": "",
                 "type": "text",
                 "values": [],
                 "append": "",
-                "size": 3
+                "size": 3,
+                "placeholder": ""
             },
             {
                 "form_label": "Product",
-                "default_value": "",
+                "state": "",
                 "type": "select",
                 "values": ["Product1", "Product2"],
                 "append": "" ,
-                "size": 2
+                "size": 2,
+                "placeholder": ""
             },
             {
                 "form_label": "Unit",
-                "default_value": "",
+                "state": "",
                 "type": "select",
                 "values": ["Time Spent (Hrs)", "Time Spent (Days"] ,
                 "append": "",
-                "size": 2
+                "size": 2,
+                "placeholder": ""
             },
             {
                 "form_label": "Current Time Spent",
-                "default_value": "",
+                "state": "",
                 "type": "text",
                 "values": [],
                 "append": "",
-                "size": 2
+                "size": 2,
+                "placeholder": ""
             },
             {
                 "form_label": "Revised Time Spent",
-                "default_value": "",
+                "state": "",
                 "type": "text",
                 "values": [],
                 "append": "",
-                "size": 2
+                "size": 2,
+                "placeholder": ""
+            }]
+    }]
+
+
+    const unchanged_inputs = [{
+        "inputs":[
+            {
+                "form_label": "Name of Something",
+                "state": "",
+                "type": "text",
+                "values": [],
+                "append": "",
+                "size": 3,
+                "placeholder": ""
+            },
+            {
+                "form_label": "Product",
+                "state": "",
+                "type": "select",
+                "values": ["Product1", "Product2"],
+                "append": "" ,
+                "size": 2,
+                "placeholder": ""
+            },
+            {
+                "form_label": "Unit",
+                "state": "",
+                "type": "select",
+                "values": ["Time Spent (Hrs)", "Time Spent (Days"] ,
+                "append": "",
+                "size": 2,
+                "placeholder": ""
+            },
+            {
+                "form_label": "Current Time Spent",
+                "state": "",
+                "type": "text",
+                "values": [],
+                "append": "",
+                "size": 2,
+                "placeholder": ""
+            },
+            {
+                "form_label": "Revised Time Spent",
+                "state": "",
+                "type": "text",
+                "values": [],
+                "append": "",
+                "size": 2,
+                "placeholder": ""
             }]
     }]
 
@@ -58,22 +113,23 @@ class Automation extends Component {
       super(props);
       this.state = {
           form_inputs: the_form_inputs,
-          unchanged_inputs: the_form_inputs,
+          unchanged_inputs: unchanged_inputs,
           data_loaded: false,
           open: false,
           data: {},
           options: {},
           search_result: [],
-          search_detail: []
+          search_detail: [],
+          navActive: ""
       };
-
+      this.activeNav = this.activeNav.bind(this)
     //creates the list of inputs that are displayed upfront to the user
     }
    
     formLabel(index,label){
         if(index==0){
             return(
-                <FormLabel>{label}</FormLabel>
+                <FormLabel bsPrefix="form-label text-center">{label}</FormLabel>
             )
         }
     }
@@ -103,7 +159,8 @@ class Automation extends Component {
                                                             name={item.form_label} 
                                                             type={item.type}
                                                             id={col_index} 
-                                                            value={item.default_value||''}
+                                                            value={item.state||''}
+                                                            onChange={this.handleChange.bind(this, row_index, col_index)} 
                                                             aria-describedby="basic-addon2"/>
                                                     </InputGroup>
                                                 </FormGroup>
@@ -115,7 +172,9 @@ class Automation extends Component {
                                         <Col xs={item.size} key={col_index}>
                                             <FormGroup>
                                                 {this.formLabel(row_index,item.form_label)}
-                                                    <FormControl as={item.type}>
+                                                    <FormControl 
+                                                        as={item.type}
+                                                        value={item.state||''}>
                                                         {item.values.map((options) => {
                                                             return(
                                                         <React.Fragment>
@@ -142,22 +201,50 @@ class Automation extends Component {
                     
 
 //this is for all the inputs besides the search bar
-     handleChange(i, event) {
+    handleChange(row, col, event) {
+            
         let values = [...this.state.form_inputs];
-
-        values[i].state = event.target.value;
+        values[row].inputs[col].state = event.target.value;
+        console.log(this.state.unchanged_inputs)
+        
         this.setState({ values });
-     }
+    }
     
     onSubmitTask = (e) => {
+        let new_val = this.state.form_inputs.concat(unchanged_inputs)
+        //console.log(new_val)
         this.setState({
-           form_inputs: this.state.form_inputs.concat(this.state.unchanged_inputs)
+           form_inputs: new_val
         })    
     }
 
+    //
+    activeNav(eventKey){
+        this.setState({ navActive: eventKey})
+    }
+
+    supSquad(){
+        return (
+            <div>
+                sup bitches
+            </div>
+        )
+    }
+
+   // this function determines the content to display based on the active nav 
+    contentDisplay(){
+        if(this.state.navActive === '' || this.state.navActive === "form"){
+            return(
+                this.createForm())
+        } else {
+            return(this.supSquad())
+        }
+    }
+        
+
 
 render() {
-    console.log(this.state.form_inputs.concat(this.state.form_inputs))
+    //console.log(this.state.form_inputs.push(this.state.unchanged_inputs))
     return( 
         
         <div className="container-fluid">
@@ -171,22 +258,22 @@ render() {
             <Row>
                 <div className="tab-content" id="navTabContent4">
                     <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
-                        <Nav variant="tabs" defaultActiveKey="link-0">
+                        <Nav variant="tabs" defaultActiveKey="form" onSelect={this.activeNav}>
                             <Nav.Item>
-                                <Nav.Link eventKey="link-0">Inputs</Nav.Link>
+                                <Nav.Link eventKey="form">Inputs</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="link-1">Graph</Nav.Link>
+                                <Nav.Link eventKey="graph">Graph</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="disabled">Spreadsheet</Nav.Link>
+                                <Nav.Link eventKey="spreadsheet" >Spreadsheet</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </div>
                 </div>
             </Row>
             <Row>
-                {this.createForm()}
+                {this.contentDisplay()}
                   
             </Row>
         </div>
