@@ -5,6 +5,7 @@ import Overview from './components/Overview';
 import FinalResult from './components/final_results';
 import TestingFormInput from './components/testing_form_options';
 import Automation from './components/automation';
+import ROIList from './components/roi_list';
 
 
 ReactDOM.render(
@@ -14,6 +15,7 @@ ReactDOM.render(
       <Route path="/5fac52be03ff66099d9a8ef4" component={FinalResult} />
       <Route path="/testing" component={TestingFormInput} />
       <Route path="/automation" component={Automation} />
+      <Route path="/calculator" component={ROIList} />
     </div>
   </Router>,
   document.getElementById('root')
