@@ -124,54 +124,57 @@ const line_chart_data = {
     }
   }
 
-const the_form_inputs = [{
-        "inputs":[
-            {
-                "form_label": "Name of Something",
-                "state": "",
-                "input_type": "text",
-                "values": [],
-                "data_type": "",
-                "size": 3,
-                "placeholder": ""
-            },
-            {
-                "form_label": "Product",
-                "state": "",
-                "input_type": "select",
-                "values": ["choose...","Product1", "Product2"],
-                "data_type": "" ,
-                "size": 2,
-                "placeholder": ""
-            },
-            {
-                "form_label": "Current Time Spent",
-                "state": "",
-                "input_type": "text",
-                "values": [],
-                "data_type": "Hrs",
-                "size": 2,
-                "placeholder": ""
-            },
-            {
-                "form_label": "Cost",
-                "state": "",
-                "input_type": "text",
-                "values": [],
-                "data_type": "$",
-                "size": 2,
-                "placeholder": ""
-            }]
-    }]
-
 const the_products = [
     {
+        "id":1,
         "name": "Cool Product",
-        "product_cost": 5000
+        "cost": 10000,
+        "period": "year"
     },
     {
-        "name": "Another Product",
-        "product_cost": 50000
+        "id":2,
+        "name":"Another Product",
+        "cost": 5000,
+        "peiod": "quarter"
+    }
+]
+
+const the_cadences = [
+    {
+        "id":1,
+        "name":"Daily",
+        "period":"day"
+    },
+    {
+        "id":2,
+        "name":"Quarterly",
+        "period": "quarter"
+    },
+    {
+        "id":3,
+        "name":"Annually",
+        "period":"year"
+    }
+]
+
+const the_employees = [
+    {
+        "id": 1,
+        "name": "Analyst",
+        "cost": 50000,
+        "period": "year"
+    },
+    {
+        "id": 2,
+        "name": "Account Management",
+        "cost": 65000,
+        "period": "year"
+    },
+    {
+        "id": 3,
+        "name": "Account Executive",
+        "cost": 75000,
+        "period": "year"
     }
 ]
 
@@ -179,7 +182,8 @@ const the_rows = [{
     "name": "",
     "product": "",
     "current_time_spent":"",
-    "cost":""
+    "employee": "",
+    "cadence":""
 }]
 
 
@@ -187,9 +191,10 @@ class Automation extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          form_inputs: the_form_inputs,
           rows: the_rows,
           products: the_products,
+          cadences: the_cadences,
+          employees: the_employees,
           data_loaded: false,
           open: false,
           data: line_chart_data["data"],
@@ -260,7 +265,8 @@ class Automation extends Component {
                             <th className="text-center"> Name </th>
                             <th className="text-center"> Product </th>
                             <th className="text-center"> Current Time Spent </th>
-                            <th className="text-center"> Cost </th>
+                            <th className="text-center"> Employee </th>
+                            <th className="text-center"> Cadence </th>
                             <th />
                             </tr>
                         </thead>
@@ -274,8 +280,8 @@ class Automation extends Component {
                                 <FormControl
                                 type="text"
                                 name="name"
-                                value={this.state.rows[idx].name}
-                                onChange={this.handleChange(idx)}
+                                value={item.name}
+                                onChange={this.handleChange.bind(this, idx, "name")}
                                 />
                                 </InputGroup>
                             </td>
@@ -284,13 +290,13 @@ class Automation extends Component {
                                 <FormControl
                                 as="select"
                                 name="product"
-                                value={this.state.rows[idx].product}
-                                onChange={this.handleChange(idx)}>
+                                onChange={this.handleChange.bind(this, idx, "product")}>
+                                <React.Fragment>
+                                    <option>Choose..</option>
                                 {this.state.products.map((product, product_index) => {
                                 return(
-                                <React.Fragment>
-                                    <option key={product_index}>{product.name}</option>
-                                </React.Fragment>)})}
+                                    <option key={product_index} value={product_index}>{product.name}</option>)})}
+                                </React.Fragment>
                                 </FormControl>
                                 </InputGroup>
                             </td>
@@ -300,7 +306,7 @@ class Automation extends Component {
                                 type="text"
                                 name="current_time_spent"
                                 value={this.state.rows[idx].current_time_spent}
-                                onChange={this.handleChange(idx)}
+                                onChange={this.handleChange.bind(this, idx, "current_time_spent")}
                                 />
                                     <InputGroup.Append>
                                         <InputGroup.Text id="basic-addon1">Hrs</InputGroup.Text>
@@ -309,15 +315,32 @@ class Automation extends Component {
                             </td>
                             <td>
                                 <InputGroup>
-                                    <InputGroup.Prepend>
-                                        <InputGroup.Text id="basic-addon1">$</InputGroup.Text>
-                                    </InputGroup.Prepend>
                                 <FormControl
-                                type="text"
-                                name="cost"
-                                value={this.state.rows[idx].cost}
-                                onChange={this.handleChange(idx)}
-                                />
+                                as="select"
+                                name="employee"
+                                onChange={this.handleChange.bind(this, idx, "employee")}>
+                                <React.Fragment>
+                                    <option>Choose..</option>
+                                {this.state.employees.map((employee, employee_index) => {
+                                return(
+                                    <option key={employee_index} value={employee_index}>{employee.name}</option>)})}
+                                </React.Fragment>
+                                </FormControl>
+                                </InputGroup>
+                            </td>
+                            <td>
+                                <InputGroup>
+                                <FormControl
+                                as="select"
+                                name="cadence"
+                                onChange={this.handleChange.bind(this, idx, "cadence")}>
+                                <React.Fragment>
+                                    <option>Choose..</option>
+                                {this.state.cadences.map((cadence, cadence_index) => {
+                                return(
+                                    <option key={cadence_index} value={cadence_index}>{cadence.name}</option>)})}
+                                </React.Fragment>
+                                </FormControl>
                                 </InputGroup>
                             </td>
                             <td className="text-center">
@@ -339,18 +362,30 @@ class Automation extends Component {
                 
             </Col>
         )}
+        
+    handleChange(row, field, event) {
+        let values = [...this.state.rows];
+        if(event.target.type === "select-one"){
+            values[row][field] = this.state.products[event.target.value]
+            this.setState({ values });
+
+        } else {
+            values[row][field] = event.target.value;
+            this.setState({ values });
+        }
+
+        
+    }
+
+    /*handleSelectChange(row, field, event) {
     
-    
-    handleChange = (idx) => (e) => {
-        const { name, value } = e.target;
-        const rows = [...this.state.rows];
-            rows[idx] = {
-                [name]: value
-            };
-            this.setState({
-                rows
-            });
-        };                          
+        let values = [...this.state.rows];
+        let prod_array = this.state.products.find(event.)
+        console.log(field)
+        //values[row][field] = event.target.value;
+        
+        //this.setState({ values });
+    }*/
 
     handleRemoveSpecificRow = (idx) => () => {
         const rows = [...this.state.rows];
@@ -367,7 +402,8 @@ class Automation extends Component {
             "name": "",
             "product": "",
             "current_time_spent":"",
-            "cost":""
+            "employee": "",
+            "cadence":""
         }
         this.setState({
            rows: [...this.state.rows, new_row]
@@ -407,6 +443,7 @@ class Automation extends Component {
 
 render() {
     //console.log(this.state.form_inputs.push(this.state.unchanged_inputs))
+    console.log(this.state.rows)
     return( 
         
         <div className="container-fluid">
