@@ -129,13 +129,17 @@ const the_products = [
         "id":1,
         "name": "Cool Product",
         "cost": 10000,
-        "period": "year"
+        "period": "year",
+        "time_save": 50,
+        "time_unit": "pct"
     },
     {
         "id":2,
         "name":"Another Product",
         "cost": 5000,
-        "peiod": "quarter"
+        "peiod": "quarter",
+        "time_save": 80,
+        "time_unit": "pct"
     }
 ]
 
@@ -180,10 +184,10 @@ const the_employees = [
 
 const the_rows = [{
     "name": "",
-    "product": "",
+    "products": "",
     "current_time_spent":"",
-    "employee": "",
-    "cadence":""
+    "employees": "",
+    "cadences":""
 }]
 
 
@@ -195,6 +199,11 @@ class Automation extends Component {
           products: the_products,
           cadences: the_cadences,
           employees: the_employees,
+          select_inputs:{
+              products: the_products,
+              employees: the_employees,
+              cadences: the_cadences
+          },
           data_loaded: false,
           open: false,
           data: line_chart_data["data"],
@@ -289,11 +298,11 @@ class Automation extends Component {
                                 <InputGroup>
                                 <FormControl
                                 as="select"
-                                name="product"
-                                onChange={this.handleChange.bind(this, idx, "product")}>
+                                name="products"
+                                onChange={this.handleChange.bind(this, idx, "products")}>
                                 <React.Fragment>
                                     <option>Choose..</option>
-                                {this.state.products.map((product, product_index) => {
+                                {this.state.select_inputs.products.map((product, product_index) => {
                                 return(
                                     <option key={product_index} value={product_index}>{product.name}</option>)})}
                                 </React.Fragment>
@@ -317,11 +326,11 @@ class Automation extends Component {
                                 <InputGroup>
                                 <FormControl
                                 as="select"
-                                name="employee"
-                                onChange={this.handleChange.bind(this, idx, "employee")}>
+                                name="employees"
+                                onChange={this.handleChange.bind(this, idx, "employees")}>
                                 <React.Fragment>
                                     <option>Choose..</option>
-                                {this.state.employees.map((employee, employee_index) => {
+                                {this.state.select_inputs.employees.map((employee, employee_index) => {
                                 return(
                                     <option key={employee_index} value={employee_index}>{employee.name}</option>)})}
                                 </React.Fragment>
@@ -332,11 +341,11 @@ class Automation extends Component {
                                 <InputGroup>
                                 <FormControl
                                 as="select"
-                                name="cadence"
-                                onChange={this.handleChange.bind(this, idx, "cadence")}>
+                                name="cadences"
+                                onChange={this.handleChange.bind(this, idx, "cadences")}>
                                 <React.Fragment>
                                     <option>Choose..</option>
-                                {this.state.cadences.map((cadence, cadence_index) => {
+                                {this.state.select_inputs.cadences.map((cadence, cadence_index) => {
                                 return(
                                     <option key={cadence_index} value={cadence_index}>{cadence.name}</option>)})}
                                 </React.Fragment>
@@ -366,7 +375,7 @@ class Automation extends Component {
     handleChange(row, field, event) {
         let values = [...this.state.rows];
         if(event.target.type === "select-one"){
-            values[row][field] = this.state.products[event.target.value]
+            values[row][field] = this.state.select_inputs[event.target.name][event.target.value]
             this.setState({ values });
 
         } else {
@@ -400,10 +409,10 @@ class Automation extends Component {
         //Or we would have to do a post for every row added.
         const new_row = {
             "name": "",
-            "product": "",
+            "products": "",
             "current_time_spent":"",
-            "employee": "",
-            "cadence":""
+            "employees": "",
+            "cadences":""
         }
         this.setState({
            rows: [...this.state.rows, new_row]
@@ -450,7 +459,7 @@ render() {
             <div className="page-header">
                 <div className ="row align-items-bottom">
                     <div className="col-sm mb-2 mb-sm-0">
-                        <h1 className="page-header-title text-left align-bottom">Give a good title; possible includes prospects name in it</h1>
+                        <h1 className="page-header-title text-left align-bottom">New Calculator</h1>
                     </div>
                 </div>
             </div>
