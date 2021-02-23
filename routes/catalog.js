@@ -26,7 +26,7 @@ router.get('/:id/search_detail', search_detail_controller.searchDetail);
 
 router.get('/:id/test_input', form_input_test_controller.form_input_test);
 
-router.get('/automate/testing', time_save_controller.timeSaver);
+router.post('/automate/testing', time_save_controller.timeSaver);
 
 //router.get('/:id/test', testing_controller.testing);
 
