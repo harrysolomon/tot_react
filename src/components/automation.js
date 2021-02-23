@@ -126,12 +126,16 @@ const line_chart_data = {
 
 const the_products = [
     {
+        "id":0,
+        "name": "Choose..."
+    },
+    {
         "id":1,
         "name": "Cool Product",
         "cost": 10000,
         "period": "year",
         "time_save": 50,
-        "time_unit": "pct"
+        "time_unit": "hour"
     },
     {
         "id":2,
@@ -139,7 +143,7 @@ const the_products = [
         "cost": 5000,
         "peiod": "quarter",
         "time_save": 80,
-        "time_unit": "pct"
+        "time_unit": "hour"
     }
 ]
 
@@ -249,6 +253,11 @@ class Automation extends Component {
             
         }
     }
+    productOptions = () => {
+        this.state.select_inputs.products.map((product, product_index) => {
+            return(
+                <option key={product_index} value={product_index}>{product.name}</option>)})
+    }
 
     tableOption(){
         return(
@@ -258,7 +267,7 @@ class Automation extends Component {
                     <Col>Inputs</Col>
                     <Col>
                     <div className="text-right">
-                        <Button size="sm" variant="outline-primary">
+                        <Button size="sm" variant="outline-primary" onClick={this.onSubmitTask}>
                             Submit
                         </Button>
                         </div>
@@ -281,11 +290,11 @@ class Automation extends Component {
                         </thead>
                         <tbody>
                         {this.state.rows.map((item, idx) => (
-                            <tr id="addr0" key={idx}>
+                            <tr id={idx} key={idx}>
                             <td>{idx}</td>
                             <td>
                                 
-                                <InputGroup>
+                                <InputGroup key="1">
                                 <FormControl
                                 type="text"
                                 name="name"
@@ -294,23 +303,23 @@ class Automation extends Component {
                                 />
                                 </InputGroup>
                             </td>
-                            <td>
-                                <InputGroup>
+                            <td key={idx}>
+                                <InputGroup key="2">
                                 <FormControl
                                 as="select"
                                 name="products"
+                                value={item.products.name||"Choose..."}
                                 onChange={this.handleChange.bind(this, idx, "products")}>
-                                <React.Fragment>
-                                    <option>Choose..</option>
-                                {this.state.select_inputs.products.map((product, product_index) => {
-                                return(
-                                    <option key={product_index} value={product_index}>{product.name}</option>)})}
-                                </React.Fragment>
+                                {
+                                    this.state.select_inputs.products.map((product, product_index) => {
+                                        return(
+                                            <option key={product_index} value={product_index}>{product.name}</option>)})
+                                }
                                 </FormControl>
                                 </InputGroup>
                             </td>
                             <td>
-                                <InputGroup>
+                                <InputGroup key="2">
                                 <FormControl
                                 type="text"
                                 name="current_time_spent"
@@ -323,7 +332,7 @@ class Automation extends Component {
                                 </InputGroup>
                             </td>
                             <td>
-                                <InputGroup>
+                                <InputGroup key="3">
                                 <FormControl
                                 as="select"
                                 name="employees"
@@ -338,7 +347,7 @@ class Automation extends Component {
                                 </InputGroup>
                             </td>
                             <td>
-                                <InputGroup>
+                                <InputGroup key="4">
                                 <FormControl
                                 as="select"
                                 name="cadences"
@@ -373,10 +382,12 @@ class Automation extends Component {
         )}
         
     handleChange(row, field, event) {
+        console.log(event.target)
         let values = [...this.state.rows];
         if(event.target.type === "select-one"){
-            values[row][field] = this.state.select_inputs[event.target.name][event.target.value]
-            this.setState({ values });
+            values[row][field] = this.state.select_inputs[event.target.name][1]
+            this.setState({
+                rows: values });
 
         } else {
             values[row][field] = event.target.value;
@@ -397,10 +408,10 @@ class Automation extends Component {
     }*/
 
     handleRemoveSpecificRow = (idx) => () => {
-        const rows = [...this.state.rows];
-        rows.splice(idx, 1);
-        this.setState({ rows });
-        console.log(this.state.rows);
+        const values = [...this.state.rows];
+        values.splice(idx, 1);
+        console.log(values)
+        this.setState({ rows: values });
         };
     
     handleAddRow = (e) => {
@@ -447,12 +458,27 @@ class Automation extends Component {
             return(this.tableOption())
         }
     }
+
+    onSubmitTask = (e) => {
+        const requestOptions = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.state.rows)
+        };
+
+        Promise.all([
+            fetch('http://localhost:3000/automate/testing',requestOptions)
+        ])
+        .then(([res1]) => Promise.all([res1.json()]))
+        .then(([data1]) => this.setState({
+            data: data1["data"],
+            options: data1["options"],
+        }))
+    }
         
 
 
 render() {
-    //console.log(this.state.form_inputs.push(this.state.unchanged_inputs))
-    console.log(this.state.rows)
     return( 
         
         <div className="container-fluid">

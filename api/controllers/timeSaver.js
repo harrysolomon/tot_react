@@ -1,7 +1,9 @@
+const { request } = require("express");
+
 exports.timeSaver = (req, res, next) => {
 
-
-    let request = [
+    
+    /*let request = [
         {
             "cadences":{
                 "id":2,
@@ -25,7 +27,7 @@ exports.timeSaver = (req, res, next) => {
                 "time_unit":"hour"   
             }
         }
-    ]
+    ]*/
     let result = {
         "data": {
         "labels": [
@@ -139,32 +141,21 @@ exports.timeSaver = (req, res, next) => {
             "quarter": 1
         }
     }
-    
-    let date_convert = [
-        {
-            "Daily": "day",
-            "Quarterly": "quarter",
-            "Yearly": "year"
-        }
-    ]
-    let products = [{
-
-    }]
 
     let interval = "quarter"
     
-    let time_now = request[0].current_time_spent
+    let time_now = req.body[0].current_time_spent
     let time_now_period = "hour"
 
-    let time_save = request[0].products.time_save
-    let time_save_period = request[0].products.time_unit
+    let time_save = req.body[0].products.time_save
+    let time_save_period = req.body[0].products.time_unit
     let time_save_convert = time_save * date_dict[time_save_period][time_now_period]
-    let product_cost = request[0].products.cost
-    let product_cost_period = request[0].products.period
+    let product_cost = req.body[0].products.cost
+    let product_cost_period = req.body[0].products.period
     let product_cost_rate = product_cost * date_dict[interval][product_cost_period]
     
-    let cur_avg_cost = request[0].employees.cost
-    let cost_period = request[0].employees.period
+    let cur_avg_cost = req.body[0].employees.cost
+    let cost_period = req.body[0].employees.period
 
     let forecast_length = 8
 

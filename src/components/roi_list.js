@@ -31,9 +31,38 @@ const the_product_cols = [
 
 const the_product_list = [{
     "name": "Accouting Wizard",
+    "description": "Automates collection of receipts from client dinners",
     "cost": "$1,000",
     "period": "Month"
 }]
+
+const the_employee_cols = [
+    "Name", "Department","Salary"
+]
+
+const the_employee_list = [
+    {
+        "id": 1,
+        "name": "Analyst",
+        "department": "Finance",
+        "cost": 50000,
+        "period": "year"
+    },
+    {
+        "id": 2,
+        "name": "Account Management",
+        "department": "Sales",
+        "cost": 65000,
+        "period": "year"
+    },
+    {
+        "id": 3,
+        "name": "Account Executive",
+        "department": "Sales",
+        "cost": 75000,
+        "period": "year"
+    }
+]
 
 
 class ROIList extends Component {
@@ -44,6 +73,8 @@ class ROIList extends Component {
           rows: the_rows,
           product_cols: the_product_cols,
           product_list: the_product_list,
+          employee_cols: the_employee_cols,
+          employee_list: the_employee_list,
           data_loaded: false,
           open: false,
           search_result: [],
@@ -214,7 +245,7 @@ class ROIList extends Component {
                                 </a>
                             </td>
                             <td>
-                                <span className="d-block h5 mb-0">Automates collection of receipts from client dinners
+                                <span className="d-block h5 mb-0">{item.description}
                                     <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
                                 </span>
                             </td>
@@ -232,7 +263,82 @@ class ROIList extends Component {
             </Card>
                 
             </Col>
-        )}
+        )
+    }
+
+    employeeList(){
+        return(
+            <Col>
+            <Card>
+                <Card.Header>
+                    <Col md={4}>
+                        <div>Employees</div>
+                        <div class="form-group w-md-50">
+                            <div class="input-group input-group-merge">
+                                <input type="text" class="js-form-search form-control" placeholder="Search..."></input>
+                                <a class="input-group-append" href="javascript:;">
+                                <span class="input-group-text">
+                                    <i id="clearIconBasicEg" class="tio-clear tio-lg"></i>
+                                </span>
+                                </a>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col>
+                        
+                    </Col>
+                        
+                    <Col>
+                    <div className="text-right">
+                        <Button>
+                            Add Employee
+                        </Button>
+                    </div>
+                    </Col>
+                </Card.Header>
+                <Card.Body>
+                    <div className="table-responsive">
+                        <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
+                            <thead className="thead-light">
+                            <tr>
+                                {this.state.employee_cols.map((cols, col_idx) => (
+                                    <th key={col_idx}> {cols} </th>
+                                ))}
+                            </tr>
+                            </thead>
+                        <tbody>
+                        {this.state.employee_list.map((item, idx) => (
+                            <tr id="addr0">
+                            <td>
+                                <a className="media align-items-center" href="/automation">
+                                <div className="media-body">
+                                    <span className="d-block h5 text-hover-primary mb-0">{item.name} 
+                                        <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
+                                    </span>
+                                </div>
+                                </a>
+                            </td>
+                            <td>
+                                <span className="d-block h5 mb-0">{item.department}
+                                    <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
+                                </span>
+                            </td>
+                            <td>
+                                <span className="d-block h5 mb-0">${item.cost}/{item.period} 
+                                    <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
+                                </span>
+                            </td>
+                            </tr>))}
+                            
+                        </tbody>
+                    </table>
+                    </div>
+                </Card.Body>
+            </Card>
+                
+            </Col>
+        )
+    }
 
 
 
@@ -259,7 +365,7 @@ class ROIList extends Component {
         } else if (this.state.navActive === "products"){
             return(this.productList())
         } else {
-            return(this.supSquad())
+            return(this.employeeList())
         }
     }
         
