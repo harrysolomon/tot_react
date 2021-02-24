@@ -308,7 +308,6 @@ class Automation extends Component {
                                 <FormControl
                                 as="select"
                                 name="products"
-                                value={item.products.name||"Choose..."}
                                 onChange={this.handleChange.bind(this, idx, "products")}>
                                 {
                                     this.state.select_inputs.products.map((product, product_index) => {

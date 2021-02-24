@@ -1,5 +1,3 @@
-const { request } = require("express");
-
 exports.timeSaver = (req, res, next) => {
 
     
@@ -143,39 +141,38 @@ exports.timeSaver = (req, res, next) => {
     }
 
     let interval = "quarter"
-    
-    let time_now = req.body[0].current_time_spent
     let time_now_period = "hour"
-
-    let time_save = req.body[0].products.time_save
-    let time_save_period = req.body[0].products.time_unit
-    let time_save_convert = time_save * date_dict[time_save_period][time_now_period]
-    let product_cost = req.body[0].products.cost
-    let product_cost_period = req.body[0].products.period
-    let product_cost_rate = product_cost * date_dict[interval][product_cost_period]
-    
-    let cur_avg_cost = req.body[0].employees.cost
-    let cost_period = req.body[0].employees.period
-
     let forecast_length = 8
-
-    let cur_cost = cur_avg_cost * time_now * date_dict[time_now_period][cost_period]
-    let cur_cost_array = []
-
-    let new_cost = (cur_avg_cost * (time_now - time_save_convert) * date_dict[time_now_period][cost_period]) + product_cost_rate
-    let new_cost_array = []
-
-    console.log(cur_cost)
-    console.log(new_cost)
+    let total_cur_employee_costs = 0
+    let total_new_employee_costs = 0
     
+    for (let i = 0;i < req.body.length;++i){
+        
+        let time_save_convert = req.body[i].products.time_save * date_dict[req.body[i].products.time_unit][time_now_period]
+        let product_cost_rate = req.body[i].products.cost * date_dict[interval][req.body[i].products.period]
+        let cur_employee_cost = req.body[i].employees.cost * req.body[i].current_time_spent * date_dict[time_now_period][req.body[i].employees.period]
+        let new_employee_cost = (req.body[i].employees.cost * (req.body[i].current_time_spent - time_save_convert) * date_dict[time_now_period][req.body[i].employees.period]) + product_cost_rate
+
+        total_cur_employee_costs += cur_employee_cost
+        total_new_employee_costs += new_employee_cost
+
+        
+    }
+    
+    let final_cur_employee_cost_array = []
+    let final_new_employee_cost_array = []
+
+    
+
 
     for (let i = 0;i < forecast_length;++i) {
-        cur_cost_array.push(cur_cost)
-        new_cost_array.push(new_cost)
+        final_cur_employee_cost_array.push(total_cur_employee_costs)
+        final_new_employee_cost_array.push(total_new_employee_costs)
     }
 
-    cur_cost_array.reduce( (prev, curr,i) =>  result["data"]["datasets"][0]["data"][i] = Math.round(prev + curr), 0)
-    new_cost_array.reduce( (prev, curr,i) =>  result["data"]["datasets"][1]["data"][i] = Math.round(prev + curr), 0)
+
+    final_cur_employee_cost_array.reduce( (prev, curr,i) =>  result["data"]["datasets"][0]["data"][i] = Math.round(prev + curr), 0)
+    final_new_employee_cost_array.reduce( (prev, curr,i) =>  result["data"]["datasets"][1]["data"][i] = Math.round(prev + curr), 0)
 
     let combined_cost = result["data"]["datasets"][0]["data"].concat(result["data"]["datasets"][1]["data"]);
 
@@ -184,9 +181,6 @@ exports.timeSaver = (req, res, next) => {
 
     result["options"]["scales"]["yAxes"][0]["ticks"]["suggestedMin"] = minimum_val
     result["options"]["scales"]["yAxes"][0]["ticks"]["suggestedMax"] = maximum_val
-
-  /*final_result["cum_s2"] = []
-            final_result["salary_2"].reduce( (prev, curr,i) =>  final_result["cum_s2"][i] = Math.round(prev + curr), 0)*/
 
 
   res.json(result)
