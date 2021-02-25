@@ -148,7 +148,12 @@ exports.timeSaver = (req, res, next) => {
     
     for (let i = 0;i < req.body.length;++i){
         
-        let time_save_convert = req.body[i].products.time_save * date_dict[req.body[i].products.time_unit][time_now_period]
+        if(req.body[i].products.time_unit === "pct"){
+            time_save_convert = req.body[i].current_time_spent * (req.body[i].products.time_save / 100)
+        } else {
+            time_save_convert = req.body[i].products.time_save * date_dict[req.body[i].products.time_unit][time_now_period]
+        }
+        
         let product_cost_rate = req.body[i].products.cost * date_dict[interval][req.body[i].products.period]
         let cur_employee_cost = req.body[i].employees.cost * req.body[i].current_time_spent * date_dict[time_now_period][req.body[i].employees.period]
         let new_employee_cost = (req.body[i].employees.cost * (req.body[i].current_time_spent - time_save_convert) * date_dict[time_now_period][req.body[i].employees.period]) + product_cost_rate
@@ -156,7 +161,7 @@ exports.timeSaver = (req, res, next) => {
         total_cur_employee_costs += cur_employee_cost
         total_new_employee_costs += new_employee_cost
 
-        
+        console.log(total_cur_employee_costs)
     }
     
     let final_cur_employee_cost_array = []

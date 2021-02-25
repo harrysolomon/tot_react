@@ -381,10 +381,9 @@ class Automation extends Component {
         )}
         
     handleChange(row, field, event) {
-        console.log(event.target)
         let values = [...this.state.rows];
         if(event.target.type === "select-one"){
-            values[row][field] = this.state.select_inputs[event.target.name][1]
+            values[row][field] = this.state.select_inputs[event.target.name][event.target.value]
             this.setState({
                 rows: values });
 
@@ -392,7 +391,6 @@ class Automation extends Component {
             values[row][field] = event.target.value;
             this.setState({ values });
         }
-
         
     }
 

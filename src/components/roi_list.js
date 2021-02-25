@@ -389,7 +389,7 @@ render() {
                                 <Nav.Link eventKey="products">Products</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="clients">Clients</Nav.Link>
+                                <Nav.Link eventKey="clients">Employees</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </div>
