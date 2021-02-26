@@ -1,8 +1,6 @@
-import React, { Component, useState } from "react";
-import { Link } from 'react-router-dom';
-import { Card, Row, Col, Nav, DropdownButton, Dropdown, Button} from "react-bootstrap";
+import React, { Component } from "react";
+import { Card, Row, Col, Nav, Button} from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import { XSquare } from 'react-bootstrap-icons'
 
 const the_rows = [{
     "name": "The Best ROI Ever",
@@ -126,7 +124,20 @@ class ROIList extends Component {
                 <Card.Header>
                     <Col md={4}>
                         <div>Calculators</div>
-                        <div class="form-group w-md-50">
+                    </Col>
+                    <Col>
+                        
+                    </Col>
+                        
+                    <Col>
+                    <div className="text-right">
+                        <Button href="/automation"> Create New </Button>
+                    </div>
+                    </Col>
+                </Card.Header>
+                <Card.Body>
+                <Col md={4}>
+                <div class="form-group w-md-50">
                             <div class="input-group input-group-merge">
                                 <input type="text" class="js-form-search form-control" placeholder="Search..."></input>
                                 <a class="input-group-append" href="javascript:;">
@@ -136,22 +147,7 @@ class ROIList extends Component {
                                 </a>
                             </div>
                         </div>
-                    </Col>
-                    <Col>
-                        
-                    </Col>
-                        
-                    <Col>
-                    <div className="text-right">
-                        <DropdownButton id="dropdown-basic-button" title="Create New">
-                            <Dropdown.Item href="/automation">Save Time</Dropdown.Item>
-                            <Dropdown.Item href="#/action-2">Save Money</Dropdown.Item>
-                            <Dropdown.Item href="#/action-3">Make Money</Dropdown.Item>
-                        </DropdownButton>
-                    </div>
-                    </Col>
-                </Card.Header>
-                <Card.Body>
+                        </Col>
                     <div className="table-responsive">
                         <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
                             <thead className="thead-light">
@@ -199,19 +195,8 @@ class ROIList extends Component {
                 <Card.Header>
                     <Col md={4}>
                         <div>Products</div>
-                        <div class="form-group w-md-50">
-                            <div class="input-group input-group-merge">
-                                <input type="text" class="js-form-search form-control" placeholder="Search..."></input>
-                                <a class="input-group-append" href="javascript:;">
-                                <span class="input-group-text">
-                                    <i id="clearIconBasicEg" class="tio-clear tio-lg"></i>
-                                </span>
-                                </a>
-                            </div>
-                        </div>
                     </Col>
-                    <Col>
-                        
+                    <Col> 
                     </Col>
                         
                     <Col>
@@ -223,6 +208,18 @@ class ROIList extends Component {
                     </Col>
                 </Card.Header>
                 <Card.Body>
+                <Col md={4}>
+                <div class="form-group w-md-50">
+                            <div class="input-group input-group-merge">
+                                <input type="text" class="js-form-search form-control" placeholder="Search..."></input>
+                                <a class="input-group-append" href="javascript:;">
+                                <span class="input-group-text">
+                                    <i id="clearIconBasicEg" class="tio-clear tio-lg"></i>
+                                </span>
+                                </a>
+                            </div>
+                        </div>
+                        </Col>
                     <div className="table-responsive">
                         <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
                             <thead className="thead-light">
@@ -273,16 +270,6 @@ class ROIList extends Component {
                 <Card.Header>
                     <Col md={4}>
                         <div>Employees</div>
-                        <div class="form-group w-md-50">
-                            <div class="input-group input-group-merge">
-                                <input type="text" class="js-form-search form-control" placeholder="Search..."></input>
-                                <a class="input-group-append" href="javascript:;">
-                                <span class="input-group-text">
-                                    <i id="clearIconBasicEg" class="tio-clear tio-lg"></i>
-                                </span>
-                                </a>
-                            </div>
-                        </div>
                     </Col>
                     <Col>
                         
@@ -297,6 +284,18 @@ class ROIList extends Component {
                     </Col>
                 </Card.Header>
                 <Card.Body>
+                <Col md={4}>
+                <div class="form-group w-md-50">
+                            <div class="input-group input-group-merge">
+                                <input type="text" class="js-form-search form-control" placeholder="Search..."></input>
+                                <a class="input-group-append" href="javascript:;">
+                                <span class="input-group-text">
+                                    <i id="clearIconBasicEg" class="tio-clear tio-lg"></i>
+                                </span>
+                                </a>
+                            </div>
+                        </div>
+                        </Col>
                     <div className="table-responsive">
                         <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
                             <thead className="thead-light">
@@ -340,22 +339,39 @@ class ROIList extends Component {
         )
     }
 
+    /*verticalNav(){
+        return(
+            
+                <div class="navbar-vertical-container">
 
+                        <div class="splitted-content-mini navbar-dark h-100 py-2">
+                            <a class="navbar-brand d-flex justify-content-center mb-1" href="../index.html" aria-label="Front">
+                                <img class="navbar-brand-logo-short" src="../assets/svg/logos/logo-short-white.svg" alt="Logo"></img>
+                            </a>
+
+                            <div class="navbar-vertical-content">
+                                <ul class="navbar-nav navbar-nav-lg nav-tabs">
+                                    <li class="navbar-vertical-aside-has-menu ">
+                                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle " href="javascript:;" title="Dashboards">
+                                            <i class="tio-home-vs-1-outlined nav-icon"></i>
+                                            <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Dashboards</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+        )
+
+                            
+    }*/
 
     
 
     //this function determines the active nav
     activeNav(eventKey){
         this.setState({ navActive: eventKey})
-    }
-
-    supSquad(){
-        return (
-            <div>
-                Yo Yo
-            </div>
-
-        )
     }
 
    // this function determines the content to display based on the active nav 
@@ -376,8 +392,12 @@ render() {
     return( 
         
         <div className="container-fluid">
-            <h3 className="page-header-title text-left align-middle">ROY</h3>
-            <Row>
+            
+            <main id="content" role="main" class="main splitted-content-main bg-light">
+            {/*Fluid Content */}
+                <div class="splitted-content-fluid content-space">
+                <a href="/"><h3 className="page-header-title text-left align-middle">ROY</h3></a>
+                <div class="row justify-content-lg-left">
                 <Col md={4}>
                 <div className="tab-content" id="navTabContent4">
                     <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
@@ -395,11 +415,13 @@ render() {
                     </div>
                 </div>
                 </Col>
-            </Row>
+            </div>
             <Row>
                 {this.contentDisplay()}
                   
             </Row>
+            </div>
+            </main>
         </div>
         );
     };

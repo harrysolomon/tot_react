@@ -1,0 +1,114 @@
+{
+    "data": {
+      "labels": [
+        "Y0",
+        "Y1",
+        "Y2",
+        "Y3",
+        "Y4",
+        "Y5",
+        "Y6",
+        "Y7",
+        "Y8",
+        "Y9",
+        "Y10"
+      ],
+      "datasets": [
+        {
+          "data": [
+            -5042,
+            -10084,
+            -15126,
+            -20168,
+            31669,
+            84706,
+            138967,
+            194476,
+            251259,
+            309341,
+            368748
+          ],
+          "backgroundColor": "transparent",
+          "borderColor": "#377dff",
+          "borderWidth": 2,
+          "pointRadius": 0,
+          "hoverBorderColor": "#377dff",
+          "pointBackgroundColor": "#377dff",
+          "pointBorderColor": "#fff",
+          "pointHoverRadius": 0
+        },
+        {
+          "data": [
+            35042,
+            70535,
+            106487,
+            142906,
+            182920,
+            223265,
+            263945,
+            304964,
+            346325,
+            388033,
+            430091
+          ],
+          "backgroundColor": "transparent",
+          "borderColor": "#00c9db",
+          "borderWidth": 2,
+          "pointRadius": 0,
+          "hoverBorderColor": "#00c9db",
+          "pointBackgroundColor": "#00c9db",
+          "pointBorderColor": "#fff",
+          "pointHoverRadius": 0
+        }
+      ]
+    },
+    "options": {
+      "legend": {
+        "display": false
+      },
+      "scales": {
+        "yAxes": [
+          {
+            "gridLines": {
+              "color": "#e7eaf3",
+              "drawBorder": false,
+              "zeroLineColor": "#e7eaf3"
+            },
+            "ticks": {
+              "suggestedMin": -20168,
+              "suggestedMax": 430091,
+              "fontColor": "#97a4af",
+              "fontFamily": "Open Sans, sans-serif",
+              "padding": 10,
+              "postfix": "k"
+            }
+          }
+        ],
+        "xAxes": [
+          {
+            "gridLines": {
+              "display": false,
+              "drawBorder": false
+            },
+            "ticks": {
+              "fontSize": 12,
+              "fontColor": "#97a4af",
+              "fontFamily": "Open Sans, sans-serif",
+              "padding": 5
+            }
+          }
+        ]
+      },
+      "tooltips": {
+        "hasIndicator": true,
+        "mode": "index",
+        "intersect": false,
+        "lineMode": true,
+        "lineWithLineColor": "rgba(19, 33, 68, 0.075)"
+      },
+      "hover": {
+        "mode": "nearest",
+        "intersect": true
+      }
+    }
+  }

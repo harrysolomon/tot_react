@@ -185,6 +185,7 @@ class TestingFormInput extends Component {
                 </Container>
                  </Modal.Header>
                  <Modal.Body>
+                     
                      <BootstrapTable
                         keyField="period"
                         data={ products }

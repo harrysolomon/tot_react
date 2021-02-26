@@ -1,17 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Overview from './components/Overview';
+import ForPeople from './components/forPeople';
 import FinalResult from './components/final_results';
 import TestingFormInput from './components/testing_form_options';
 import Automation from './components/automation';
 import ROIList from './components/roi_list';
+import Homepage from './components/homepage';
+import ForBusiness from './components/forBusiness';
 
 
 ReactDOM.render(
   <Router>
     <div>
-      <Route exact path="/" component={Overview} />
+      <Route exact path="/" component={Homepage} />
+      <Route path="/for-people" component={ForPeople} />
+      <Route path="/for-business" component={ForBusiness} />
       <Route path="/5fac52be03ff66099d9a8ef4" component={FinalResult} />
       <Route path="/testing" component={TestingFormInput} />
       <Route path="/automation" component={Automation} />

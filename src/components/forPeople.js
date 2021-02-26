@@ -6,7 +6,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
 
-class Overview extends Component {
+class ForPeople extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,7 +30,7 @@ render() {
         <div className="page-header">
             <div className ="row align-items-center">
                 <div className="col-sm mb-2 mb-sm-0">
-                    <h1 className="page-header-title">Libra</h1>
+                    <a href="/"><h1 className="page-header-title">ROY</h1></a>
                 </div>
             </div>
         </div>
@@ -64,4 +64,4 @@ render() {
 
 }
 
-export default Overview;
+export default ForPeople;

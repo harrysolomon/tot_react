@@ -6,7 +6,7 @@ import { Typeahead, ClearButton } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import _ from 'lodash'
 import LineChart from '../components/line_chart'
-import { XSquare } from 'react-bootstrap-icons'
+import { XSquareFill } from 'react-bootstrap-icons'
 
 
 const line_chart_data = {
@@ -484,6 +484,17 @@ render() {
                     <div className="col-sm mb-2 mb-sm-0">
                         <h1 className="page-header-title text-left align-bottom">New Calculator</h1>
                     </div>
+                    <div className="col-sm mb-2 mb-sm-0">
+                        <div className="text-right">
+                            <Button 
+                                href="/calculator"
+                                variant="outline-primary"
+                            >
+                                <XSquareFill/>
+                            </Button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <Row>
