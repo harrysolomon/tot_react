@@ -204,20 +204,14 @@ class Automation extends Component {
           data: line_chart_data["data"],
           options: line_chart_data["options"],
           navActive: "",
-          location: this.props.location
+          location: this.props.location,
+          match: this.props.match
       };
       this.activeNav = this.activeNav.bind(this)
       
     //creates the list of inputs that are displayed upfront to the user
     }
    
-    formLabel(index,label){
-        if(index==0){
-            return(
-                <FormLabel bsPrefix="form-label text-center">{label}</FormLabel>
-            )
-        }
-    }
 
     inputPrepend(data_type){
         const available_prepends = [""]
@@ -266,7 +260,7 @@ class Automation extends Component {
                     <Col>
                     <div className="text-right">
                         <Button size="sm" variant="outline-primary" onClick={this.onSubmitTask}>
-                            Submit
+                            Calculate and Save
                         </Button>
                         </div>
                     </Col>
@@ -474,7 +468,10 @@ class Automation extends Component {
     }
 
     componentDidMount() {
-        if(this.state.location["pathname"]==="/automation"){
+        console.log(this.state.match)
+        if(this.state.match.params === '{}'){
+        } else if(this.state.match.params.timesaverId === 'new'){
+            console.log(1+1)
             const the_rows = [{
                 "name": "",
                 "products": "",
@@ -489,16 +486,16 @@ class Automation extends Component {
             })
 
         } else {
-
-        Promise.all([
-            fetch(`http://localhost:3000/time_saver/603afc4040397c4f0472ac66`)
-        ])
-        .then(([res1]) => Promise.all([res1.json()]))
-        .then(([data1]) => this.setState({
-            rows: data1[0]["inputs"],
-            data_loaded: true
-        }))
-    }}
+            let path = 'http://localhost:3000/time_saver/' + this.state.match.params.timesaverId
+            Promise.all([
+                fetch(path)
+            ])
+            .then(([res1]) => Promise.all([res1.json()]))
+            .then(([data1]) => this.setState({
+                rows: data1[0]["inputs"],
+                data_loaded: true
+            }))}
+    }
 
 
 render() {
@@ -514,7 +511,7 @@ render() {
                     <div className="col-sm mb-2 mb-sm-0">
                         <div className="text-right">
                             <Button 
-                                href="/calculator"
+                                href="/timesaver"
                                 variant="outline-primary"
                             >
                                 <XSquareFill/>

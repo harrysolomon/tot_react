@@ -14,13 +14,13 @@ ReactDOM.render(
   <Router>
     <div>
       <Route exact path="/" component={Homepage} />
-      <Route path="/for-people" component={ForPeople} />
-      <Route path="/for-business" component={ForBusiness} />
-      <Route path="/5fac52be03ff66099d9a8ef4" component={FinalResult} />
-      <Route path="/testing" component={TestingFormInput} />
-      <Route path="/automation" component={Automation} />
-      <Route path="/somethingelse" component={Automation} />
-      <Route path="/calculator" component={ROIList} />
+      <Route exact path="/for-people" component={ForPeople} />
+      <Route exact path="/for-business" component={ForBusiness} />
+      <Route exact path="/5fac52be03ff66099d9a8ef4" component={FinalResult} />
+      <Route exact path="/testing" component={TestingFormInput} />
+      <Route exact path="/timesaver/new" component={Automation} />
+      <Route exact path="/timesaver/:timesaverId" component={Automation} />
+      <Route exact path="/timesaver" component={ROIList} />
     </div>
   </Router>,
   document.getElementById('root')

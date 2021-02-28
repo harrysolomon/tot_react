@@ -97,7 +97,7 @@ class ROIList extends Component {
                         
                     <Col>
                     <div className="text-right">
-                        <Button href="/automation"> Create New </Button>
+                        <Button href="/timesaver/new"> Create New </Button>
                     </div>
                     </Col>
                 </Card.Header>
@@ -127,7 +127,7 @@ class ROIList extends Component {
                         {this.state.rows.map((item, idx) => (
                             <tr id="addr0">
                             <td>
-                                <a className="media align-items-center" href="/automation">
+                                <a className="media align-items-center" href={"/timesaver/"+item._id}>
                                 <div className="media-body">
                                     <span className="d-block h5 text-hover-primary mb-0">{item.name} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                                     <span className="d-block font-size-sm text-body">Harrison Solomon</span>
@@ -199,7 +199,7 @@ class ROIList extends Component {
                         {this.state.product_list.map((item, idx) => (
                             <tr id="addr0">
                             <td>
-                                <a className="media align-items-center" href="/automation">
+                                <a className="media align-items-center" href="/timesaver/new">
                                 <div className="media-body">
                                     <span className="d-block h5 text-hover-primary mb-0">{item.name} 
                                         <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
@@ -275,7 +275,7 @@ class ROIList extends Component {
                         {this.state.employee_list.map((item, idx) => (
                             <tr id="addr0">
                             <td>
-                                <a className="media align-items-center" href="/automation">
+                                <a className="media align-items-center" href="/timesaver/new">
                                 <div className="media-body">
                                     <span className="d-block h5 text-hover-primary mb-0">{item.name} 
                                         <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
