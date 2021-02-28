@@ -44,7 +44,7 @@ exports.createData = (req, res) => {
          })
 
          res.json(req.body)
-}
+};
 
 exports.updateData = (req, res) => {
     TimeSaver.findByIdAndUpdate(req.params.id,req.body, {}, function (err) {
@@ -52,12 +52,21 @@ exports.updateData = (req, res) => {
     })
 
     res.json(req.body)
-},
+};
 
 exports.getData = (req, res, next) => {
     TimeSaver.find(
         {_id: req.params.id})
       .exec((err, data) => {
+        if (err) {
+          return res.sendStatus(404);
+        }
+        res.json(data);
+      });
+  };
+
+  exports.timeSaverList = (req, res, next) => {
+    TimeSaver.find().exec((err, data) => {
         if (err) {
           return res.sendStatus(404);
         }
