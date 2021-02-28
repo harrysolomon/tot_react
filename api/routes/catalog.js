@@ -8,7 +8,9 @@ var line_chart_controller = require('../controllers/lineChartController');
 var cost_controller = require('../controllers/costController')
 var search_detail_controller = require('../controllers/searchDetailController')
 var form_input_test_controller = require('../controllers/tileFormInputTestController')
+var time_saver_controller = require('../controllers/timeSaverController');
 var time_save_controller = require('../controllers/timeSaver')
+
 //var testing_controller = require('../controllers/testingController');
 
 /// BOOK ROUTES ///
@@ -27,6 +29,10 @@ router.get('/:id/search_detail', search_detail_controller.searchDetail);
 router.get('/:id/test_input', form_input_test_controller.form_input_test);
 
 router.post('/automate/testing', time_save_controller.timeSaver);
+
+router.post('/time_saver', time_saver_controller.createData);
+
+router.put('/time_saver/:id', time_saver_controller.updateData);
 
 //router.get('/:id/test', testing_controller.testing);
 

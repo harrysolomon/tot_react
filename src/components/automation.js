@@ -2,11 +2,12 @@ import React, { Component, useState } from "react";
 import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Button, Card, FormControl, InputGroup, FormGroup, FormLabel, Container, Row, Col, Nav, Navbar} from "react-bootstrap";
-import { Typeahead, ClearButton } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import _ from 'lodash'
 import LineChart from '../components/line_chart'
-import { XSquareFill } from 'react-bootstrap-icons'
+import { CircleFill, XSquareFill } from 'react-bootstrap-icons'
+//import SelectOptions from '../components/form_inputs/options'
+
 
 
 const line_chart_data = {
@@ -127,10 +128,6 @@ const line_chart_data = {
 const the_products = [
     {
         "id":0,
-        "name": "Choose..."
-    },
-    {
-        "id":1,
         "name": "Cool Product",
         "cost": 10000,
         "period": "year",
@@ -138,7 +135,7 @@ const the_products = [
         "time_unit": "hour"
     },
     {
-        "id":2,
+        "id":1,
         "name":"Another Product",
         "cost": 5000,
         "peiod": "quarter",
@@ -186,20 +183,12 @@ const the_employees = [
     }
 ]
 
-const the_rows = [{
-    "name": "",
-    "products": "",
-    "current_time_spent":"",
-    "employees": "",
-    "cadences":""
-}]
-
 
 class Automation extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          rows: the_rows,
+          rows: "",
           products: the_products,
           cadences: the_cadences,
           employees: the_employees,
@@ -209,14 +198,17 @@ class Automation extends Component {
               cadences: the_cadences
           },
           data_loaded: false,
+          product_state: "",
           open: false,
           data: line_chart_data["data"],
           options: line_chart_data["options"],
           search_result: [],
           search_detail: [],
-          navActive: ""
+          navActive: "",
+          location: this.props.location
       };
       this.activeNav = this.activeNav.bind(this)
+      
     //creates the list of inputs that are displayed upfront to the user
     }
    
@@ -253,11 +245,14 @@ class Automation extends Component {
             
         }
     }
-    productOptions = () => {
+    productOptions(){
+        
         this.state.select_inputs.products.map((product, product_index) => {
             return(
-                <option key={product_index} value={product_index}>{product.name}</option>)})
-    }
+                <option key={product_index} value={product_index}>{product.name}</option>)
+            })
+
+        }
 
     tableOption(){
         return(
@@ -304,16 +299,16 @@ class Automation extends Component {
                                 </InputGroup>
                             </td>
                             <td key={idx}>
-                                <InputGroup key="2">
+                                <InputGroup>
                                 <FormControl
                                 as="select"
                                 name="products"
+                                value={item.products.name}
                                 onChange={this.handleChange.bind(this, idx, "products")}>
-                                {
-                                    this.state.select_inputs.products.map((product, product_index) => {
-                                        return(
-                                            <option key={product_index} value={product_index}>{product.name}</option>)})
-                                }
+                                <option>Choose..</option>
+                                {this.state.select_inputs.products.map((product, product_index) => {
+                                return(
+                                    <option key={product_index} value={product_index}>{product.name}</option>)})}
                                 </FormControl>
                                 </InputGroup>
                             </td>
@@ -322,7 +317,7 @@ class Automation extends Component {
                                 <FormControl
                                 type="text"
                                 name="current_time_spent"
-                                value={this.state.rows[idx].current_time_spent}
+                                value={item.current_time_spent}
                                 onChange={this.handleChange.bind(this, idx, "current_time_spent")}
                                 />
                                     <InputGroup.Append>
@@ -380,17 +375,20 @@ class Automation extends Component {
             </Col>
         )}
         
-    handleChange(row, field, event) {
+    handleChange = (row, field, event) => {
         let values = [...this.state.rows];
         if(event.target.type === "select-one"){
             values[row][field] = this.state.select_inputs[event.target.name][event.target.value]
             this.setState({
-                rows: values });
+                rows: values
+                });
 
         } else {
             values[row][field] = event.target.value;
             this.setState({ values });
         }
+
+        console.log(this.state.rows)
         
     }
 
@@ -407,7 +405,6 @@ class Automation extends Component {
     handleRemoveSpecificRow = (idx) => () => {
         const values = [...this.state.rows];
         values.splice(idx, 1);
-        console.log(values)
         this.setState({ rows: values });
         };
     
@@ -472,10 +469,39 @@ class Automation extends Component {
             options: data1["options"],
         }))
     }
-        
+
+    testInsert = (e) => {
+        const requestOptions = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({"value": 10})
+        };
+
+        Promise.all([
+            fetch('http://localhost:3000/time_saver',requestOptions)
+        ])
+    }
+
+    componentDidMount() {
+        if(this.state.location["pathname"]==="/automation"){
+            let the_rows = [{
+                "name": "",
+                "products": "",
+                "current_time_spent":"",
+                "employees": "",
+                "cadences":""
+            }]
+
+            this.setState({
+                rows: the_rows,
+                data_loaded:true})
+        }
+
+    }
 
 
 render() {
+    if(this.state.data_loaded) {
     return( 
         
         <div className="container-fluid">
@@ -509,7 +535,7 @@ render() {
                                 <Nav.Link eventKey="graph">Graph</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="spreadsheet" >Spreadsheet</Nav.Link>
+                                <Nav.Link eventKey="spreadsheet" >Table</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </div>
@@ -520,8 +546,21 @@ render() {
                 {this.contentDisplay()}
                   
             </Row>
+            <Row>
+                <Button onClick={this.testInsert}>
+                    Testing
+                </Button>
+            </Row>
         </div>
-        );
+        )
+    };
+
+    return(
+        <div>
+            Sup
+        </div>
+    )
+
     };
 }
 
