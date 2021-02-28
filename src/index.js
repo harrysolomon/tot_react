@@ -19,6 +19,7 @@ ReactDOM.render(
       <Route path="/5fac52be03ff66099d9a8ef4" component={FinalResult} />
       <Route path="/testing" component={TestingFormInput} />
       <Route path="/automation" component={Automation} />
+      <Route path="/somethingelse" component={Automation} />
       <Route path="/calculator" component={ROIList} />
     </div>
   </Router>,

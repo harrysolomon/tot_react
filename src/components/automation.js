@@ -5,7 +5,8 @@ import { Button, Card, FormControl, InputGroup, FormGroup, FormLabel, Container,
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import _ from 'lodash'
 import LineChart from '../components/line_chart'
-import { CircleFill, XSquareFill } from 'react-bootstrap-icons'
+import { XSquareFill } from 'react-bootstrap-icons'
+import axios from "axios";
 //import SelectOptions from '../components/form_inputs/options'
 
 
@@ -183,12 +184,20 @@ const the_employees = [
     }
 ]
 
+const the_rows = [{
+    "name": "",
+    "products": "",
+    "current_time_spent":"",
+    "employees": "",
+    "cadences":""
+}]
+
 
 class Automation extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          rows: "",
+          rows: [],
           products: the_products,
           cadences: the_cadences,
           employees: the_employees,
@@ -202,8 +211,6 @@ class Automation extends Component {
           open: false,
           data: line_chart_data["data"],
           options: line_chart_data["options"],
-          search_result: [],
-          search_detail: [],
           navActive: "",
           location: this.props.location
       };
@@ -249,10 +256,14 @@ class Automation extends Component {
         
         this.state.select_inputs.products.map((product, product_index) => {
             return(
-                <option key={product_index} value={product_index}>{product.name}</option>)
+                <option value={product_index}>{product.name}</option>)
             })
 
         }
+
+    datasetKeyProvider=()=>{ 
+            return btoa(Math.random()).substring(0,12)
+        } 
 
     tableOption(){
         return(
@@ -285,11 +296,11 @@ class Automation extends Component {
                         </thead>
                         <tbody>
                         {this.state.rows.map((item, idx) => (
-                            <tr id={idx} key={idx}>
-                            <td>{idx}</td>
-                            <td>
+                            <tr id={idx} key={this.datasetKeyProvider}>
+                            <td key={this.datasetKeyProvider}>{idx}</td>
+                            <td key={this.datasetKeyProvider}>
                                 
-                                <InputGroup key="1">
+                                <InputGroup>
                                 <FormControl
                                 type="text"
                                 name="name"
@@ -298,7 +309,7 @@ class Automation extends Component {
                                 />
                                 </InputGroup>
                             </td>
-                            <td key={idx}>
+                            <td key={this.datasetKeyProvider}>
                                 <InputGroup>
                                 <FormControl
                                 as="select"
@@ -308,12 +319,12 @@ class Automation extends Component {
                                 <option>Choose..</option>
                                 {this.state.select_inputs.products.map((product, product_index) => {
                                 return(
-                                    <option key={product_index} value={product_index}>{product.name}</option>)})}
+                                    <option value={product_index}>{product.name}</option>)})}
                                 </FormControl>
                                 </InputGroup>
                             </td>
-                            <td>
-                                <InputGroup key="2">
+                            <td key={this.datasetKeyProvider}>
+                                <InputGroup>
                                 <FormControl
                                 type="text"
                                 name="current_time_spent"
@@ -325,8 +336,8 @@ class Automation extends Component {
                                     </InputGroup.Append>
                                 </InputGroup>
                             </td>
-                            <td>
-                                <InputGroup key="3">
+                            <td key={this.datasetKeyProvider}>
+                                <InputGroup>
                                 <FormControl
                                 as="select"
                                 name="employees"
@@ -335,13 +346,13 @@ class Automation extends Component {
                                     <option>Choose..</option>
                                 {this.state.select_inputs.employees.map((employee, employee_index) => {
                                 return(
-                                    <option key={employee_index} value={employee_index}>{employee.name}</option>)})}
+                                    <option value={employee_index}>{employee.name}</option>)})}
                                 </React.Fragment>
                                 </FormControl>
                                 </InputGroup>
                             </td>
-                            <td>
-                                <InputGroup key="4">
+                            <td key={this.datasetKeyProvider}>
+                                <InputGroup>
                                 <FormControl
                                 as="select"
                                 name="cadences"
@@ -350,12 +361,12 @@ class Automation extends Component {
                                     <option>Choose..</option>
                                 {this.state.select_inputs.cadences.map((cadence, cadence_index) => {
                                 return(
-                                    <option key={cadence_index} value={cadence_index}>{cadence.name}</option>)})}
+                                    <option value={cadence_index}>{cadence.name}</option>)})}
                                 </React.Fragment>
                                 </FormControl>
                                 </InputGroup>
                             </td>
-                            <td className="text-center">
+                            <td className="text-center" key={this.datasetKeyProvider}>
                                 <Button
                                 variant="outline-danger"
                                 size="sm"
@@ -387,20 +398,8 @@ class Automation extends Component {
             values[row][field] = event.target.value;
             this.setState({ values });
         }
-
-        console.log(this.state.rows)
         
     }
-
-    /*handleSelectChange(row, field, event) {
-    
-        let values = [...this.state.rows];
-        let prod_array = this.state.products.find(event.)
-        console.log(field)
-        //values[row][field] = event.target.value;
-        
-        //this.setState({ values });
-    }*/
 
     handleRemoveSpecificRow = (idx) => () => {
         const values = [...this.state.rows];
@@ -483,20 +482,14 @@ class Automation extends Component {
     }
 
     componentDidMount() {
-        if(this.state.location["pathname"]==="/automation"){
-            let the_rows = [{
-                "name": "",
-                "products": "",
-                "current_time_spent":"",
-                "employees": "",
-                "cadences":""
-            }]
-
-            this.setState({
-                rows: the_rows,
-                data_loaded:true})
-        }
-
+        Promise.all([
+            fetch(`http://localhost:3000/time_saver/603afc4040397c4f0472ac66`)
+        ])
+        .then(([res1]) => Promise.all([res1.json()]))
+        .then(([data1]) => this.setState({
+            rows: data1[0]["inputs"],
+            data_loaded: true
+        }))
     }
 
 
@@ -552,16 +545,12 @@ render() {
                 </Button>
             </Row>
         </div>
-        )
-    };
+        );
+    } else {
 
-    return(
-        <div>
-            Sup
-        </div>
-    )
-
-    };
-}
+        return(
+            <div>
+            </div>)}
+}}
 
 export default Automation;

@@ -32,7 +32,9 @@ router.post('/automate/testing', time_save_controller.timeSaver);
 
 router.post('/time_saver', time_saver_controller.createData);
 
-router.put('/time_saver/:id', time_saver_controller.updateData);
+router.put('/time_saver/edit/:id', time_saver_controller.updateData);
+
+router.get('/time_saver/:id', time_saver_controller.getData);
 
 //router.get('/:id/test', testing_controller.testing);
 
