@@ -20,7 +20,7 @@ const the_rows = [{
 }]
 
 const the_columns = [
-    "Name","Client","ROI Type", "Value"
+    "Name","Client","Created Time", "Value"
 ]
 
 const the_product_cols = [
@@ -82,40 +82,6 @@ class ROIList extends Component {
       this.activeNav = this.activeNav.bind(this)
     //creates the list of inputs that are displayed upfront to the user
     }
-   
-    /*formLabel(index,label){
-        if(index==0){
-            return(
-                <FormLabel bsPrefix="form-label text-center">{label}</FormLabel>
-            )
-        }
-    }*/
-
-    /*inputPrepend(data_type){
-        const available_prepends = [""]
-
-        if(available_prepends.includes(data_type)){
-            return(
-                <InputGroup.Prepend>
-                    <InputGroup.Text id="basic-addon1">{data_type}</InputGroup.Text>
-                </InputGroup.Prepend>
-            )
-            
-        }
-    }*/
-
-    /*inputAppend(data_type){
-        const available_appends = ["Hrs"]
-
-        if(available_appends.includes(data_type)){
-            return(
-                <InputGroup.Append>
-                    <InputGroup.Text id="basic-addon1">{data_type}</InputGroup.Text>
-                </InputGroup.Append>
-            )
-            
-        }
-    }*/
 
     tableOption(){
         return(
@@ -164,18 +130,18 @@ class ROIList extends Component {
                                 <a className="media align-items-center" href="/automation">
                                 <div className="media-body">
                                     <span className="d-block h5 text-hover-primary mb-0">{item.name} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                                    <span className="d-block font-size-sm text-body">{item.created_by}</span>
+                                    <span className="d-block font-size-sm text-body">Harrison Solomon</span>
                                 </div>
                                 </a>
                             </td>
                             <td>
-                                <span className="d-block h5 mb-0">{item.client} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                <span className="d-block h5 mb-0">Test Client <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                             </td>
                             <td>
-                                <span className="d-block h5 mb-0">{item.type} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                <span className="d-block h5 mb-0">{item.createdAt} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                             </td>
                             <td>
-                                <span className="d-block h5 mb-0">{item.value} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                <span className="d-block h5 mb-0">{item.values[0].value} / {item.values[0].period} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                             </td>
                             </tr>))}
                             
@@ -339,36 +305,6 @@ class ROIList extends Component {
         )
     }
 
-    /*verticalNav(){
-        return(
-            
-                <div class="navbar-vertical-container">
-
-                        <div class="splitted-content-mini navbar-dark h-100 py-2">
-                            <a class="navbar-brand d-flex justify-content-center mb-1" href="../index.html" aria-label="Front">
-                                <img class="navbar-brand-logo-short" src="../assets/svg/logos/logo-short-white.svg" alt="Logo"></img>
-                            </a>
-
-                            <div class="navbar-vertical-content">
-                                <ul class="navbar-nav navbar-nav-lg nav-tabs">
-                                    <li class="navbar-vertical-aside-has-menu ">
-                                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle " href="javascript:;" title="Dashboards">
-                                            <i class="tio-home-vs-1-outlined nav-icon"></i>
-                                            <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Dashboards</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-        )
-
-                            
-    }*/
-
-    
-
     //this function determines the active nav
     activeNav(eventKey){
         this.setState({ navActive: eventKey})
@@ -384,11 +320,23 @@ class ROIList extends Component {
             return(this.employeeList())
         }
     }
+
+    componentDidMount(){
+        Promise.all([
+            fetch(`http://localhost:3000/timesaver/list`)
+        ])
+        .then(([res1]) => Promise.all([res1.json()]))
+        .then(([data1]) => this.setState({
+            rows: data1,
+            data_loaded: true
+        }))
+    }
         
 
 
 render() {
     //console.log(this.state.form_inputs.push(this.state.unchanged_inputs))
+    if(this.state.data_loaded) {
     return( 
         
         <div className="container-fluid">
@@ -423,7 +371,11 @@ render() {
             </div>
             </main>
         </div>
-        );
+        )} else {
+            return(
+                <div></div>
+            )
+        }
     };
 }
 

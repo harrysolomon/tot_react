@@ -14,7 +14,7 @@ var TimeSaverSchema = new Schema(
         period:{type: String, required: true},
         name:{type: String, required: true}
       },
-      current_time_spent:{type: Number, required: true},
+    current_time_spent:{type: Number, required: true},
     name: {type: String, required: true},
     employees:{
         cost:{type: Number, required: true},
@@ -30,7 +30,8 @@ var TimeSaverSchema = new Schema(
     }
     }]
   },
-  {collection: 'time_saver'}
+  { timestamps: true },
+  {collection: 'timesavers'}
 );
         
 module.exports = mongoose.model('TimeSaver', TimeSaverSchema);

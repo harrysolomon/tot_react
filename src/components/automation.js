@@ -184,14 +184,6 @@ const the_employees = [
     }
 ]
 
-const the_rows = [{
-    "name": "",
-    "products": "",
-    "current_time_spent":"",
-    "employees": "",
-    "cadences":""
-}]
-
 
 class Automation extends Component {
     constructor(props) {
@@ -482,6 +474,22 @@ class Automation extends Component {
     }
 
     componentDidMount() {
+        if(this.state.location["pathname"]==="/automation"){
+            const the_rows = [{
+                "name": "",
+                "products": "",
+                "current_time_spent":"",
+                "employees": "",
+                "cadences":""
+            }]
+
+            this.setState({
+                rows: the_rows,
+                data_loaded: true
+            })
+
+        } else {
+
         Promise.all([
             fetch(`http://localhost:3000/time_saver/603afc4040397c4f0472ac66`)
         ])
@@ -490,7 +498,7 @@ class Automation extends Component {
             rows: data1[0]["inputs"],
             data_loaded: true
         }))
-    }
+    }}
 
 
 render() {
