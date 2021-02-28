@@ -15,20 +15,17 @@ let test_data = {
     "inputs":[
         {
             "cadences":{
-                "id":2,
                 "period":"quarter",
                 "name":"Quarterly"
             },
             "current_time_spent":10,
             "name": "Harrisons Test",
             "employees":{
-                "id":1,
                 "cost":50000,
                 "name":"Analyst",
                 "period":"year"
             },
             "products":{
-                "id":1,
                 "name":"Cool Product",
                 "cost": 10000,
                 "period": "year",
@@ -55,4 +52,15 @@ exports.updateData = (req, res) => {
     })
 
     res.json(req.body)
-}
+},
+
+exports.getData = (req, res, next) => {
+    TimeSaver.find(
+        {_id: req.params.id})
+      .exec((err, data) => {
+        if (err) {
+          return res.sendStatus(404);
+        }
+        res.json(data);
+      });
+  };
