@@ -190,6 +190,8 @@ class Automation extends Component {
       super(props);
       this.state = {
           rows: [],
+          calc_name: "New Calculator",
+          values:"",
           products: the_products,
           cadences: the_cadences,
           employees: the_employees,
@@ -205,7 +207,13 @@ class Automation extends Component {
           options: line_chart_data["options"],
           navActive: "",
           location: this.props.location,
-          match: this.props.match
+          match: this.props.match,
+          calculate_button: false,
+          input_nav: false,
+          graph_nav: true,
+          table_nav: true,
+          active_key: "form"
+
       };
       this.activeNav = this.activeNav.bind(this)
       
@@ -259,7 +267,7 @@ class Automation extends Component {
                     <Col>Inputs</Col>
                     <Col>
                     <div className="text-right">
-                        <Button size="sm" variant="outline-primary" onClick={this.onSubmitTask}>
+                        <Button size="sm" variant="primary" onClick={this.onSubmitTask} disabled={this.state.calculate_button}>
                             Calculate and Save
                         </Button>
                         </div>
@@ -300,7 +308,6 @@ class Automation extends Component {
                                 <FormControl
                                 as="select"
                                 name="products"
-                                value={item.products.name}
                                 onChange={this.handleChange.bind(this, idx, "products")}>
                                 <option>Choose..</option>
                                 {this.state.select_inputs.products.map((product, product_index) => {
@@ -376,14 +383,14 @@ class Automation extends Component {
         let values = [...this.state.rows];
         if(event.target.type === "select-one"){
             values[row][field] = this.state.select_inputs[event.target.name][event.target.value]
-            this.setState({
-                rows: values
-                });
+            this.setState({ values });
 
         } else {
             values[row][field] = event.target.value;
             this.setState({ values });
         }
+
+        console.log(this.state.rows)
         
     }
 
@@ -404,9 +411,10 @@ class Automation extends Component {
             "employees": "",
             "cadences":""
         }
-        this.setState({
-           rows: [...this.state.rows, new_row]
-        })    
+        
+        this.setState({ rows: [...this.state.rows, new_row] })
+        
+        console.log(this.state.rows)
     }
 
     //this function determines the active nav
@@ -439,19 +447,28 @@ class Automation extends Component {
     }
 
     onSubmitTask = (e) => {
+        let schema = {}
+        schema["name"] = this.state.calc_name
+        schema["inputs"] = this.state.rows
+        console.log(schema)
+        
         const requestOptions = {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(this.state.rows)
+            body: JSON.stringify(schema)
         };
 
         Promise.all([
-            fetch('http://localhost:3000/automate/testing',requestOptions)
+            fetch('http://localhost:3000/timesaver',requestOptions)
         ])
         .then(([res1]) => Promise.all([res1.json()]))
         .then(([data1]) => this.setState({
             data: data1["data"],
             options: data1["options"],
+            graph_nav: false,
+            table_nav: false,
+            navActive: "graph",
+            active_key: "graph"
         }))
     }
 
@@ -471,14 +488,13 @@ class Automation extends Component {
         console.log(this.state.match)
         if(this.state.match.params === '{}'){
         } else if(this.state.match.params.timesaverId === 'new'){
-            console.log(1+1)
             const the_rows = [{
-                "name": "",
-                "products": "",
-                "current_time_spent":"",
-                "employees": "",
-                "cadences":""
-            }]
+                      "cadences": "",
+                      "employees": "",
+                      "products": "",
+                      "current_time_spent": "",
+                      "name": ""
+                    }]
 
             this.setState({
                 rows: the_rows,
@@ -506,7 +522,7 @@ render() {
             <div className="page-header">
                 <div className ="row align-items-bottom">
                     <div className="col-sm mb-2 mb-sm-0">
-                        <h1 className="page-header-title text-left align-bottom">New Calculator</h1>
+                        <h1 className="page-header-title text-left align-bottom">{this.state.calc_name}</h1>
                     </div>
                     <div className="col-sm mb-2 mb-sm-0">
                         <div className="text-right">
@@ -525,15 +541,15 @@ render() {
                 <Col md={4}>
                 <div className="tab-content" id="navTabContent4">
                     <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
-                        <Nav variant="tabs" defaultActiveKey="form" onSelect={this.activeNav}>
+                        <Nav variant="tabs" defaultActiveKey={this.state.active_key} onSelect={this.activeNav}>
                             <Nav.Item>
-                                <Nav.Link eventKey="form">Inputs</Nav.Link>
+                                <Nav.Link eventKey="form" disabled={this.state.input_nav}>Inputs</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="graph">Graph</Nav.Link>
+                                <Nav.Link eventKey="graph" disabled={this.state.graph_nav}>Graph</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="spreadsheet" >Table</Nav.Link>
+                                <Nav.Link eventKey="spreadsheet" disabled={this.state.table_nav}>Table</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </div>
