@@ -1,41 +1,30 @@
-var schemas = require('../functions/schemas')
 var time_save_functions = require('../functions/time_saved')
 var TimeSaver = require('../models/time_saver');
 
 
 exports.createData = (req, res) => {
-    let result = schemas.line_chart_schema()
-    console.log(result)
-
-    let final_cur_employee_cost_array = time_save_functions.current_cost(req.body.inputs)
-    let final_new_employee_cost_array = time_save_functions.new_cost(req.body.inputs)
-
-    final_cur_employee_cost_array.reduce( (prev, curr,i) =>  result["data"]["datasets"][0]["data"][i] = Math.round(prev + curr), 0)
-    final_new_employee_cost_array.reduce( (prev, curr,i) =>  result["data"]["datasets"][1]["data"][i] = Math.round(prev + curr), 0)
-
-    let combined_cost = result["data"]["datasets"][0]["data"].concat(result["data"]["datasets"][1]["data"]);
-
-    let minimum_val = Math.min.apply(Math, combined_cost);
-    let maximum_val = Math.max.apply(Math, combined_cost);
-
-    result["options"]["scales"]["yAxes"][0]["ticks"]["suggestedMin"] = minimum_val
-    result["options"]["scales"]["yAxes"][0]["ticks"]["suggestedMax"] = maximum_val
-
-
+    
+    let chart_data = time_save_functions.new_cost(req.body.inputs)
+    
     let test_data = [{
         "period": "hour"
     }]
     test_data[0]["value"] = 20
 
-        req.body["values"] = test_data
-        console.log(req.body)
-        var new_data = new TimeSaver(req.body);
-         new_data.save(function (err) {
-            if (err) return console.log(err);
-           console.log("saved successfully")
-         })
+    req.body["values"] = test_data
+    
+    var new_data = new TimeSaver(req.body);
 
-         res.json(result)
+    
+    new_data.save(function (err) {
+        if (err) return console.log(err);
+        console.log("saved successfully")
+    })
+    
+    req.body["data"] = chart_data["data"]
+    req.body["options"] = chart_data["options"]
+
+        res.json(req.body)
 };
 
 exports.updateData = (req, res) => {
@@ -53,8 +42,18 @@ exports.getData = (req, res, next) => {
         if (err) {
           return res.sendStatus(404);
         }
-        res.json(data);
-      });
+
+        let result = data
+        let chart_data = time_save_functions.new_cost(result[0].inputs)
+        result["data"] = chart_data["data"]
+        result["options"] = chart_data["options"]
+
+        console.log(result)
+        
+        res.json(result);
+      }
+
+      );
   };
 
   exports.timeSaverList = (req, res, next) => {

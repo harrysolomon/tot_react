@@ -419,7 +419,7 @@ class Automation extends Component {
 
     //this function determines the active nav
     activeNav(eventKey){
-        this.setState({ navActive: eventKey})
+        this.setState({ active_key: eventKey})
     }
 
     supSquad(){
@@ -437,9 +437,9 @@ class Automation extends Component {
 
    // this function determines the content to display based on the active nav 
     contentDisplay(){
-        if(this.state.navActive === '' || this.state.navActive === "form"){
+        if(this.state.active_key === '' || this.state.active_key === "form"){
             return(this.tableOption())
-        } else if (this.state.navActive === "graph"){
+        } else if (this.state.active_key === "graph"){
             return(this.supSquad())
         } else {
             return(this.tableOption())
@@ -465,6 +465,7 @@ class Automation extends Component {
         .then(([data1]) => this.setState({
             data: data1["data"],
             options: data1["options"],
+            rows: data1["inputs"],
             graph_nav: false,
             table_nav: false,
             navActive: "graph",
@@ -541,7 +542,7 @@ render() {
                 <Col md={4}>
                 <div className="tab-content" id="navTabContent4">
                     <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
-                        <Nav variant="tabs" defaultActiveKey={this.state.active_key} onSelect={this.activeNav}>
+                        <Nav variant="tabs" activeKey={this.state.active_key} onSelect={this.activeNav}>
                             <Nav.Item>
                                 <Nav.Link eventKey="form" disabled={this.state.input_nav}>Inputs</Nav.Link>
                             </Nav.Item>
