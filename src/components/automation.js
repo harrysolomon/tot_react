@@ -139,7 +139,7 @@ const the_products = [
         "id":1,
         "name":"Another Product",
         "cost": 5000,
-        "peiod": "quarter",
+        "period": "quarter",
         "time_save": 80,
         "time_unit": "hour"
     }
@@ -212,7 +212,8 @@ class Automation extends Component {
           input_nav: false,
           graph_nav: true,
           table_nav: true,
-          active_key: "form"
+          active_key: "form",
+          new_row_id: 1
 
       };
       this.activeNav = this.activeNav.bind(this)
@@ -290,9 +291,9 @@ class Automation extends Component {
                         </thead>
                         <tbody>
                         {this.state.rows.map((item, idx) => (
-                            <tr id={idx} key={this.datasetKeyProvider}>
-                            <td key={this.datasetKeyProvider}>{idx}</td>
-                            <td key={this.datasetKeyProvider}>
+                            <tr id={idx} key={item._id}>
+                            <td key="row_numbr">{idx}</td>
+                            <td key="name">
                                 
                                 <InputGroup>
                                 <FormControl
@@ -303,20 +304,21 @@ class Automation extends Component {
                                 />
                                 </InputGroup>
                             </td>
-                            <td key={this.datasetKeyProvider}>
+                            <td key="product">
                                 <InputGroup>
                                 <FormControl
                                 as="select"
                                 name="products"
+                                value={item.products.id}
                                 onChange={this.handleChange.bind(this, idx, "products")}>
                                 <option>Choose..</option>
                                 {this.state.select_inputs.products.map((product, product_index) => {
                                 return(
-                                    <option value={product_index}>{product.name}</option>)})}
+                                    <option key={product.id} value={product.id}>{product.name}</option>)})}
                                 </FormControl>
                                 </InputGroup>
                             </td>
-                            <td key={this.datasetKeyProvider}>
+                            <td key="timespent">
                                 <InputGroup>
                                 <FormControl
                                 type="text"
@@ -329,37 +331,39 @@ class Automation extends Component {
                                     </InputGroup.Append>
                                 </InputGroup>
                             </td>
-                            <td key={this.datasetKeyProvider}>
+                            <td key="employees">
                                 <InputGroup>
                                 <FormControl
                                 as="select"
                                 name="employees"
+                                value={item.employees.id}
                                 onChange={this.handleChange.bind(this, idx, "employees")}>
                                 <React.Fragment>
                                     <option>Choose..</option>
                                 {this.state.select_inputs.employees.map((employee, employee_index) => {
                                 return(
-                                    <option value={employee_index}>{employee.name}</option>)})}
+                                    <option key={employee.id} value={employee.id}>{employee.name}</option>)})}
                                 </React.Fragment>
                                 </FormControl>
                                 </InputGroup>
                             </td>
-                            <td key={this.datasetKeyProvider}>
+                            <td key="cadence">
                                 <InputGroup>
                                 <FormControl
                                 as="select"
                                 name="cadences"
+                                value={item.cadences.id}
                                 onChange={this.handleChange.bind(this, idx, "cadences")}>
                                 <React.Fragment>
                                     <option>Choose..</option>
                                 {this.state.select_inputs.cadences.map((cadence, cadence_index) => {
                                 return(
-                                    <option value={cadence_index}>{cadence.name}</option>)})}
+                                    <option key={cadence.id} value={cadence.id}>{cadence.name}</option>)})}
                                 </React.Fragment>
                                 </FormControl>
                                 </InputGroup>
                             </td>
-                            <td className="text-center" key={this.datasetKeyProvider}>
+                            <td className="text-center" key="removebutton">
                                 <Button
                                 variant="outline-danger"
                                 size="sm"
@@ -380,9 +384,11 @@ class Automation extends Component {
         )}
         
     handleChange = (row, field, event) => {
+        
+        //console.log(event.target.value, event.target.name, this.state.select_inputs[event.target.name])
         let values = [...this.state.rows];
         if(event.target.type === "select-one"){
-            values[row][field] = this.state.select_inputs[event.target.name][event.target.value]
+            values[row][field] = this.state.select_inputs[event.target.name].find(product => +event.target.value === product.id)
             this.setState({ values });
 
         } else {
@@ -390,7 +396,7 @@ class Automation extends Component {
             this.setState({ values });
         }
 
-        console.log(this.state.rows)
+        console.log("handle change", this.state.rows)
         
     }
 
@@ -404,7 +410,9 @@ class Automation extends Component {
         //so the way this would work is assigning this variable to the data returned from the DB? 
         //Or will that ruin assignment?
         //Or we would have to do a post for every row added.
+        
         const new_row = {
+            "_id": this.state.new_row_id +1,
             "name": "",
             "products": "",
             "current_time_spent":"",
@@ -412,9 +420,14 @@ class Automation extends Component {
             "cadences":""
         }
         
-        this.setState({ rows: [...this.state.rows, new_row] })
+        this.setState(
+            { 
+                rows: [...this.state.rows, new_row],
+                new_row_id: this.state.new_row_id + 1
+            }
+        )
         
-        console.log(this.state.rows)
+        console.log("handle add", this.state.rows)
     }
 
     //this function determines the active nav
@@ -447,10 +460,20 @@ class Automation extends Component {
     }
 
     onSubmitTask = (e) => {
-        let schema = {}
-        schema["name"] = this.state.calc_name
-        schema["inputs"] = this.state.rows
-        console.log(schema)
+        const schema = {}
+        schema.name = this.state.calc_name
+        schema.inputs = [{}]
+        this.state.rows.map((item, idx) => {
+            if(typeof item._id === "string") {
+                schema["_id"] = item._id
+            }
+            schema.inputs[idx].products = item.products 
+            schema.inputs[idx].cadences = item.cadences 
+            schema.inputs[idx].employees = item.employees
+            schema.inputs[idx].current_time_spent = item.current_time_spent
+            schema.inputs[idx].name = item.name
+        })
+        console.log(JSON.stringify(schema))
         
         const requestOptions = {
             method: "POST",
@@ -486,7 +509,7 @@ class Automation extends Component {
     }
 
     componentDidMount() {
-        console.log(this.state.match)
+        //console.log(this.state.match)
         if(this.state.match.params === '{}'){
         } else if(this.state.match.params.timesaverId === 'new'){
             const the_rows = [{
@@ -494,7 +517,8 @@ class Automation extends Component {
                       "employees": "",
                       "products": "",
                       "current_time_spent": "",
-                      "name": ""
+                      "name": "",
+                      "_id": this.state.new_row_id
                     }]
 
             this.setState({
@@ -516,6 +540,7 @@ class Automation extends Component {
 
 
 render() {
+    //console.log(this.state)
     if(this.state.data_loaded) {
     return( 
         
