@@ -28,12 +28,14 @@ exports.createData = (req, res) => {
 };
 
 exports.updateData = (req, res) => {
-    TimeSaver.findByIdAndUpdate(req.params.id,req.body, {}, function (err) {
-        if (err) return console.log(err);
-    })
+    //reserving a section here for recalculating the value portion
+    TimeSaver.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, doc) => {
+        if (err) {
+            return console.log(err)
+    }
 
-    res.json(req.body)
-};
+    res.json(doc)
+    })};
 
 exports.getData = (req, res, next) => {
     TimeSaver.find(
@@ -57,10 +59,9 @@ exports.getData = (req, res, next) => {
   };
 
   exports.timeSaverList = (req, res, next) => {
-    TimeSaver.find().exec((err, data) => {
+    TimeSaver.find()
+    .exec((err, data) => {
         if (err) {
           return res.sendStatus(404);
         }
-        res.json(data);
-      });
-  };
+        res.json(data)})}
