@@ -11,17 +11,20 @@ var TimeSaverSchema = new Schema(
     }],
     inputs:[{
       cadences:{
+        _id: {type: Schema.Types.ObjectId, ref: 'CadenceSchema', required: true},
         period:{type: String, required: true},
         name:{type: String, required: true}
       },
     current_time_spent:{type: Number, required: true},
     name: {type: String, required: true},
     employees:{
+        _id: {type: Schema.Types.ObjectId, ref: 'TimeSaverEmployeeSchema', required: true},
         cost:{type: Number, required: true},
         name:{type: String, required: true},
         period:{type: String, required: true}
     },
     products:{
+        _id:{type: Schema.Types.ObjectId, ref: 'TimeSaverProductSchema', required: true},
         name:{type: String, required: true},
         cost: {type: Number, required: true},
         period: {type: String, required: true},

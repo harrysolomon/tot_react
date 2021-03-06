@@ -16,15 +16,20 @@ exports.createData = (req, res) => {
     var new_data = new TimeSaver(req.body);
 
     
-    new_data.save(function (err) {
-        if (err) return console.log(err);
+    new_data.save(function (err, data) {
+        if (err) {
+            return console.log(err)
+        };
+
         console.log("saved successfully")
-    })
-    
-    req.body["data"] = chart_data["data"]
-    req.body["options"] = chart_data["options"]
+        req.body["_id"] = data._id
+
+        req.body["data"] = chart_data["data"]
+        req.body["options"] = chart_data["options"]
 
         res.json(req.body)
+    })
+
 };
 
 exports.updateData = (req, res) => {
