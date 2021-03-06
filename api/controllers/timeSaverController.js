@@ -48,19 +48,20 @@ exports.getData = (req, res, next) => {
       .exec((err, data) => {
         if (err) {
           return res.sendStatus(404);
+        } 
+        let result = {
+            meta: {},
+            graph_data: {}
         }
-
-        let result = data
-        let chart_data = time_save_functions.new_cost(result[0].inputs)
-        result["data"] = chart_data["data"]
-        result["options"] = chart_data["options"]
-
-        console.log(result)
         
-        res.json(result);
-      }
+        let chart_data = time_save_functions.new_cost(data[0].inputs)
+        
+        result.meta = data
+        result.graph_data = chart_data
 
-      );
+        res.json(result)
+        
+      });
   };
 
   exports.timeSaverList = (req, res, next) => {

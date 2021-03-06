@@ -4,127 +4,9 @@ import { Line } from 'react-chartjs-2';
 import { Button, Card, FormControl, InputGroup, FormGroup, FormLabel, Container, Row, Col, Nav, Navbar} from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import _ from 'lodash'
-import LineChart from '../components/line_chart'
+import LineChart from '../line_chart'
 import { XSquareFill } from 'react-bootstrap-icons'
-import axios from "axios";
-//import SelectOptions from '../components/form_inputs/options'
-
-
-
-const line_chart_data = {
-    "data": {
-      "labels": [
-        "Y0",
-        "Y1",
-        "Y2",
-        "Y3",
-        "Y4",
-        "Y5",
-        "Y6",
-        "Y7",
-        "Y8",
-        "Y9",
-        "Y10"
-      ],
-      "datasets": [
-        {
-          "data": [
-            -5042,
-            -10084,
-            -15126,
-            -20168,
-            31669,
-            84706,
-            138967,
-            194476,
-            251259,
-            309341,
-            368748
-          ],
-          "backgroundColor": "transparent",
-          "borderColor": "#377dff",
-          "borderWidth": 2,
-          "pointRadius": 0,
-          "hoverBorderColor": "#377dff",
-          "pointBackgroundColor": "#377dff",
-          "pointBorderColor": "#fff",
-          "pointHoverRadius": 0
-        },
-        {
-          "data": [
-            35042,
-            70535,
-            106487,
-            142906,
-            182920,
-            223265,
-            263945,
-            304964,
-            346325,
-            388033,
-            430091
-          ],
-          "backgroundColor": "transparent",
-          "borderColor": "#00c9db",
-          "borderWidth": 2,
-          "pointRadius": 0,
-          "hoverBorderColor": "#00c9db",
-          "pointBackgroundColor": "#00c9db",
-          "pointBorderColor": "#fff",
-          "pointHoverRadius": 0
-        }
-      ]
-    },
-    "options": {
-      "legend": {
-        "display": false
-      },
-      "scales": {
-        "yAxes": [
-          {
-            "gridLines": {
-              "color": "#e7eaf3",
-              "drawBorder": false,
-              "zeroLineColor": "#e7eaf3"
-            },
-            "ticks": {
-              "suggestedMin": -20168,
-              "suggestedMax": 430091,
-              "fontColor": "#97a4af",
-              "fontFamily": "Open Sans, sans-serif",
-              "padding": 10,
-              "postfix": "k"
-            }
-          }
-        ],
-        "xAxes": [
-          {
-            "gridLines": {
-              "display": false,
-              "drawBorder": false
-            },
-            "ticks": {
-              "fontSize": 12,
-              "fontColor": "#97a4af",
-              "fontFamily": "Open Sans, sans-serif",
-              "padding": 5
-            }
-          }
-        ]
-      },
-      "tooltips": {
-        "hasIndicator": true,
-        "mode": "index",
-        "intersect": false,
-        "lineMode": true,
-        "lineWithLineColor": "rgba(19, 33, 68, 0.075)"
-      },
-      "hover": {
-        "mode": "nearest",
-        "intersect": true
-      }
-    }
-  }
+import { Redirect } from 'react-router'
 
 const the_products = [
     {
@@ -185,35 +67,32 @@ const the_employees = [
 ]
 
 
-class Automation extends Component {
+class TimeSaverView extends Component {
     constructor(props) {
       super(props);
       this.state = {
           rows: [],
-          calc_name: "New Calculator",
-          values:"",
-          products: the_products,
-          cadences: the_cadences,
-          employees: the_employees,
+          calc_name: "",
           select_inputs:{
               products: the_products,
               employees: the_employees,
               cadences: the_cadences
           },
           data_loaded: false,
-          product_state: "",
           open: false,
-          data: line_chart_data["data"],
-          options: line_chart_data["options"],
-          navActive: "",
+          data: {},
+          options: {},
+          //navActive: "",
           location: this.props.location,
           match: this.props.match,
           calculate_button: false,
           input_nav: false,
           graph_nav: true,
           table_nav: true,
-          active_key: "form",
-          new_row_id: 1
+          active_key: "graph",
+          new_row_id: 1,
+          redirect: false,
+          redirect_id: ""
 
       };
       this.activeNav = this.activeNav.bind(this)
@@ -499,8 +378,10 @@ class Automation extends Component {
                 rows: data1["inputs"],
                 graph_nav: false,
                 table_nav: false,
-                navActive: "graph",
-                active_key: "graph"
+                //navActive: "graph",
+                active_key: "graph",
+                redirect: true,
+                redirect_id: data1["_id"]
             }))
         }
     }
@@ -518,41 +399,30 @@ class Automation extends Component {
     }
 
     componentDidMount() {
-        //console.log(this.state.match)
-        if(this.state.match.params === '{}'){
-        } else if(this.state.match.params.timesaverId === 'new'){
-            const the_rows = [{
-                      "cadences": "",
-                      "employees": "",
-                      "products": "",
-                      "current_time_spent": "",
-                      "name": "",
-                      "_id": this.state.new_row_id
-                    }]
-
-            this.setState({
-                rows: the_rows,
-                data_loaded: true
-            })
-
-        } else {
-            let path = 'http://localhost:3000/time_saver/' + this.state.match.params.timesaverId
-            Promise.all([
-                fetch(path)
-            ])
-            .then(([res1]) => Promise.all([res1.json()]))
-            .then(([data1]) => this.setState({
-                rows: data1[0]["inputs"],
-                data_loaded: true,
-                graph_nav: false,
-                table_nav: false
-            }))}
+        let path = 'http://localhost:3000/time_saver/' + this.state.match.params.timesaverId
+        Promise.all([
+            fetch(path)
+        ])
+        .then(([res1]) => Promise.all([res1.json()]))
+        .then(([data1]) => this.setState({
+            rows: data1.meta[0].inputs,
+            data_loaded: true,
+            graph_nav: false,
+            table_nav: false,
+            calc_name: data1.meta[0].name,
+            data: data1.graph_data.data,
+            options: data1.graph_data.options
+        }))
     }
 
 
 render() {
-    //console.log(this.state)
+    const { redirect } = this.state;
     if(this.state.data_loaded) {
+        if (redirect) {
+            let path = "/timesaver/"+this.state.redirect_id
+            return <Redirect to={path}/>;
+        }
     return( 
         
         <div className="container-fluid">
@@ -580,13 +450,13 @@ render() {
                     <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
                         <Nav variant="tabs" activeKey={this.state.active_key} onSelect={this.activeNav}>
                             <Nav.Item>
-                                <Nav.Link eventKey="form" disabled={this.state.input_nav}>Inputs</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
                                 <Nav.Link eventKey="graph" disabled={this.state.graph_nav}>Graph</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link eventKey="spreadsheet" disabled={this.state.table_nav}>Table</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="form" disabled={this.state.input_nav}>Inputs</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </div>
@@ -606,4 +476,4 @@ render() {
             </div>)}
 }}
 
-export default Automation;
+export default TimeSaverView;
