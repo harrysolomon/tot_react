@@ -128,7 +128,7 @@ const line_chart_data = {
 
 const the_products = [
     {
-        "id":0,
+        "_id":"6042ebb491adc4633779ce0c",
         "name": "Cool Product",
         "cost": 10000,
         "period": "year",
@@ -136,7 +136,7 @@ const the_products = [
         "time_unit": "hour"
     },
     {
-        "id":1,
+        "_id":"6042ebf991adc4633779ce0d",
         "name":"Another Product",
         "cost": 5000,
         "period": "quarter",
@@ -147,17 +147,17 @@ const the_products = [
 
 const the_cadences = [
     {
-        "id":1,
+        "_id":"6042ecd83b465a4fcabdbbb1",
         "name":"Daily",
         "period":"day"
     },
     {
-        "id":2,
+        "_id":"6042ed163b465a4fcabdbbb4",
         "name":"Quarterly",
         "period": "quarter"
     },
     {
-        "id":3,
+        "_id":"6042ed253b465a4fcabdbbb5",
         "name":"Annually",
         "period":"year"
     }
@@ -165,19 +165,19 @@ const the_cadences = [
 
 const the_employees = [
     {
-        "id": 1,
+        "_id": "6042edb63b465a4fcabdbbb6",
         "name": "Analyst",
         "cost": 50000,
         "period": "year"
     },
     {
-        "id": 2,
+        "_id": "6042edda3b465a4fcabdbbb7",
         "name": "Account Management",
         "cost": 65000,
         "period": "year"
     },
     {
-        "id": 3,
+        "_id": "6042edf13b465a4fcabdbbb8",
         "name": "Account Executive",
         "cost": 75000,
         "period": "year"
@@ -309,12 +309,14 @@ class Automation extends Component {
                                 <FormControl
                                 as="select"
                                 name="products"
-                                value={item.products.id}
+                                value={item.products._id}
                                 onChange={this.handleChange.bind(this, idx, "products")}>
-                                <option>Choose..</option>
-                                {this.state.select_inputs.products.map((product, product_index) => {
+                                <option>{item.products.name || 'Choose...'}</option>
+                                {this.state.select_inputs.products.map((product) => {
+                                if(item.products._id === product._id){}
+                                else{
                                 return(
-                                    <option key={product.id} value={product.id}>{product.name}</option>)})}
+                                    <option key={product._id} value={product._id}>{product.name}</option>)}})}
                                 </FormControl>
                                 </InputGroup>
                             </td>
@@ -336,13 +338,15 @@ class Automation extends Component {
                                 <FormControl
                                 as="select"
                                 name="employees"
-                                value={item.employees.id}
+                                value={item.employees._id}
                                 onChange={this.handleChange.bind(this, idx, "employees")}>
                                 <React.Fragment>
-                                    <option>Choose..</option>
-                                {this.state.select_inputs.employees.map((employee, employee_index) => {
+                                    <option>{item.employees.name || 'Choose...'}</option>
+                                    {this.state.select_inputs.employees.map((employee) => {
+                                if(item.employees._id === employee._id){}
+                                else{
                                 return(
-                                    <option key={employee.id} value={employee.id}>{employee.name}</option>)})}
+                                    <option key={employee._id} value={employee._id}>{employee.name}</option>)}})}
                                 </React.Fragment>
                                 </FormControl>
                                 </InputGroup>
@@ -352,13 +356,15 @@ class Automation extends Component {
                                 <FormControl
                                 as="select"
                                 name="cadences"
-                                value={item.cadences.id}
+                                value={item.cadences._id}
                                 onChange={this.handleChange.bind(this, idx, "cadences")}>
                                 <React.Fragment>
-                                    <option>Choose..</option>
-                                {this.state.select_inputs.cadences.map((cadence, cadence_index) => {
+                                    <option>{item.cadences.name || 'Choose...'}</option>
+                                    {this.state.select_inputs.cadences.map((cadence) => {
+                                if(item.cadences._id === cadence._id){}
+                                else{
                                 return(
-                                    <option key={cadence.id} value={cadence.id}>{cadence.name}</option>)})}
+                                    <option key={cadence._id} value={cadence._id}>{cadence.name}</option>)}})}
                                 </React.Fragment>
                                 </FormControl>
                                 </InputGroup>
@@ -385,10 +391,10 @@ class Automation extends Component {
         
     handleChange = (row, field, event) => {
         
-        //console.log(event.target.value, event.target.name, this.state.select_inputs[event.target.name])
+        console.log("the_id" + event.target.value, "the name" + event.target.name, this.state.select_inputs[event.target.name])
         let values = [...this.state.rows];
         if(event.target.type === "select-one"){
-            values[row][field] = this.state.select_inputs[event.target.name].find(product => +event.target.value === product.id)
+            values[row][field] = this.state.select_inputs[event.target.name].find(product => event.target.value === product._id)
             this.setState({ values });
 
         } else {
@@ -396,7 +402,7 @@ class Automation extends Component {
             this.setState({ values });
         }
 
-        console.log("handle change", this.state.rows)
+        //console.log(this.state.rows)
         
     }
 
@@ -427,7 +433,6 @@ class Automation extends Component {
             }
         )
         
-        console.log("handle add", this.state.rows)
     }
 
     //this function determines the active nav
@@ -462,8 +467,10 @@ class Automation extends Component {
     onSubmitTask = (e) => {
         const schema = {}
         schema.name = this.state.calc_name
-        schema.inputs = [{}]
+        schema.inputs = []
         this.state.rows.map((item, idx) => {
+            schema.inputs[idx] = {}
+            
             if(typeof item._id === "string") {
                 schema["_id"] = item._id
             }
@@ -472,28 +479,30 @@ class Automation extends Component {
             schema.inputs[idx].employees = item.employees
             schema.inputs[idx].current_time_spent = item.current_time_spent
             schema.inputs[idx].name = item.name
-        })
-        console.log(JSON.stringify(schema))
-        
-        const requestOptions = {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(schema)
-        };
 
-        Promise.all([
-            fetch('http://localhost:3000/timesaver',requestOptions)
-        ])
-        .then(([res1]) => Promise.all([res1.json()]))
-        .then(([data1]) => this.setState({
-            data: data1["data"],
-            options: data1["options"],
-            rows: data1["inputs"],
-            graph_nav: false,
-            table_nav: false,
-            navActive: "graph",
-            active_key: "graph"
-        }))
+        })
+        //this will create a new record so should only be run for new calculators
+        if(this.state.match.params.timesaverId === 'new'){
+            const requestOptions = {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(schema)
+            };
+
+            Promise.all([
+                fetch('http://localhost:3000/timesaver',requestOptions)
+            ])
+            .then(([res1]) => Promise.all([res1.json()]))
+            .then(([data1]) => this.setState({
+                data: data1["data"],
+                options: data1["options"],
+                rows: data1["inputs"],
+                graph_nav: false,
+                table_nav: false,
+                navActive: "graph",
+                active_key: "graph"
+            }))
+        }
     }
 
     testInsert = (e) => {
@@ -534,7 +543,9 @@ class Automation extends Component {
             .then(([res1]) => Promise.all([res1.json()]))
             .then(([data1]) => this.setState({
                 rows: data1[0]["inputs"],
-                data_loaded: true
+                data_loaded: true,
+                graph_nav: false,
+                table_nav: false
             }))}
     }
 
@@ -585,11 +596,6 @@ render() {
             <Row>
                 {this.contentDisplay()}
                   
-            </Row>
-            <Row>
-                <Button onClick={this.testInsert}>
-                    Testing
-                </Button>
             </Row>
         </div>
         );
