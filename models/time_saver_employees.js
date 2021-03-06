@@ -4,9 +4,9 @@ var Schema = mongoose.Schema;
 
 var TimeSaverEmployeeSchema = new Schema(
   {
-    name: {type: String},
+    name: {type: String, required: true},
     cost: {type: Number, required: true},
-    period: {type: Number, required: true},
+    period: {type: String, required: true},
   },
   {collection: 'employees'}
 );
