@@ -4,8 +4,8 @@ var Schema = mongoose.Schema;
 
 var CadenceSchema = new Schema(
   {
-    name: {type: String},
-    period: {type: Number, required: true}
+    name: {type: String, required: true},
+    period: {type: String, required: true}
   },
   {collection: 'cadences'}
 );

@@ -82,7 +82,6 @@ class TimeSaverView extends Component {
           open: false,
           data: {},
           options: {},
-          //navActive: "",
           location: this.props.location,
           match: this.props.match,
           calculate_button: false,
@@ -179,8 +178,7 @@ class TimeSaverView extends Component {
                                 type="text"
                                 name="name"
                                 value={item.name}
-                                onChange={this.handleChange.bind(this, idx, "name")}
-                                />
+                                onChange={this.handleChange.bind(this, idx, "name")}/>
                                 </InputGroup>
                             </td>
                             <td key="product">
@@ -378,7 +376,6 @@ class TimeSaverView extends Component {
                 rows: data1["inputs"],
                 graph_nav: false,
                 table_nav: false,
-                //navActive: "graph",
                 active_key: "graph",
                 redirect: true,
                 redirect_id: data1["_id"]
@@ -399,7 +396,7 @@ class TimeSaverView extends Component {
     }
 
     componentDidMount() {
-        let path = 'http://localhost:3000/time_saver/' + this.state.match.params.timesaverId
+        let path = 'http://localhost:3000/timesaver/' + this.state.match.params.timesaverId
         Promise.all([
             fetch(path)
         ])

@@ -24,7 +24,7 @@ const the_columns = [
 ]
 
 const the_product_cols = [
-    "Name", "Description","Cost"
+    "Name","Cost"
 ]
 
 const the_product_list = [{
@@ -35,10 +35,10 @@ const the_product_list = [{
 }]
 
 const the_employee_cols = [
-    "Name", "Department","Salary"
+    "Name", "Salary"
 ]
 
-const the_employee_list = [
+/*const the_employee_list = [
     {
         "id": 1,
         "name": "Analyst",
@@ -60,7 +60,7 @@ const the_employee_list = [
         "cost": 75000,
         "period": "year"
     }
-]
+]*/
 
 
 class ROIList extends Component {
@@ -68,11 +68,11 @@ class ROIList extends Component {
       super(props);
       this.state = {
           columns: the_columns,
-          rows: the_rows,
+          rows: [],
           product_cols: the_product_cols,
-          product_list: the_product_list,
+          product_list: [],
           employee_cols: the_employee_cols,
-          employee_list: the_employee_list,
+          employee_list: [],
           data_loaded: false,
           open: false,
           search_result: [],
@@ -208,12 +208,7 @@ class ROIList extends Component {
                                 </a>
                             </td>
                             <td>
-                                <span className="d-block h5 mb-0">{item.description}
-                                    <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
-                                </span>
-                            </td>
-                            <td>
-                                <span className="d-block h5 mb-0">{item.cost}/{item.period} 
+                                <span className="d-block h5 mb-0">${item.cost} / {item.period} 
                                     <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
                                 </span>
                             </td>
@@ -284,12 +279,7 @@ class ROIList extends Component {
                                 </a>
                             </td>
                             <td>
-                                <span className="d-block h5 mb-0">{item.department}
-                                    <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
-                                </span>
-                            </td>
-                            <td>
-                                <span className="d-block h5 mb-0">${item.cost}/{item.period} 
+                                <span className="d-block h5 mb-0">${item.cost} / {item.period} 
                                     <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
                                 </span>
                             </td>
@@ -323,13 +313,18 @@ class ROIList extends Component {
 
     componentDidMount(){
         Promise.all([
-            fetch(`http://localhost:3000/timesaver/list`)
+            fetch('http://localhost:3000/timesaver/calculator/list'),
+            fetch('http://localhost:3000/timesaver/product/list'),
+            fetch('http://localhost:3000/timesaver/employee/list')
         ])
-        .then(([res1]) => Promise.all([res1.json()]))
-        .then(([data1]) => this.setState({
+        .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
+        .then(([data1, data2, data3]) => this.setState({
             rows: data1,
+            product_list: data2,
+            employee_list: data3,
             data_loaded: true
         }))
+
     }
         
 
@@ -337,6 +332,7 @@ class ROIList extends Component {
 render() {
     //console.log(this.state.form_inputs.push(this.state.unchanged_inputs))
     if(this.state.data_loaded) {
+        console.log(this.state)
     return( 
         
         <div className="container-fluid">

@@ -1,5 +1,8 @@
 var time_save_functions = require('../functions/time_saved')
 var TimeSaver = require('../models/time_saver');
+var TimeSaverProductSchema = require('../models/time_saver_products')
+var TimeSaverEmployeeSchema = require('../models/time_saver_employees')
+
 
 
 exports.createData = (req, res) => {
@@ -64,10 +67,61 @@ exports.getData = (req, res, next) => {
       });
   };
 
-  exports.timeSaverList = (req, res, next) => {
+exports.timeSaverList = (req, res, next) => {
     TimeSaver.find()
     .exec((err, data) => {
         if (err) {
-          return res.sendStatus(404);
+            return res.sendStatus(404);
         }
-        res.json(data)})}
+        res.json(data)
+    });
+};
+
+exports.productList = (req, res, next) => {
+    TimeSaverProductSchema.find()
+    .exec((err, data) => {
+        if (err) {
+            return res.sendStatus(404);
+        }
+        res.json(data)
+    });
+};
+
+exports.product = (req, res, next) => {
+    TimeSaverProductSchema.find(
+        {_id: req.params.id})
+      .exec((err, data) => {
+        if (err) {
+          return res.sendStatus(404);
+        } 
+
+        res.json(data)
+        
+      });
+  };
+
+exports.employeeList = (req, res, next) => {
+    TimeSaverEmployeeSchema.find()
+    .exec((err, data) => {
+        if (err) {
+            return res.sendStatus(404);
+        }
+        res.json(data)
+    });
+};
+
+exports.employee = (req, res, next) => {
+    TimeSaverEmployeeSchema.find(
+        {_id: req.params.id})
+      .exec((err, data) => {
+        if (err) {
+          return res.sendStatus(404);
+        } 
+
+        res.json(data)
+        
+      });
+  };
+
+
+    

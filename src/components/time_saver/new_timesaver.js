@@ -69,11 +69,9 @@ class NewTimeSaver extends Component {
       this.state = {
           rows: [],
           calc_name: "",
-          select_inputs:{
-              products: the_products,
-              employees: the_employees,
-              cadences: the_cadences
-          },
+          products: the_products,
+          employees: the_employees,
+          cadences: the_cadences,
           data_loaded: false,
           navActive: "",
           location: this.props.location,
@@ -168,7 +166,7 @@ class NewTimeSaver extends Component {
                                 value={item.products._id}
                                 onChange={this.handleChange.bind(this, idx, "products")}>
                                 <option>{item.products.name || 'Choose...'}</option>
-                                {this.state.select_inputs.products.map((product) => {
+                                {this.state.products.map((product) => {
                                 if(item.products._id === product._id){}
                                 else{
                                 return(
@@ -198,7 +196,7 @@ class NewTimeSaver extends Component {
                                 onChange={this.handleChange.bind(this, idx, "employees")}>
                                 <React.Fragment>
                                     <option>{item.employees.name || 'Choose...'}</option>
-                                    {this.state.select_inputs.employees.map((employee) => {
+                                    {this.state.employees.map((employee) => {
                                 if(item.employees._id === employee._id){}
                                 else{
                                 return(
@@ -216,7 +214,7 @@ class NewTimeSaver extends Component {
                                 onChange={this.handleChange.bind(this, idx, "cadences")}>
                                 <React.Fragment>
                                     <option>{item.cadences.name || 'Choose...'}</option>
-                                    {this.state.select_inputs.cadences.map((cadence) => {
+                                    {this.state.cadences.map((cadence) => {
                                 if(item.cadences._id === cadence._id){}
                                 else{
                                 return(
@@ -247,10 +245,9 @@ class NewTimeSaver extends Component {
         
     handleChange = (row, field, event) => {
         
-        console.log("the_id" + event.target.value, "the name" + event.target.name, this.state.select_inputs[event.target.name])
         let values = [...this.state.rows];
         if(event.target.type === "select-one"){
-            values[row][field] = this.state.select_inputs[event.target.name].find(product => event.target.value === product._id)
+            values[row][field] = this.state[event.target.name].find(product => event.target.value === product._id)
             this.setState({ values });
 
         } else {
@@ -340,11 +337,19 @@ class NewTimeSaver extends Component {
                     "name": "",
                     "_id": this.state.new_row_id
                 }]
-
-        this.setState({
+        Promise.all([
+            fetch('http://localhost:3000/cadences/list'),
+            fetch('http://localhost:3000/timesaver/product/list'),
+            fetch('http://localhost:3000/timesaver/employee/list')
+        ])
+        .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
+        .then(([data1, data2, data3]) => this.setState({
             rows: the_rows,
+            products: data2,
+            employees: data3,
+            cadences: data1, 
             data_loaded: true
-        })
+        }))
     }
 
 
