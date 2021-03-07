@@ -337,10 +337,24 @@ class NewTimeSaver extends Component {
                     "name": "",
                     "_id": this.state.new_row_id
                 }]
+
+        const productRequestOptions = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(["_id", "name", "cost", "period", "time_save", "time_unit"])
+        };
+
+        const employeeRequestOptions = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(["_id", "name", "cost", "period"])
+        };
+
+
         Promise.all([
             fetch('http://localhost:3000/cadences/list'),
-            fetch('http://localhost:3000/timesaver/product/list'),
-            fetch('http://localhost:3000/timesaver/employee/list')
+            fetch('http://localhost:3000/timesaver/product/list',productRequestOptions),
+            fetch('http://localhost:3000/timesaver/employee/list',employeeRequestOptions)
         ])
         .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
         .then(([data1, data2, data3]) => this.setState({

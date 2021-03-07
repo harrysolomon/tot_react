@@ -337,7 +337,11 @@ class TimeSaverView extends Component {
         } else if (this.state.active_key === "graph"){
             return(this.supSquad())
         } else {
-            return(this.tableOption())
+            return(
+                <div>
+                    Not Built Yet
+                </div>
+            )
         }
     }
 
@@ -381,18 +385,6 @@ class TimeSaverView extends Component {
                 redirect_id: data1["_id"]
             }))
         }
-    }
-
-    testInsert = (e) => {
-        const requestOptions = {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({"value": 10})
-        };
-
-        Promise.all([
-            fetch('http://localhost:3000/time_saver',requestOptions)
-        ])
     }
 
     componentDidMount() {

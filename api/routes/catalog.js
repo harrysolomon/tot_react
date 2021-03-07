@@ -19,7 +19,7 @@ router.get('/forpeople/bachelorsdegree/form_input/:id', form_input_controller.fo
 
 router.post('/forpeople/bachelorsdegree/chart/:id', line_chart_controller.lineChart);
 
-router.get('/:id/cost', cost_controller.cost);
+//router.get('/:id/cost', cost_controller.cost);
 
 router.get('/forpeople/bachelorsdegree/searchdetail/:id', search_detail_controller.searchDetail);
 
@@ -35,13 +35,13 @@ router.get('/timesaver/:id', time_saver_controller.getData);
 
 router.get('/timesaver/calculator/list', time_saver_controller.timeSaverList);
 
-router.get('/timesaver/product/list', time_saver_controller.productList);
+router.post('/timesaver/product/list', time_saver_controller.productList);
 
-router.get('/timesaver/product/:id', time_saver_controller.product);
+router.post('/timesaver/product/:id', time_saver_controller.product);
 
-router.get('/timesaver/employee/list', time_saver_controller.employeeList);
+router.post('/timesaver/employee/list', time_saver_controller.employeeList);
 
-router.get('/timesaver/employee/:id', time_saver_controller.employee);
+router.post('/timesaver/employee/:id', time_saver_controller.employee);
 
 router.get('/cadences/list', cadence_controller.cadences);
 

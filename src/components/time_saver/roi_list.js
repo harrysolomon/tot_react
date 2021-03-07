@@ -2,65 +2,17 @@ import React, { Component } from "react";
 import { Card, Row, Col, Nav, Button} from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
-const the_rows = [{
-    "name": "The Best ROI Ever",
-    "created_by": "John Doe",
-    "created_at": "February 20th, 2021",
-    "value":"5,000",
-    "type":"Time Saver",
-    "client": "Acme Explosives"
-},
-{
-    "name": "The Best ROI Ever",
-    "created_by": "John Doe",
-    "created_at": "February 20th, 2021",
-    "value":"5,000",
-    "type":"Time Saver",
-    "client": "Acme Explosives"
-}]
-
 const the_columns = [
     "Name","Client","Created Time", "Value"
 ]
 
 const the_product_cols = [
-    "Name","Cost"
+    "Name","Description","Cost"
 ]
-
-const the_product_list = [{
-    "name": "Accouting Wizard",
-    "description": "Automates collection of receipts from client dinners",
-    "cost": "$1,000",
-    "period": "Month"
-}]
 
 const the_employee_cols = [
-    "Name", "Salary"
+    "Name", "Department","Salary"
 ]
-
-/*const the_employee_list = [
-    {
-        "id": 1,
-        "name": "Analyst",
-        "department": "Finance",
-        "cost": 50000,
-        "period": "year"
-    },
-    {
-        "id": 2,
-        "name": "Account Management",
-        "department": "Sales",
-        "cost": 65000,
-        "period": "year"
-    },
-    {
-        "id": 3,
-        "name": "Account Executive",
-        "department": "Sales",
-        "cost": 75000,
-        "period": "year"
-    }
-]*/
 
 
 class ROIList extends Component {
@@ -80,7 +32,6 @@ class ROIList extends Component {
           navActive: ""
       };
       this.activeNav = this.activeNav.bind(this)
-    //creates the list of inputs that are displayed upfront to the user
     }
 
     tableOption(){
@@ -135,7 +86,7 @@ class ROIList extends Component {
                                     </a>
                                 </td>
                                 <td>
-                                    <span className="d-block mb-0">Test Client <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                    <span className="d-block h5 mb-0">Test Client <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                                 </td>
                                 <td>
                                     <span className="d-block h5 mb-0">{item.createdAt} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
@@ -199,13 +150,18 @@ class ROIList extends Component {
                         {this.state.product_list.map((item, idx) => (
                             <tr id="addr0">
                             <td>
-                                <a className="media align-items-center" href="/timesaver/new">
-                                <div className="media-body">
-                                    <span className="d-block h5 text-hover-primary mb-0">{item.name} 
-                                        <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
-                                    </span>
-                                </div>
+                                <a className="media align-items-center">
+                                    <div className="media-body">
+                                        <span className="d-block h5 text-hover-primary mb-0">{item.name} 
+                                            <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
+                                        </span>
+                                    </div>
                                 </a>
+                            </td>
+                            <td>
+                                <span className="d-block mb-0">{item.description}
+                                    <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
+                                </span>
                             </td>
                             <td>
                                 <span className="d-block h5 mb-0">${item.cost} / {item.period} 
@@ -279,6 +235,11 @@ class ROIList extends Component {
                                 </a>
                             </td>
                             <td>
+                                <span className="d-block h5 mb-0">{item.department} 
+                                    <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
+                                </span>
+                            </td>
+                            <td>
                                 <span className="d-block h5 mb-0">${item.cost} / {item.period} 
                                     <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
                                 </span>
@@ -312,10 +273,22 @@ class ROIList extends Component {
     }
 
     componentDidMount(){
+        const productRequestOptions = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(["_id", "name", "cost", "period", "time_save", "time_unit","description"])
+        };
+
+        const employeeRequestOptions = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(["_id", "name", "cost", "period","department"])
+        };
+        
         Promise.all([
             fetch('http://localhost:3000/timesaver/calculator/list'),
-            fetch('http://localhost:3000/timesaver/product/list'),
-            fetch('http://localhost:3000/timesaver/employee/list')
+            fetch('http://localhost:3000/timesaver/product/list',productRequestOptions),
+            fetch('http://localhost:3000/timesaver/employee/list',employeeRequestOptions)
         ])
         .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
         .then(([data1, data2, data3]) => this.setState({
