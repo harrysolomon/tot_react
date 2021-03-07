@@ -83,7 +83,22 @@ exports.productList = (req, res, next) => {
         if (err) {
             return res.sendStatus(404);
         }
-        res.json(data)
+
+        let response = []
+
+        data.map((product) => {
+            let a_product = {}
+            for (let i = 0; i < req.body.length; ++i){
+                
+                let field = req.body[i]
+                a_product[field] = product[field]
+                
+            }
+            response.push(a_product)
+            
+        })
+
+        res.json(response)
     });
 };
 
@@ -94,8 +109,22 @@ exports.product = (req, res, next) => {
         if (err) {
           return res.sendStatus(404);
         } 
+        console.log(data)
+        let response = []
 
-        res.json(data)
+        data.map((product) => {
+            let a_product = {}
+            for (let i = 0; i < req.body.length; ++i){
+                
+                let field = req.body[i]
+                a_product[field] = product[field]
+                
+            }
+            response.push(a_product)
+            
+        })
+
+        res.json(response)
         
       });
   };
@@ -106,7 +135,21 @@ exports.employeeList = (req, res, next) => {
         if (err) {
             return res.sendStatus(404);
         }
-        res.json(data)
+        let response = []
+
+        data.map((employee) => {
+            let a_employee = {}
+            for (let i = 0; i < req.body.length; ++i){
+                
+                let field = req.body[i]
+                a_employee[field] = employee[field]
+                
+            }
+            response.push(a_employee)
+            
+        })
+
+        res.json(response)
     });
 };
 
@@ -118,7 +161,21 @@ exports.employee = (req, res, next) => {
           return res.sendStatus(404);
         } 
 
-        res.json(data)
+        let response = []
+
+        data.map((employee) => {
+            let a_employee = {}
+            for (let i = 0; i < req.body.length; ++i){
+                
+                let field = req.body[i]
+                a_employee[field] = employee[field]
+                
+            }
+            response.push(a_employee)
+            
+        })
+
+        res.json(response)
         
       });
   };
