@@ -189,7 +189,7 @@ class FinalResult extends Component {
         };
 
         Promise.all([
-            fetch('http://localhost:3000/5fac52be03ff66099d9a8ef4/line_chart',requestOptions)
+            fetch('http://localhost:3000/forpeople/bachelorsdegree/chart/5fac52be03ff66099d9a8ef4',requestOptions)
         ])
         .then(([res1]) => Promise.all([res1.json()]))
         .then(([data1]) => this.setState({
@@ -205,10 +205,10 @@ class FinalResult extends Component {
         };
 
         Promise.all([
-            fetch(`http://localhost:3000/5fac52be03ff66099d9a8ef4`),
-            fetch('http://localhost:3000/5fac52be03ff66099d9a8ef4/line_chart',requestOptions),
+            fetch('http://localhost:3000/forpeople/bachelorsdegree/form_input/5fac52be03ff66099d9a8ef4'),
+            fetch('http://localhost:3000/forpeople/bachelorsdegree/chart/5fac52be03ff66099d9a8ef4',requestOptions),
             fetch('https://api.data.gov/ed/collegescorecard/v1/schools.json?api_key=ro4hAT4oZs4MhyZDBrAqSEmg3vYCQOTJ2wAT0OEP&school.degrees_awarded.predominant=2,3&school.main_campus=1&fields=school.name,latest.cost.tuition.in_state,latest.cost.tuition.out_of_state'),
-            fetch('http://localhost:3000/5fac52be03ff66099d9a8ef4/search_detail')
+            fetch('http://localhost:3000/forpeople/bachelorsdegree/searchdetail/5fac52be03ff66099d9a8ef4')
         ])
         .then(([res1, res2, res3, res4]) => Promise.all([res1.json(), res2.json(), res3.json(), res4.json()]))
         .then(([data1, data2, data3, data4]) => this.setState({

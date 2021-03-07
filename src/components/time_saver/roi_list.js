@@ -102,8 +102,8 @@ class ROIList extends Component {
                     </Col>
                 </Card.Header>
                 <Card.Body>
-                <Col md={4}>
-                <div class="form-group w-md-50">
+                    <Col md={4}>
+                        <div class="form-group w-md-50">
                             <div class="input-group input-group-merge">
                                 <input type="text" class="js-form-search form-control" placeholder="Search..."></input>
                                 <a class="input-group-append" href="javascript:;">
@@ -113,40 +113,40 @@ class ROIList extends Component {
                                 </a>
                             </div>
                         </div>
-                        </Col>
+                    </Col>
                     <div className="table-responsive">
                         <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
                             <thead className="thead-light">
-                            <tr>
-                                {this.state.columns.map((cols, col_idx) => (
-                                    <th key={col_idx}> {cols} </th>
-                                ))}
-                            </tr>
+                                <tr>
+                                    {this.state.columns.map((cols, col_idx) => (
+                                        <th key={col_idx}> {cols} </th>
+                                    ))}
+                                </tr>
                             </thead>
-                        <tbody>
-                        {this.state.rows.map((item, idx) => (
-                            <tr id="addr0">
-                            <td>
-                                <a className="media align-items-center" href={"/timesaver/"+item._id}>
-                                <div className="media-body">
-                                    <span className="d-block h5 text-hover-primary mb-0">{item.name} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                                    <span className="d-block font-size-sm text-body">Harrison Solomon</span>
-                                </div>
-                                </a>
-                            </td>
-                            <td>
-                                <span className="d-block h5 mb-0">Test Client <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                            </td>
-                            <td>
-                                <span className="d-block h5 mb-0">{item.createdAt} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                            </td>
-                            <td>
-                                <span className="d-block h5 mb-0">{item.values[0].value} / {item.values[0].period} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                            </td>
-                            </tr>))}
-                            
-                        </tbody>
-                    </table>
+                            <tbody>
+                            {this.state.rows.map((item, idx) => (
+                                <tr id="addr0">
+                                <td>
+                                    <a className="media align-items-center" href={"/timesaver/"+item._id}>
+                                    <div className="media-body">
+                                        <span className="d-block h5 text-hover-primary mb-0">{item.name} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                        <span className="d-block font-size-sm text-body">Harrison Solomon</span>
+                                    </div>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span className="d-block mb-0">Test Client <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                </td>
+                                <td>
+                                    <span className="d-block h5 mb-0">{item.createdAt} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                </td>
+                                <td>
+                                    <span className="d-block h5 mb-0">{item.values[0].value} / {item.values[0].period} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                </td>
+                                </tr>))}
+                                
+                            </tbody>
+                        </table>
                     </div>
                 </Card.Body>
             </Card>
