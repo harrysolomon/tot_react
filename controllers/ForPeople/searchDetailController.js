@@ -1,10 +1,9 @@
-var FormInputTest = require('../models/tile_form_input_test');
+var SearchDetail = require('../../models/ForPeople/search_detail');
 
-exports.form_input_test = (req, res, next) => {
-    FormInputTest.find({ 
+exports.bachelorsDegreeSearchDetail = (req, res, next) => {
+    SearchDetail.find({ 
         tile_id: req.params.id
       })
-    .sort({rank: 'asc'})
       .exec((err, data) => {
         if (err) {
           return res.sendStatus(404);

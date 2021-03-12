@@ -1,10 +1,10 @@
-var TilesFormInput = require('../models/tiles__form_inputs');
+var ForPeopleFormInput = require('../../models/ForPeople/forpeople__form_inputs');
 
 //I need to figure out a way to grab the inputs and generate the result. The inputs should match
 //Best way to do this is to have the get request go before the post request
-exports.lineChart = (req, res, next) => {
+exports.bachelorsDegreeChart = (req, res, next) => {
     console.log(req.params.id)
-    TilesFormInput.find({ tile_id: req.params.id})
+    ForPeopleFormInput.find({ tile_id: req.params.id})
     .sort({rank: 'asc'})
       .exec((err, tileData) => {
         if (err) {
