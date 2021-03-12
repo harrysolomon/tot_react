@@ -1,7 +1,7 @@
-var TilesFormInput = require('../models/tiles__form_inputs');
+var ForPeopleFormInput = require('../../models/ForPeople/forpeople__form_inputs');
 
 exports.form_input = (req, res, next) => {
-    TilesFormInput.find({ 
+  ForPeopleFormInput.find({ 
         tile_id: req.params.id
       })
       .sort({parent_rank: 'asc', sibling_rank: 'asc'})

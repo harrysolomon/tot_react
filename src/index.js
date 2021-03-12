@@ -1,28 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import ForPeople from './components/forPeople';
-import FinalResult from './components/final_results';
-import TestingFormInput from './components/testing_form_options';
-import NewTimeSaver from './components/time_saver/new_timesaver';
-import ROIList from './components/time_saver/roi_list';
+import ForPeople from './components/For People/forPeople';
+import BachelorsDegree from './components/For People/bachelors_degree';
+import NewTimeSaver from './components/For Business/time_saver/new_timesaver';
+import ROIList from './components/For Business/time_saver/timesaver_list';
 import Homepage from './components/homepage';
-import ForBusiness from './components/forBusiness';
-import TimeSaverView from './components/time_saver/view_timesaver'
+import ForBusiness from './components/For Business/forBusiness';
+import TimeSaverView from './components/For Business/time_saver/view_timesaver'
 
 
 ReactDOM.render(
   <Router>
     <div>
       <Route exact path="/" component={Homepage} />
-      <Route exact path="/for-people" component={ForPeople} />
-      <Route exact path="/for-business" component={ForBusiness} />
-      <Route exact path="/5fac52be03ff66099d9a8ef4" component={FinalResult} />
-      <Route exact path="/testing" component={TestingFormInput} />
       <Switch>
-        <Route exact path="/timesaver" component={ROIList} />
-        <Route path="/timesaver/new" component={NewTimeSaver} />
-        <Route path="/timesaver/:timesaverId" component={TimeSaverView} />
+        <Route exact path="/for-people" component={ForPeople} />
+        <Route exact path="/for-people/bachelors-degree" component={BachelorsDegree} />
+      </Switch>
+      <Switch>
+        <Route exact path="/for-business" component={ForBusiness} />
+        <Route exact path="/for-business/timesaver" component={ROIList} />
+        <Route path="/for-business/timesaver/new" component={NewTimeSaver} />
+        <Route path="/for-business/timesaver/:timesaverId" component={TimeSaverView} />
       </Switch>
       
     </div>

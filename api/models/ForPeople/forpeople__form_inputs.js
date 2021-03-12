@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var TileFormInputSchema = new Schema(
+var ForPeopleFormInputSchema = new Schema(
   {
     tile_id: {type: Schema.Types.ObjectId, ref: 'Tiles', required: true},
     form_id: {type: String, required: true, maxlength: 100},
@@ -22,4 +22,4 @@ var TileFormInputSchema = new Schema(
 );
 
 //Export model
-module.exports = mongoose.model('TilesFormInput', TileFormInputSchema);
+module.exports = mongoose.model('ForPeopleFormInput', ForPeopleFormInputSchema);

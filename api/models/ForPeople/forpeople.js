@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var TileSchema = new Schema(
+var ForPeopleSchema = new Schema(
   {
     scenario_type: {type: String, required: true, maxlength: 100},
     scenario_description: {type: String, required: true},
@@ -14,4 +14,4 @@ var TileSchema = new Schema(
 );
 
 //Export model
-module.exports = mongoose.model('Tiles', TileSchema);
+module.exports = mongoose.model('ForPeople', ForPeopleSchema);

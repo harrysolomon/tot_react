@@ -1,7 +1,7 @@
-var Tiles = require('../models/tiles');
+var ForPeople = require('../../models/ForPeople/forpeople');
 
 exports.tile_list = (req, res, next) => {
-    Tiles.find()
+  ForPeople.find()
       .exec((err, data) => {
         if (err) {
           return res.sendStatus(404);

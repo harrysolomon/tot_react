@@ -1,7 +1,7 @@
-var time_save_functions = require('../functions/time_saved')
-var TimeSaver = require('../models/time_saver');
-var TimeSaverProductSchema = require('../models/time_saver_products')
-var TimeSaverEmployeeSchema = require('../models/time_saver_employees')
+var time_save_functions = require('../../functions/time_saved')
+var TimeSaver = require('../../models/ForBusiness/time_saver');
+var TimeSaverProductSchema = require('../../models/ForBusiness/time_saver_products')
+var TimeSaverEmployeeSchema = require('../../models/ForBusiness/time_saver_employees')
 
 
 

@@ -3,13 +3,12 @@ import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import { Card, FormControl, InputGroup, FormGroup, Container, Row, Col, Button, Collapse, Spinner } from "react-bootstrap";
 import { Typeahead, ClearButton } from 'react-bootstrap-typeahead';
-import 'react-bootstrap-typeahead/css/Typeahead.css';
 import _ from 'lodash'
 
 
 
 
-class FinalResult extends Component {
+class BachelorsDegree extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -309,5 +308,5 @@ render() {
 }
 }
 
-export default FinalResult;
+export default BachelorsDegree;
         

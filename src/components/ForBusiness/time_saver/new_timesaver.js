@@ -1,10 +1,6 @@
 import React, { Component, useState } from "react";
-import { Link } from 'react-router-dom';
-import { Line } from 'react-chartjs-2';
-import { Button, Card, FormControl, InputGroup, FormGroup, FormLabel, Container, Row, Col, Nav, Navbar} from "react-bootstrap";
+import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col } from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import _ from 'lodash'
-import LineChart from '../line_chart'
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 
@@ -67,34 +63,25 @@ const the_employees = [
 ]
 
 
-class TimeSaverView extends Component {
+class NewTimeSaver extends Component {
     constructor(props) {
       super(props);
       this.state = {
           rows: [],
           calc_name: "",
-          select_inputs:{
-              products: the_products,
-              employees: the_employees,
-              cadences: the_cadences
-          },
+          products: the_products,
+          employees: the_employees,
+          cadences: the_cadences,
           data_loaded: false,
-          open: false,
-          data: {},
-          options: {},
+          navActive: "",
           location: this.props.location,
           match: this.props.match,
           calculate_button: false,
-          input_nav: false,
-          graph_nav: true,
-          table_nav: true,
-          active_key: "graph",
           new_row_id: 1,
           redirect: false,
           redirect_id: ""
 
       };
-      this.activeNav = this.activeNav.bind(this)
       
     //creates the list of inputs that are displayed upfront to the user
     }
@@ -125,18 +112,7 @@ class TimeSaverView extends Component {
             
         }
     }
-    productOptions(){
-        
-        this.state.select_inputs.products.map((product, product_index) => {
-            return(
-                <option value={product_index}>{product.name}</option>)
-            })
 
-        }
-
-    datasetKeyProvider=()=>{ 
-            return btoa(Math.random()).substring(0,12)
-        } 
 
     tableOption(){
         return(
@@ -178,7 +154,8 @@ class TimeSaverView extends Component {
                                 type="text"
                                 name="name"
                                 value={item.name}
-                                onChange={this.handleChange.bind(this, idx, "name")}/>
+                                onChange={this.handleChange.bind(this, idx, "name")}
+                                />
                                 </InputGroup>
                             </td>
                             <td key="product">
@@ -189,7 +166,7 @@ class TimeSaverView extends Component {
                                 value={item.products._id}
                                 onChange={this.handleChange.bind(this, idx, "products")}>
                                 <option>{item.products.name || 'Choose...'}</option>
-                                {this.state.select_inputs.products.map((product) => {
+                                {this.state.products.map((product) => {
                                 if(item.products._id === product._id){}
                                 else{
                                 return(
@@ -219,7 +196,7 @@ class TimeSaverView extends Component {
                                 onChange={this.handleChange.bind(this, idx, "employees")}>
                                 <React.Fragment>
                                     <option>{item.employees.name || 'Choose...'}</option>
-                                    {this.state.select_inputs.employees.map((employee) => {
+                                    {this.state.employees.map((employee) => {
                                 if(item.employees._id === employee._id){}
                                 else{
                                 return(
@@ -237,7 +214,7 @@ class TimeSaverView extends Component {
                                 onChange={this.handleChange.bind(this, idx, "cadences")}>
                                 <React.Fragment>
                                     <option>{item.cadences.name || 'Choose...'}</option>
-                                    {this.state.select_inputs.cadences.map((cadence) => {
+                                    {this.state.cadences.map((cadence) => {
                                 if(item.cadences._id === cadence._id){}
                                 else{
                                 return(
@@ -268,10 +245,9 @@ class TimeSaverView extends Component {
         
     handleChange = (row, field, event) => {
         
-        console.log("the_id" + event.target.value, "the name" + event.target.name, this.state.select_inputs[event.target.name])
         let values = [...this.state.rows];
         if(event.target.type === "select-one"){
-            values[row][field] = this.state.select_inputs[event.target.name].find(product => event.target.value === product._id)
+            values[row][field] = this.state[event.target.name].find(product => event.target.value === product._id)
             this.setState({ values });
 
         } else {
@@ -281,6 +257,12 @@ class TimeSaverView extends Component {
 
         //console.log(this.state.rows)
         
+    }
+
+    handleNameChange = (e) => {
+        this.setState({
+            calc_name: e.target.value
+        })
     }
 
     handleRemoveSpecificRow = (idx) => () => {
@@ -312,39 +294,6 @@ class TimeSaverView extends Component {
         
     }
 
-    //this function determines the active nav
-    activeNav(eventKey){
-        this.setState({ active_key: eventKey})
-    }
-
-    supSquad(){
-        return (
-            <LineChart 
-            data={this.state.data} 
-            options={this.state.options}
-            new_way = "New Service"
-            old_way = "Old Service">
-
-            </LineChart>
-
-        )
-    }
-
-   // this function determines the content to display based on the active nav 
-    contentDisplay(){
-        if(this.state.active_key === '' || this.state.active_key === "form"){
-            return(this.tableOption())
-        } else if (this.state.active_key === "graph"){
-            return(this.supSquad())
-        } else {
-            return(
-                <div>
-                    Not Built Yet
-                </div>
-            )
-        }
-    }
-
     onSubmitTask = (e) => {
         const schema = {}
         schema.name = this.state.calc_name
@@ -363,44 +312,57 @@ class TimeSaverView extends Component {
 
         })
         //this will create a new record so should only be run for new calculators
-        if(this.state.match.params.timesaverId === 'new'){
-            const requestOptions = {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(schema)
-            };
+        const requestOptions = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(schema)
+        };
 
-            Promise.all([
-                fetch('http://localhost:3000/timesaver',requestOptions)
-            ])
-            .then(([res1]) => Promise.all([res1.json()]))
-            .then(([data1]) => this.setState({
-                data: data1["data"],
-                options: data1["options"],
-                rows: data1["inputs"],
-                graph_nav: false,
-                table_nav: false,
-                active_key: "graph",
-                redirect: true,
-                redirect_id: data1["_id"]
-            }))
-        }
-    }
-
-    componentDidMount() {
-        let path = 'http://localhost:3000/timesaver/' + this.state.match.params.timesaverId
         Promise.all([
-            fetch(path)
+            fetch('http://localhost:3000/timesaver',requestOptions)
         ])
         .then(([res1]) => Promise.all([res1.json()]))
         .then(([data1]) => this.setState({
-            rows: data1.meta[0].inputs,
-            data_loaded: true,
-            graph_nav: false,
-            table_nav: false,
-            calc_name: data1.meta[0].name,
-            data: data1.graph_data.data,
-            options: data1.graph_data.options
+            redirect: true,
+            redirect_id: data1["_id"]
+        }))
+    }
+
+    componentDidMount() {
+        const the_rows = [{
+                    "cadences": "",
+                    "employees": "",
+                    "products": "",
+                    "current_time_spent": "",
+                    "name": "",
+                    "_id": this.state.new_row_id
+                }]
+
+        const productRequestOptions = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(["_id", "name", "cost", "period", "time_save", "time_unit"])
+        };
+
+        const employeeRequestOptions = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(["_id", "name", "cost", "period"])
+        };
+
+
+        Promise.all([
+            fetch('http://localhost:3000/cadences/list'),
+            fetch('http://localhost:3000/timesaver/product/list',productRequestOptions),
+            fetch('http://localhost:3000/timesaver/employee/list',employeeRequestOptions)
+        ])
+        .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
+        .then(([data1, data2, data3]) => this.setState({
+            rows: the_rows,
+            products: data2,
+            employees: data3,
+            cadences: data1, 
+            data_loaded: true
         }))
     }
 
@@ -410,7 +372,7 @@ render() {
     if(this.state.data_loaded) {
         if (redirect) {
             let path = "/timesaver/"+this.state.redirect_id
-            return <Redirect to={path}/>;
+            return <Redirect to={{pathname: path}}/>;
         }
     return( 
         
@@ -418,12 +380,12 @@ render() {
             <div className="page-header">
                 <div className ="row align-items-bottom">
                     <div className="col-sm mb-2 mb-sm-0">
-                        <h1 className="page-header-title text-left align-bottom">{this.state.calc_name}</h1>
+                        <h1 className="page-header-title text-left align-bottom">Time Saver</h1>
                     </div>
                     <div className="col-sm mb-2 mb-sm-0">
                         <div className="text-right">
                             <Button 
-                                href="/timesaver"
+                                href="/for-business/timesaver"
                                 variant="outline-primary"
                             >
                                 <XSquareFill/>
@@ -435,25 +397,21 @@ render() {
             </div>
             <Row>
                 <Col md={4}>
-                <div className="tab-content" id="navTabContent4">
-                    <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
-                        <Nav variant="tabs" activeKey={this.state.active_key} onSelect={this.activeNav}>
-                            <Nav.Item>
-                                <Nav.Link eventKey="graph" disabled={this.state.graph_nav}>Graph</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link eventKey="spreadsheet" disabled={this.state.table_nav}>Table</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link eventKey="form" disabled={this.state.input_nav}>Inputs</Nav.Link>
-                            </Nav.Item>
-                        </Nav>
-                    </div>
-                </div>
-                </Col>
+            <FormGroup key="name">
+                <label>Time Saver Name
+                </label>
+                <InputGroup>
+                    <FormControl 
+                        type="text"
+                        name="time_saver_name"
+                        value={this.state.calc_name}
+                        onChange={this.handleNameChange.bind(this)}/>
+                </InputGroup>
+            </FormGroup>
+            </Col>
             </Row>
             <Row>
-                {this.contentDisplay()}
+                {this.tableOption()}
                   
             </Row>
         </div>
@@ -465,4 +423,4 @@ render() {
             </div>)}
 }}
 
-export default TimeSaverView;
+export default NewTimeSaver;
