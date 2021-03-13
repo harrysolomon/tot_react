@@ -1,10 +1,10 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col } from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 
-class NewTimeSaver extends Component {
+class EditTimeSaver extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -25,33 +25,6 @@ class NewTimeSaver extends Component {
       };
       
     //creates the list of inputs that are displayed upfront to the user
-    }
-   
-
-    inputPrepend(data_type){
-        const available_prepends = [""]
-
-        if(available_prepends.includes(data_type)){
-            return(
-                <InputGroup.Prepend>
-                    <InputGroup.Text id="basic-addon1">{data_type}</InputGroup.Text>
-                </InputGroup.Prepend>
-            )
-            
-        }
-    }
-
-    inputAppend(data_type){
-        const available_appends = ["Hrs"]
-
-        if(available_appends.includes(data_type)){
-            return(
-                <InputGroup.Append>
-                    <InputGroup.Text id="basic-addon1">{data_type}</InputGroup.Text>
-                </InputGroup.Append>
-            )
-            
-        }
     }
 
 
@@ -237,14 +210,28 @@ class NewTimeSaver extends Component {
 
     onSubmitTask = (e) => {
         const schema = {}
+        //this is tech debt. I need to remove values from the request and have it update on response
+        const values = [
+            {
+              "_id": "603bd2414e445958cf2de385",
+              "period": "hour",
+              "value": 50
+            },
+            {
+              "_id": "603bd2414e445958cf2de386",
+              "period": "quarter",
+              "value": 100
+            }]
+        schema.values = []
+        schema.values = values
         schema.name = this.state.calc_name
         schema.inputs = []
         this.state.rows.map((item, idx) => {
             schema.inputs[idx] = {}
             
-            if(typeof item._id === "string") {
+            /*if(typeof item._id === "string") {
                 schema["_id"] = item._id
-            }
+            }*/
             schema.inputs[idx].products = item.products 
             schema.inputs[idx].cadences = item.cadences 
             schema.inputs[idx].employees = item.employees
@@ -252,15 +239,17 @@ class NewTimeSaver extends Component {
             schema.inputs[idx].name = item.name
 
         })
-        //this will create a new record so should only be run for new calculators
+
+        //this will be the put route instead for the edit mode
+        let path = 'http://localhost:3000/timesaver/edit/' + this.state.match.params.timesaverId 
         const requestOptions = {
-            method: "POST",
+            method: "PUT",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(schema)
         };
 
         Promise.all([
-            fetch('http://localhost:3000/timesaver',requestOptions)
+            fetch(path,requestOptions)
         ])
         .then(([res1]) => Promise.all([res1.json()]))
         .then(([data1]) => this.setState({
@@ -270,15 +259,9 @@ class NewTimeSaver extends Component {
     }
 
     componentDidMount() {
-        const the_rows = [{
-                    "cadences": "",
-                    "employees": "",
-                    "products": "",
-                    "current_time_spent": "",
-                    "name": "",
-                    "_id": this.state.new_row_id
-                }]
-
+        console.log(this.state.match)
+        let path = 'http://localhost:3000/timesaver/' + this.state.match.params.timesaverId
+        
         const productRequestOptions = {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
@@ -293,16 +276,18 @@ class NewTimeSaver extends Component {
 
 
         Promise.all([
+            fetch(path),
             fetch('http://localhost:3000/cadences/list'),
             fetch('http://localhost:3000/timesaver/product/list',productRequestOptions),
             fetch('http://localhost:3000/timesaver/employee/list',employeeRequestOptions)
         ])
-        .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
-        .then(([data1, data2, data3]) => this.setState({
-            rows: the_rows,
-            products: data2,
-            employees: data3,
-            cadences: data1, 
+        .then(([res1, res2, res3, res4]) => Promise.all([res1.json(),res2.json(),res3.json(),res4.json()]))
+        .then(([data1, data2, data3, data4]) => this.setState({
+            rows: data1.meta[0].inputs,
+            calc_name: data1.meta[0].name,
+            products: data3,
+            employees: data4,
+            cadences: data2, 
             data_loaded: true
         }))
     }
@@ -364,4 +349,4 @@ render() {
             </div>)}
 }}
 
-export default NewTimeSaver;
+export default EditTimeSaver;

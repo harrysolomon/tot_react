@@ -8,76 +8,17 @@ import LineChart from '../../library/line_chart'
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 
-const the_products = [
-    {
-        "_id":"6042ebb491adc4633779ce0c",
-        "name": "Cool Product",
-        "cost": 10000,
-        "period": "year",
-        "time_save": 50,
-        "time_unit": "hour"
-    },
-    {
-        "_id":"6042ebf991adc4633779ce0d",
-        "name":"Another Product",
-        "cost": 5000,
-        "period": "quarter",
-        "time_save": 80,
-        "time_unit": "hour"
-    }
+const the_columns = [
+    "Name","Product","Current Time Spent", "Employee","Cadence"
 ]
-
-const the_cadences = [
-    {
-        "_id":"6042ecd83b465a4fcabdbbb1",
-        "name":"Daily",
-        "period":"day"
-    },
-    {
-        "_id":"6042ed163b465a4fcabdbbb4",
-        "name":"Quarterly",
-        "period": "quarter"
-    },
-    {
-        "_id":"6042ed253b465a4fcabdbbb5",
-        "name":"Annually",
-        "period":"year"
-    }
-]
-
-const the_employees = [
-    {
-        "_id": "6042edb63b465a4fcabdbbb6",
-        "name": "Analyst",
-        "cost": 50000,
-        "period": "year"
-    },
-    {
-        "_id": "6042edda3b465a4fcabdbbb7",
-        "name": "Account Management",
-        "cost": 65000,
-        "period": "year"
-    },
-    {
-        "_id": "6042edf13b465a4fcabdbbb8",
-        "name": "Account Executive",
-        "cost": 75000,
-        "period": "year"
-    }
-]
-
 
 class TimeSaverView extends Component {
     constructor(props) {
       super(props);
       this.state = {
           rows: [],
+          columns: the_columns,
           calc_name: "",
-          select_inputs:{
-              products: the_products,
-              employees: the_employees,
-              cadences: the_cadences
-          },
           data_loaded: false,
           open: false,
           data: {},
@@ -125,192 +66,66 @@ class TimeSaverView extends Component {
             
         }
     }
-    productOptions(){
-        
-        this.state.select_inputs.products.map((product, product_index) => {
-            return(
-                <option value={product_index}>{product.name}</option>)
-            })
-
-        }
-
-    datasetKeyProvider=()=>{ 
-            return btoa(Math.random()).substring(0,12)
-        } 
 
     tableOption(){
         return(
             <Col>
-            <Card>
-                <Card.Header>
-                    <Col>Inputs</Col>
-                    <Col>
-                    <div className="text-right">
-                        <Button size="sm" variant="primary" onClick={this.onSubmitTask} disabled={this.state.calculate_button}>
-                            Calculate and Save
-                        </Button>
+                <Card>
+                    <Card.Header>
+                        <Col md={4}>
+                            <div>Inputs</div>
+                        </Col>
+                        <Col>
+                            
+                        </Col>
+                            
+                        <Col>
+                        <div className="text-right">
+                            <Button href={"/for-business/timesaver/"+this.state.match.params.timesaverId+"/edit"}> Edit </Button>
                         </div>
-                    </Col>
-                </Card.Header>
-                <Card.Body>
-                    <table
-                        className="table table-bordered table-hover"
-                        id="tab_logic">
-                        <thead>
-                            <tr>
-                            <th className="text-center align-middle"> # </th>
-                            <th className="text-center"> Name </th>
-                            <th className="text-center"> Product </th>
-                            <th className="text-center"> Current Time Spent </th>
-                            <th className="text-center"> Employee </th>
-                            <th className="text-center"> Cadence </th>
-                            <th />
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {this.state.rows.map((item, idx) => (
-                            <tr id={idx} key={item._id}>
-                            <td key="row_numbr">{idx}</td>
-                            <td key="name">
-                                
-                                <InputGroup>
-                                <FormControl
-                                type="text"
-                                name="name"
-                                value={item.name}
-                                onChange={this.handleChange.bind(this, idx, "name")}/>
-                                </InputGroup>
-                            </td>
-                            <td key="product">
-                                <InputGroup>
-                                <FormControl
-                                as="select"
-                                name="products"
-                                value={item.products._id}
-                                onChange={this.handleChange.bind(this, idx, "products")}>
-                                <option>{item.products.name || 'Choose...'}</option>
-                                {this.state.select_inputs.products.map((product) => {
-                                if(item.products._id === product._id){}
-                                else{
-                                return(
-                                    <option key={product._id} value={product._id}>{product.name}</option>)}})}
-                                </FormControl>
-                                </InputGroup>
-                            </td>
-                            <td key="timespent">
-                                <InputGroup>
-                                <FormControl
-                                type="text"
-                                name="current_time_spent"
-                                value={item.current_time_spent}
-                                onChange={this.handleChange.bind(this, idx, "current_time_spent")}
-                                />
-                                    <InputGroup.Append>
-                                        <InputGroup.Text id="basic-addon1">Hrs</InputGroup.Text>
-                                    </InputGroup.Append>
-                                </InputGroup>
-                            </td>
-                            <td key="employees">
-                                <InputGroup>
-                                <FormControl
-                                as="select"
-                                name="employees"
-                                value={item.employees._id}
-                                onChange={this.handleChange.bind(this, idx, "employees")}>
-                                <React.Fragment>
-                                    <option>{item.employees.name || 'Choose...'}</option>
-                                    {this.state.select_inputs.employees.map((employee) => {
-                                if(item.employees._id === employee._id){}
-                                else{
-                                return(
-                                    <option key={employee._id} value={employee._id}>{employee.name}</option>)}})}
-                                </React.Fragment>
-                                </FormControl>
-                                </InputGroup>
-                            </td>
-                            <td key="cadence">
-                                <InputGroup>
-                                <FormControl
-                                as="select"
-                                name="cadences"
-                                value={item.cadences._id}
-                                onChange={this.handleChange.bind(this, idx, "cadences")}>
-                                <React.Fragment>
-                                    <option>{item.cadences.name || 'Choose...'}</option>
-                                    {this.state.select_inputs.cadences.map((cadence) => {
-                                if(item.cadences._id === cadence._id){}
-                                else{
-                                return(
-                                    <option key={cadence._id} value={cadence._id}>{cadence.name}</option>)}})}
-                                </React.Fragment>
-                                </FormControl>
-                                </InputGroup>
-                            </td>
-                            <td className="text-center" key="removebutton">
-                                <Button
-                                variant="outline-danger"
-                                size="sm"
-                                onClick={this.handleRemoveSpecificRow(idx)}
-                                >
-                                Remove
-                                </Button>
-                            </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                    <Button onClick={this.handleAddRow} variant="link">Add Row</Button>
-                </Card.Body>
-            </Card>
-                
+                        </Col>
+                    </Card.Header>
+                    <Card.Body>
+                        <div className="table-responsive">
+                            <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
+                                <thead>
+                                    <tr>
+                                        <th> Name </th>
+                                        <th> Product </th>
+                                        <th> Current Time Spent </th>
+                                        <th> Employee </th>
+                                        <th> Cadence </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {this.state.rows.map((item, idx) => (
+                                    <tr key={item._id}>
+                                        <td key="name">
+                                            <div className="media-body">
+                                                <span className="d-block h5 text-hover-primary mb-0">{item.name} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                            </div>
+                                        </td>
+                                        <td key="products">
+                                            <span className="d-block h5 mb-0">{item.products.name} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                        </td>   
+                                        <td key="current_time_spent">
+                                            <span className="d-block h5 mb-0">{item.current_time_spent}hrs <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                        </td>
+                                        <td key="employees">
+                                            <span className="d-block h5 mb-0">{item.employees.name}<i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                        </td>
+                                        <td key="cadence">
+                                            <span className="d-block h5 mb-0">{item.cadences.name}<i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                        </td>
+                                    </tr>))}
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </Card.Body>
+                </Card>
             </Col>
         )}
-        
-    handleChange = (row, field, event) => {
-        
-        console.log("the_id" + event.target.value, "the name" + event.target.name, this.state.select_inputs[event.target.name])
-        let values = [...this.state.rows];
-        if(event.target.type === "select-one"){
-            values[row][field] = this.state.select_inputs[event.target.name].find(product => event.target.value === product._id)
-            this.setState({ values });
-
-        } else {
-            values[row][field] = event.target.value;
-            this.setState({ values });
-        }
-
-        //console.log(this.state.rows)
-        
-    }
-
-    handleRemoveSpecificRow = (idx) => () => {
-        const values = [...this.state.rows];
-        values.splice(idx, 1);
-        this.setState({ rows: values });
-        };
-    
-    handleAddRow = (e) => {
-        //so the way this would work is assigning this variable to the data returned from the DB? 
-        //Or will that ruin assignment?
-        //Or we would have to do a post for every row added.
-        
-        const new_row = {
-            "_id": this.state.new_row_id +1,
-            "name": "",
-            "products": "",
-            "current_time_spent":"",
-            "employees": "",
-            "cadences":""
-        }
-        
-        this.setState(
-            { 
-                rows: [...this.state.rows, new_row],
-                new_row_id: this.state.new_row_id + 1
-            }
-        )
-        
-    }
 
     //this function determines the active nav
     activeNav(eventKey){
@@ -412,6 +227,8 @@ render() {
             let path = "/timesaver/"+this.state.redirect_id
             return <Redirect to={path}/>;
         }
+
+        console.log(this.state.rows)
     return( 
         
         <div className="container-fluid">

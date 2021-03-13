@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import ForPeople from './components/For People/forPeople';
-import BachelorsDegree from './components/For People/bachelors_degree';
-import NewTimeSaver from './components/For Business/time_saver/new_timesaver';
-import ROIList from './components/For Business/time_saver/timesaver_list';
+import ForPeople from './components/ForPeople/forPeople';
+import BachelorsDegree from './components/ForPeople/bachelors_degree';
+import NewTimeSaver from './components/ForBusiness/time_saver/new_timesaver';
+import ROIList from './components/ForBusiness/time_saver/timesaver_list';
 import Homepage from './components/homepage';
-import ForBusiness from './components/For Business/forBusiness';
-import TimeSaverView from './components/For Business/time_saver/view_timesaver'
+import ForBusiness from './components/ForBusiness/forBusiness';
+import TimeSaverView from './components/ForBusiness/time_saver/view_timesaver'
+import EditTimeSaver from './components/ForBusiness/time_saver/edit_timesaver'
 
 
 ReactDOM.render(
@@ -22,7 +23,8 @@ ReactDOM.render(
         <Route exact path="/for-business" component={ForBusiness} />
         <Route exact path="/for-business/timesaver" component={ROIList} />
         <Route path="/for-business/timesaver/new" component={NewTimeSaver} />
-        <Route path="/for-business/timesaver/:timesaverId" component={TimeSaverView} />
+        <Route exact path="/for-business/timesaver/:timesaverId" component={TimeSaverView} />
+        <Route exact path="/for-business/timesaver/:timesaverId/edit" component={EditTimeSaver} />
       </Switch>
       
     </div>

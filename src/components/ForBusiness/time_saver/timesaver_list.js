@@ -54,12 +54,12 @@ class ROIList extends Component {
                 </Card.Header>
                 <Card.Body>
                     <Col md={4}>
-                        <div class="form-group w-md-50">
-                            <div class="input-group input-group-merge">
-                                <input type="text" class="js-form-search form-control" placeholder="Search..."></input>
-                                <a class="input-group-append">
-                                <span class="input-group-text">
-                                    <i id="clearIconBasicEg" class="tio-clear tio-lg"></i>
+                        <div className="form-group w-md-50">
+                            <div className="input-group input-group-merge">
+                                <input type="text" className="js-form-search form-control" placeholder="Search..."></input>
+                                <a className="input-group-append">
+                                <span className="input-group-text">
+                                    <i id="clearIconBasicEg" className="tio-clear tio-lg"></i>
                                 </span>
                                 </a>
                             </div>
@@ -76,7 +76,7 @@ class ROIList extends Component {
                             </thead>
                             <tbody>
                             {this.state.rows.map((item, idx) => (
-                                <tr id="addr0">
+                                <tr key={item._id}>
                                 <td>
                                     <a className="media align-items-center" href={"/for-business/timesaver/"+item._id}>
                                     <div className="media-body">
@@ -126,12 +126,12 @@ class ROIList extends Component {
                 </Card.Header>
                 <Card.Body>
                 <Col md={4}>
-                <div class="form-group w-md-50">
-                            <div class="input-group input-group-merge">
-                                <input type="text" class="js-form-search form-control" placeholder="Search..."></input>
-                                <a class="input-group-append">
-                                <span class="input-group-text">
-                                    <i id="clearIconBasicEg" class="tio-clear tio-lg"></i>
+                <div className="form-group w-md-50">
+                            <div className="input-group input-group-merge">
+                                <input type="text" className="js-form-search form-control" placeholder="Search..."></input>
+                                <a className="input-group-append">
+                                <span className="input-group-text">
+                                    <i id="clearIconBasicEg" className="tio-clear tio-lg"></i>
                                 </span>
                                 </a>
                             </div>
@@ -202,12 +202,12 @@ class ROIList extends Component {
                 </Card.Header>
                 <Card.Body>
                 <Col md={4}>
-                <div class="form-group w-md-50">
-                            <div class="input-group input-group-merge">
-                                <input type="text" class="js-form-search form-control" placeholder="Search..."></input>
-                                <a class="input-group-append">
-                                <span class="input-group-text">
-                                    <i id="clearIconBasicEg" class="tio-clear tio-lg"></i>
+                <div className="form-group w-md-50">
+                            <div className="input-group input-group-merge">
+                                <input type="text" className="js-form-search form-control" placeholder="Search..."></input>
+                                <a className="input-group-append">
+                                <span className="input-group-text">
+                                    <i id="clearIconBasicEg" className="tio-clear tio-lg"></i>
                                 </span>
                                 </a>
                             </div>
@@ -310,11 +310,11 @@ render() {
         
         <div className="container-fluid">
             
-            <main id="content" role="main" class="main splitted-content-main bg-light">
+            <main id="content" role="main" className="main splitted-content-main bg-light">
             {/*Fluid Content */}
-                <div class="splitted-content-fluid content-space">
+                <div className="splitted-content-fluid content-space">
                 <a href="/"><h3 className="page-header-title text-left align-middle">ROY</h3></a>
-                <div class="row justify-content-lg-left">
+                <div className="row justify-content-lg-left">
                 <Col md={4}>
                 <div className="tab-content" id="navTabContent4">
                     <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
