@@ -17,7 +17,7 @@ var mongoose = require('mongoose')
 
 //setup mongoose and mongodb connection
 var mongoDB = 'mongodb+srv://hsolomon602:4pvCFfCVseUYJ3k@cluster0.afpgn.mongodb.net/local_library?retryWrites=true&w=majority';
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
 
 //get default connection
 var db = mongoose.connection;
