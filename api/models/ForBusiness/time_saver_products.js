@@ -10,12 +10,10 @@ var TimeSaverProductSchema = new Schema(
     period: {type: String, required: true},
     time_save: {type: Number, required: true},
     time_unit: {type: String, required: true},
-    createdAt: {type: Date, required: true},
-    updatedAt: {type: Date, required: true},
     deleted: {type: Boolean, required: true}
   },
-  //{ timestamps: true }, this is what I used to get the request to work, but let's change this once I add the ability to create products
-  {collection: 'products'}
+  { timestamps: true },
+  {collection: 'timesaverproductschemas'}
 );
 
 //Export model

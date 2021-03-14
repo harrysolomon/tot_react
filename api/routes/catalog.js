@@ -30,9 +30,17 @@ router.post('/timesaver/product/list', time_saver_controller.productList);
 
 router.post('/timesaver/product/:id', time_saver_controller.product);
 
+router.put('/timesaver/product/:id', time_saver_controller.editProduct);
+
+router.post('/timesaver/product', time_saver_controller.newProduct);
+
 router.post('/timesaver/employee/list', time_saver_controller.employeeList);
 
 router.post('/timesaver/employee/:id', time_saver_controller.employee);
+
+router.post('/timesaver/employee', time_saver_controller.newEmployee);
+
+router.put('/timesaver/employee/:id', time_saver_controller.editEmployee);
 
 router.get('/cadences/list', cadence_controller.cadences);
 
