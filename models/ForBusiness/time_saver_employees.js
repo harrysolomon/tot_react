@@ -10,8 +10,8 @@ var TimeSaverEmployeeSchema = new Schema(
     period: {type: String, required: true},
     deleted: {type: Boolean, required: true}
   },
-  //{ timestamps: true }, this is what I used to get the request to work, but let's change this once I add the ability to create employees
-  {collection: 'employees'}
+  { timestamps: true },
+  {collection: 'timesaveremployeeschemas'}
 );
 
 //Export model

@@ -129,6 +129,28 @@ exports.product = (req, res, next) => {
       });
   };
 
+exports.newProduct = (req, res, next) => {
+    var new_data = new TimeSaverProductSchema(req.body);
+
+    
+    new_data.save({new: true}, (err, data) => {
+        if (err) {
+            return console.log(err)
+        };
+        res.json(data)
+    })
+};
+
+exports.editProduct = (req, res, next) => {
+    TimeSaverProductSchema.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, data) => {
+        if (err) {
+            return console.log(err)
+    }
+
+    res.json(data)
+    })
+};
+
 exports.employeeList = (req, res, next) => {
     TimeSaverEmployeeSchema.find()
     .exec((err, data) => {
@@ -179,6 +201,27 @@ exports.employee = (req, res, next) => {
         
       });
   };
+exports.newEmployee = (req, res, next) => {
+    var new_data = new TimeSaverEmployeeSchema(req.body);
+
+
+    new_data.save({new: true}, (err, data) => {
+        if (err) {
+            return console.log(err)
+        };
+        res.json(data)
+    })
+};
+
+exports.editEmployee = (req, res, next) => {
+    TimeSaverEmployeeSchema.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, data) => {
+        if (err) {
+            return console.log(err)
+    }
+
+    res.json(data)
+    })
+};
 
 
     
