@@ -118,14 +118,14 @@ class ROIList extends Component {
                         
                     <Col>
                     <div className="text-right">
-                        <Button>
+                        <Button href="/for-business/timesaver/product/new">
                             Add Product
                         </Button>
                     </div>
                     </Col>
                 </Card.Header>
                 <Card.Body>
-                <Col md={4}>
+                <Col md={4} key="search">
                 <div className="form-group w-md-50">
                             <div className="input-group input-group-merge">
                                 <input type="text" className="js-form-search form-control" placeholder="Search..."></input>
@@ -140,7 +140,7 @@ class ROIList extends Component {
                     <div className="table-responsive">
                         <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
                             <thead className="thead-light">
-                            <tr>
+                            <tr key="columns">
                                 {this.state.product_cols.map((cols, col_idx) => (
                                     <th key={col_idx}> {cols} </th>
                                 ))}
@@ -148,8 +148,8 @@ class ROIList extends Component {
                             </thead>
                         <tbody>
                         {this.state.product_list.map((item, idx) => (
-                            <tr id="addr0">
-                            <td>
+                            <tr key={item._id}>
+                            <td key="name">
                                 <a className="media align-items-center">
                                     <div className="media-body">
                                         <span className="d-block h5 text-hover-primary mb-0">{item.name} 
@@ -158,12 +158,12 @@ class ROIList extends Component {
                                     </div>
                                 </a>
                             </td>
-                            <td>
+                            <td key="description">
                                 <span className="d-block mb-0">{item.description}
                                     <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
                                 </span>
                             </td>
-                            <td>
+                            <td key="cost">
                                 <span className="d-block h5 mb-0">${item.cost} / {item.period} 
                                     <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
                                 </span>

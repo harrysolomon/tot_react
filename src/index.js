@@ -9,6 +9,7 @@ import Homepage from './components/homepage';
 import ForBusiness from './components/ForBusiness/forBusiness';
 import TimeSaverView from './components/ForBusiness/time_saver/view_timesaver'
 import EditTimeSaver from './components/ForBusiness/time_saver/edit_timesaver'
+import NewProduct from './components/ForBusiness/time_saver/products/new_product'
 
 
 ReactDOM.render(
@@ -23,6 +24,7 @@ ReactDOM.render(
         <Route exact path="/for-business" component={ForBusiness} />
         <Route exact path="/for-business/timesaver" component={ROIList} />
         <Route path="/for-business/timesaver/new" component={NewTimeSaver} />
+        <Route path="/for-business/timesaver/product/new" component={NewProduct} />
         <Route exact path="/for-business/timesaver/:timesaverId" component={TimeSaverView} />
         <Route exact path="/for-business/timesaver/:timesaverId/edit" component={EditTimeSaver} />
       </Switch>
