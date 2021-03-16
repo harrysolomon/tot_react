@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button, FormControl, InputGroup, FormGroup, Row, Col } from "react-bootstrap";
-//import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 
@@ -36,7 +35,7 @@ const the_units = [
         "period": "year"
     }
   ]
-class NewProduct extends Component {
+class NewEmployee extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -48,11 +47,9 @@ class NewProduct extends Component {
           redirect: false,
           request: [{
               name:"",
-              description:"",
+              department:"",
               cost:"",
-              period:"",
-              time_save:"",
-              time_unit:""
+              period:""
           }]
 
       };
@@ -74,11 +71,9 @@ class NewProduct extends Component {
     onSubmitTask = (e) => {
         const schema = {}
         schema.name = this.state.request[0].name
-        schema.description= this.state.request[0].description
+        schema.department= this.state.request[0].department
         schema.period = this.state.request[0].period.period
         schema.cost = this.state.request[0].cost
-        schema.time_save = this.state.request[0].time_save
-        schema.time_unit = this.state.request[0].time_unit.period
         schema.deleted = false
         console.log(schema)
         //this will create a new record so should only be run for new calculators
@@ -89,7 +84,7 @@ class NewProduct extends Component {
         };
 
         Promise.all([
-            fetch('http://localhost:3000/timesaver/product',requestOptions)
+            fetch('http://localhost:3000/timesaver/employee',requestOptions)
         ])
         .then(([res1]) => Promise.all([res1.json()]))
         .then(([data1]) => this.setState({
@@ -110,7 +105,7 @@ class NewProduct extends Component {
                 <div className="page-header">
                     <div className ="row align-items-bottom">
                         <div className="col-sm mb-2 mb-sm-0">
-                            <h1 className="page-header-title text-left align-bottom">Create Product</h1>
+                            <h1 className="page-header-title text-left align-bottom">Create Employee</h1>
                         </div>
                         <div className="col-sm mb-2 mb-sm-0">
                             <div className="text-right">
@@ -128,7 +123,7 @@ class NewProduct extends Component {
                 <Row>
                     <Col md={6}>
                         <FormGroup key="name">
-                            <label>Product Name</label>
+                            <label>Employee Title</label>
                             <InputGroup>
                                 <FormControl 
                                     type="text"
@@ -141,15 +136,13 @@ class NewProduct extends Component {
                 </Row>
                 <Row>
                     <Col md={6}>
-                        <FormGroup key="description">
-                            <label>Description</label>
+                        <FormGroup key="department">
+                            <label>Department</label>
                             <InputGroup>
                                 <FormControl 
-                                    as="textarea"
-                                    aria-label="With textarea"
                                     type="text"
-                                    name="description"
-                                    value={this.state.request[0].description}
+                                    name="department"
+                                    value={this.state.request[0].department}
                                     onChange={this.handleChange.bind(this)}/>
                             </InputGroup>
                         </FormGroup>
@@ -191,41 +184,6 @@ class NewProduct extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col md={4}>
-                        <FormGroup key="time_save">
-                            <label>Time Saved</label>
-                            <InputGroup>
-                                <FormControl 
-                                    type="text"
-                                    name="time_save"
-                                    value={this.state.request[0].time_save}
-                                    onChange={this.handleChange.bind(this)}/>
-                            </InputGroup>
-                        </FormGroup>
-                    </Col>
-                    <Col md={2}>
-                        <FormGroup key="time_unit">
-                            <label>Period</label>
-                            <InputGroup>
-                                <FormControl
-                                as="select"
-                                name="time_unit"
-                                value={this.state.request[0].time_unit._id}
-                                onChange={this.handleChange.bind(this)}>
-                                    <React.Fragment>
-                                        <option>{this.state.request[0].time_unit.time_unit || 'Choose...'}</option>
-                                        {this.state.units.map((unit) => {
-                                        if(this.state.request[0].time_unit._id === unit._id){}
-                                        else{
-                                        return(
-                                            <option key={unit._id} value={unit._id}>{unit.time_unit}</option>)}})}
-                                    </React.Fragment>
-                                </FormControl>
-                            </InputGroup>
-                        </FormGroup>
-                    </Col>
-                </Row>
-                <Row>
                     <Col md={2}>
                     </Col>
                     <Col md={2}>
@@ -241,4 +199,4 @@ class NewProduct extends Component {
     }
 }
 
-export default NewProduct;
+export default NewEmployee;

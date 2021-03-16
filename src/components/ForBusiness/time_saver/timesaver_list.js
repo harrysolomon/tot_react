@@ -194,7 +194,7 @@ class ROIList extends Component {
                         
                     <Col>
                     <div className="text-right">
-                        <Button>
+                        <Button href="/for-business/timesaver/employee/new">
                             Add Employee
                         </Button>
                     </div>
@@ -216,7 +216,7 @@ class ROIList extends Component {
                     <div className="table-responsive">
                         <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
                             <thead className="thead-light">
-                            <tr>
+                            <tr key="columns">
                                 {this.state.employee_cols.map((cols, col_idx) => (
                                     <th key={col_idx}> {cols} </th>
                                 ))}
@@ -224,8 +224,8 @@ class ROIList extends Component {
                             </thead>
                         <tbody>
                         {this.state.employee_list.map((item, idx) => (
-                            <tr id="addr0">
-                            <td>
+                            <tr key={item._id}>
+                            <td key="name">
                                 <a className="media align-items-center" href="/for-business/timesaver/new">
                                 <div className="media-body">
                                     <span className="d-block h5 text-hover-primary mb-0">{item.name} 
@@ -234,12 +234,12 @@ class ROIList extends Component {
                                 </div>
                                 </a>
                             </td>
-                            <td>
+                            <td key="department">
                                 <span className="d-block h5 mb-0">{item.department} 
                                     <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
                                 </span>
                             </td>
-                            <td>
+                            <td key="cost">
                                 <span className="d-block h5 mb-0">${item.cost} / {item.period} 
                                     <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
                                 </span>
