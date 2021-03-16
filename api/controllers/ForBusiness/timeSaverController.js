@@ -7,7 +7,7 @@ var TimeSaverEmployeeSchema = require('../../models/ForBusiness/time_saver_emplo
 
 exports.createData = (req, res) => {
     
-    let chart_data = time_save_functions.new_cost(req.body.inputs)
+    let chart_data = time_save_functions.new_cost(req.body.inputs,req.query)
     
     let test_data = [{
         "period": "hour"
@@ -56,8 +56,7 @@ exports.getData = (req, res, next) => {
             meta: {},
             graph_data: {}
         }
-        
-        let chart_data = time_save_functions.new_cost(data[0].inputs)
+        let chart_data = time_save_functions.new_cost(data[0].inputs, req.query)
         
         result.meta = data
         result.graph_data = chart_data

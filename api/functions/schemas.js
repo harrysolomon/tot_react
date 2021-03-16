@@ -4,14 +4,6 @@ module.exports = {
         let result = {
             "data": {
             "labels": [
-                "2020-Q1",
-                "2020-Q2",
-                "2020-Q3",
-                "2020-Q4",
-                "2021-Q1",
-                "2021-Q2",
-                "2021-Q3",
-                "2021-Q4"
             ],
             "datasets": [
                 {
@@ -97,25 +89,55 @@ module.exports = {
                     "hour": 2096,
                     "day": 262,
                     "quarter": 4,
-                    "year": 1
+                    "month": 12,
+                    "week": 52,
+                    "year": 1,
+                    "abbr": "Y"
               },
+              "week":{
+                "hour": 40,
+                "year": (40/2096),
+                "quarter": (40/524),
+                "day": 5,
+                "week": 1,
+                "month": (12/52),
+                "abbr": "W"
+            },
+            "month":{
+                "hour": (2080/12),
+                "year": (1/12),
+                "quarter": (1/4),
+                "day": (262/12),
+                "week": (52/12),
+                "month": 1,
+                "abbr": "M"
+            },
               "day":{
                   "hour": 8,
                   "year": (1/262),
                   "quarter": (1/65.5),
-                  "day": 1
+                  "day": 1,
+                  "week": (1/52),
+                  "month": (12/262),
+                  "abbr": "D"
               },
               "hour":{
                   "day":  (1/8),
                   "year": (1/(262*8)),
                   "quarter": (1/((262/4)*8)),
-                  "hour": 1
+                  "hour": 1,
+                  "week": (1/40),
+                  "month": (12/2080),
+                  "abbr": "H"
               },
               "quarter":{
                   "hour": 524,
                   "day": 65.5,
                   "year": (1/4),
-                  "quarter": 1
+                  "quarter": 1,
+                  "week": (524/40),
+                  "month": 4,
+                  "abbr": "Q"
               }
           }
         return date_dict
