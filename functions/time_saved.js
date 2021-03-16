@@ -1,13 +1,26 @@
 var schemas = require('../functions/schemas')
 module.exports = {
-    new_cost: function(req){
+    new_cost: function(req, query){
+        console.log(query.hasOwnProperty('period'))
         let date_dict = schemas.date_dictionary()
-        let interval = "quarter"
+
+        if(query.hasOwnProperty('period')) {
+            interval = query.period
+        } else {
+            interval = "quarter"
+        }
+
+        if(query.hasOwnProperty('range')) {
+            forecast_length = query.range
+        } else {
+            forecast_length = 8
+        }
+
         let time_now_period = "hour"
-        let forecast_length = 8
         let total_new_employee_costs = 0
         let total_cur_employee_costs = 0
 
+        
         for (let i = 0;i < req.length;++i){
             
             if(req[i].products.time_unit === "pct"){
@@ -16,12 +29,16 @@ module.exports = {
                 time_save_convert = req[i].products.time_save * date_dict[req[i].products.time_unit][time_now_period]
             }
 
-            let cur_employee_cost = req[i].employees.cost * req[i].current_time_spent * date_dict[time_now_period][req[i].employees.period]
-            let product_cost_rate = req[i].products.cost * date_dict[interval][req[i].products.period]
-            let new_employee_cost = (req[i].employees.cost * (req[i].current_time_spent - time_save_convert) * date_dict[time_now_period][req[i].employees.period]) + product_cost_rate
+            //calculates cost of employee to do the task once
+            let cur_cost_per_task = req[i].employees.cost * req[i].current_time_spent * date_dict[time_now_period][req[i].employees.period]
+            let cur_cost_per_period = cur_cost_per_task * date_dict[interval][req[i].cadences.period]
             
-            total_new_employee_costs += new_employee_cost
-            total_cur_employee_costs += cur_employee_cost
+            let product_cost_rate = req[i].products.cost * date_dict[interval][req[i].products.period]
+            let new_cost_per_task = (req[i].employees.cost * (req[i].current_time_spent - time_save_convert) * date_dict[time_now_period][req[i].employees.period]) + product_cost_rate
+            let new_cost_per_period = new_cost_per_task * date_dict[interval][req[i].cadences.period]
+            
+            total_new_employee_costs += new_cost_per_period
+            total_cur_employee_costs += cur_cost_per_period
             
 
         }
@@ -36,6 +53,10 @@ module.exports = {
         //console.log(final_new_employee_cost_array)
 
         let result = schemas.line_chart_schema()
+
+        for (let increment = 1; increment <= forecast_length;++increment){
+            result["data"]["labels"].push("Q"+increment)
+        }
 
         final_cur_employee_cost_array.reduce( (prev, curr,i) =>  result["data"]["datasets"][0]["data"][i] = Math.round(prev + curr), 0)
         final_new_employee_cost_array.reduce( (prev, curr,i) =>  result["data"]["datasets"][1]["data"][i] = Math.round(prev + curr), 0)
