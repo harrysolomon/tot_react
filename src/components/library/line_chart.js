@@ -29,11 +29,11 @@ render(){
                             <div className="col-sm-auto">
                                 <div className="row font-size-sm">
                                     <div className="col-auto">
-                                        <span className="legend-indicator bg-primary"></span> {this.props.new_way}
+                                        <span className="legend-indicator bg-primary"></span> {this.props.old_way}
                                     </div>
                         
                                     <div className="col-auto">
-                                        <span className="legend-indicator bg-info"></span> {this.props.old_way}
+                                        <span className="legend-indicator bg-info"></span> {this.props.new_way}
                                     </div>
                                 </div>
                             </div>
