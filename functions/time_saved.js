@@ -1,7 +1,7 @@
 var schemas = require('../functions/schemas')
 module.exports = {
     new_cost: function(req, query){
-        console.log(query.hasOwnProperty('period'))
+        
         let date_dict = schemas.date_dictionary()
 
         if(query.hasOwnProperty('period')) {
@@ -31,11 +31,14 @@ module.exports = {
 
             //calculates cost of employee to do the task once
             let cur_cost_per_task = req[i].employees.cost * req[i].current_time_spent * date_dict[time_now_period][req[i].employees.period]
+            //calculate cost of employee to do the task for an entire time increment
             let cur_cost_per_period = cur_cost_per_task * date_dict[interval][req[i].cadences.period]
-            
+            //cost of the product for the entire time increment
             let product_cost_rate = req[i].products.cost * date_dict[interval][req[i].products.period]
-            let new_cost_per_task = (req[i].employees.cost * (req[i].current_time_spent - time_save_convert) * date_dict[time_now_period][req[i].employees.period]) + product_cost_rate
-            let new_cost_per_period = new_cost_per_task * date_dict[interval][req[i].cadences.period]
+            //cost of employee to do the task once now with the product
+            let new_cost_per_task = (req[i].employees.cost * (req[i].current_time_spent - time_save_convert) * date_dict[time_now_period][req[i].employees.period])
+            //cost of employee to do the task the number of times within the time increment with the help of the product
+            let new_cost_per_period = new_cost_per_task * date_dict[interval][req[i].cadences.period] + product_cost_rate
             
             total_new_employee_costs += new_cost_per_period
             total_cur_employee_costs += cur_cost_per_period
@@ -50,7 +53,6 @@ module.exports = {
             final_new_employee_cost_array.push(total_new_employee_costs)
             final_cur_employee_cost_array.push(total_cur_employee_costs)
         }
-        //console.log(final_new_employee_cost_array)
 
         let result = schemas.line_chart_schema()
 
