@@ -132,15 +132,68 @@ class TimeSaverView extends Component {
         this.setState({ active_key: eventKey})
     }
 
+    datasetKeyProvider=()=>{ 
+        return btoa(Math.random()).substring(0,12)
+    } 
+    
     supSquad(){
+        let lineStyle = {
+            position: "relative", 
+            height: "55vh"
+          };
+
+          let dropdownStyle = {
+            paddingLeft: "15px",
+            paddingBottom: "20px"
+          };
         return (
-            <LineChart 
+            /*<LineChart 
             data={this.state.data} 
             options={this.state.options}
             new_way = "New Service"
-            old_way = "Old Service">
+            old_way = "Old Service"
+            style = {divStyle}
+            >
 
-            </LineChart>
+            </LineChart>*/
+
+            //Removed the dataset key provider for a sec
+            <Row>
+                <Col md={2} style={dropdownStyle}>
+                    <InputGroup>
+                    <FormControl
+                    as="select"
+                    name="employees">
+                        <option>Something</option>
+                    </FormControl>
+                    </InputGroup>
+                </Col>
+                <Col md={12}>
+                    <div className="card">
+                        <div className="tab-content" id="navTabContent1">
+                            <div className="tab-pane fade p-4 show active" id="nav-result1" role="tabpanel" aria-labelledby="nav-resultTab1">
+                            <div className="row align-items-sm-center mb-4">
+                                <div className="col-sm mb-3 mb-sm-0"></div>
+                                    <div className="col-sm-auto">
+                                        <div className="row font-size-sm">
+                                            <div className="col-auto">
+                                                <span className="legend-indicator bg-primary"></span> Old Way
+                                            </div>
+                                
+                                            <div className="col-auto">
+                                                <span className="legend-indicator bg-info"></span> New Way
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chart-container" style={lineStyle}>
+                                    <Line data={this.state.data} options={this.state.options}/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Col>
+            </Row>
 
         )
     }
@@ -229,6 +282,9 @@ render() {
         }
 
         console.log(this.state.rows)
+        const tabStyle = {
+            paddingTop: "0px 0"
+          };
     return( 
         
         <div className="container-fluid">
@@ -251,7 +307,7 @@ render() {
                 </div>
             </div>
             <Row>
-                <Col md={4}>
+                <Col md={4} style={tabStyle}>
                 <div className="tab-content" id="navTabContent4">
                     <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
                         <Nav variant="tabs" activeKey={this.state.active_key} onSelect={this.activeNav}>

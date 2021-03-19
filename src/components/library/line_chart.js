@@ -20,7 +20,7 @@ render(){
     
     return(
         <Col md={12}>
-            <div className="card h-100">
+            <div className="card">
                 <div className="tab-content" id="navTabContent1">
                     <div className="tab-pane fade p-4 show active" id="nav-result1" role="tabpanel" aria-labelledby="nav-resultTab1">
                         {/*Chart Legends*/}
@@ -37,9 +37,11 @@ render(){
                                     </div>
                                 </div>
                             </div>
-                            </div>
+                        </div>
+                        <div class="chart-container" style={this.props.style}>
                 
-                        <Line data={this.props.data} datasetKeyProvider={datasetKeyProvider} options={this.props.options}/>
+                            <Line data={this.props.data} datasetKeyProvider={datasetKeyProvider} options={this.props.options}/>
+                        </div>
                     </div>
                 </div>
             </div>
