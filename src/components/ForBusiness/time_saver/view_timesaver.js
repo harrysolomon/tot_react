@@ -109,7 +109,7 @@ class TimeSaverView extends Component {
                                             <span className="d-block h5 mb-0">{item.products.name} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                                         </td>   
                                         <td key="current_time_spent">
-                                            <span className="d-block h5 mb-0">{item.current_time_spent}hrs <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                            <span className="d-block h5 mb-0">{item.current_time_spent.value} / {item.current_time_spent.plural}<i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                                         </td>
                                         <td key="employees">
                                             <span className="d-block h5 mb-0">{item.employees.name}<i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>

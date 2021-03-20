@@ -13,6 +13,7 @@ class NewTimeSaver extends Component {
           products: {},
           employees: {},
           cadences: {},
+          spent_cadence: {},
           data_loaded: false,
           navActive: "",
           location: this.props.location,
@@ -116,17 +117,41 @@ class NewTimeSaver extends Component {
                                 </InputGroup>
                             </td>
                             <td key="timespent">
+                                <Row>
                                 <InputGroup>
+                                <Col md={6}>
                                 <FormControl
                                 type="text"
                                 name="current_time_spent"
                                 value={item.current_time_spent}
                                 onChange={this.handleChange.bind(this, idx, "current_time_spent")}
                                 />
-                                    <InputGroup.Append>
-                                        <InputGroup.Text id="basic-addon1">Hrs</InputGroup.Text>
-                                    </InputGroup.Append>
+                                </Col>
+                                <Col md={6} key="spent_cadence">
+                                 <InputGroup.Append>
+                                 <InputGroup>
+                                <FormControl
+                                as="select"
+                                name="cadences"
+                                value={item.spent_cadence._id}
+                                onChange={this.handleChange.bind(this, idx, "spent_cadence")}>
+                                <React.Fragment>
+                                    <option>{item.spent_cadence.abbr || 'Choose...'}</option>
+                                    {this.state.cadences.map((cadence) => {
+                                if(item.spent_cadence._id === cadence._id){}
+                                else{
+                                return(
+                                    <option key={cadence._id} value={cadence._id}>{cadence.abbr}</option>)}})}
+                                </React.Fragment>
+                                </FormControl>
                                 </InputGroup>
+                                </InputGroup.Append>
+                                </Col>
+                                </InputGroup>
+
+                                
+                                </Row>
+                                
                             </td>
                             <td key="employees">
                                 <InputGroup>
@@ -185,7 +210,9 @@ class NewTimeSaver extends Component {
         )}
         
     handleChange = (row, field, event) => {
-        
+        console.log(this.state[event.target.name])
+        console.log("these are the inputs to the equation", row, field)
+        console.log("these are the event attributes", event.target.name, event.target.value)
         let values = [...this.state.rows];
         if(event.target.type === "select-one"){
             values[row][field] = this.state[event.target.name].find(product => event.target.value === product._id)
@@ -222,6 +249,7 @@ class NewTimeSaver extends Component {
             "name": "",
             "products": "",
             "current_time_spent":"",
+            "spent_cadence": "",
             "employees": "",
             "cadences":""
         }
@@ -248,7 +276,9 @@ class NewTimeSaver extends Component {
             schema.inputs[idx].products = item.products 
             schema.inputs[idx].cadences = item.cadences 
             schema.inputs[idx].employees = item.employees
-            schema.inputs[idx].current_time_spent = item.current_time_spent
+            schema.inputs[idx].current_time_spent = {}
+            schema.inputs[idx].current_time_spent = item.spent_cadence
+            schema.inputs[idx].current_time_spent.value = item.current_time_spent
             schema.inputs[idx].name = item.name
 
         })
@@ -275,6 +305,7 @@ class NewTimeSaver extends Component {
                     "employees": "",
                     "products": "",
                     "current_time_spent": "",
+                    "spent_cadence": "",
                     "name": "",
                     "_id": this.state.new_row_id
                 }]
@@ -315,6 +346,7 @@ render() {
             let path = "/for-business/timesaver/"+this.state.redirect_id
             return <Redirect to={{pathname: path}}/>;
         }
+        console.log(this.state.rows)
     return( 
         
         <div className="container-fluid">
