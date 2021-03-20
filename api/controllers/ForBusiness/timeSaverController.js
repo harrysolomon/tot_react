@@ -1,7 +1,8 @@
 var time_save_functions = require('../../functions/time_saved')
 var TimeSaver = require('../../models/ForBusiness/time_saver');
-var TimeSaverProductSchema = require('../../models/ForBusiness/time_saver_products')
-var TimeSaverEmployeeSchema = require('../../models/ForBusiness/time_saver_employees')
+var TimeSaverProductSchema = require('../../models/ForBusiness/time_saver_products');
+var TimeSaverEmployeeSchema = require('../../models/ForBusiness/time_saver_employees');
+var cost_per_period = require('../../functions/time_saver_cost_per_period')
 
 
 
@@ -9,12 +10,10 @@ exports.createData = (req, res) => {
     
     let chart_data = time_save_functions.new_cost(req.body.inputs,req.query)
     
-    let test_data = [{
-        "period": "hour"
-    }]
-    test_data[0]["value"] = 20
+    intervals = ['year','month','quarter','week','day']
+    req.body["values"] = []
 
-    req.body["values"] = test_data
+    req.body["values"] = cost_per_period.timesaver_cost_per_period(req.body.inputs,intervals)
     
     var new_data = new TimeSaver(req.body);
 
@@ -37,6 +36,12 @@ exports.createData = (req, res) => {
 
 exports.updateData = (req, res) => {
     //reserving a section here for recalculating the value portion
+    intervals = ['year','month','quarter','week','day']
+
+    req.body["values"] = cost_per_period.timesaver_cost_per_period(req.body.inputs,intervals)
+
+    console.log(req.body["values"])
+
     TimeSaver.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, doc) => {
         if (err) {
             return console.log(err)
