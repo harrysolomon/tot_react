@@ -50,6 +50,19 @@ module.exports = {
         result["options"]["scales"]["yAxes"][0]["ticks"]["suggestedMin"] = minimum_val
         result["options"]["scales"]["yAxes"][0]["ticks"]["suggestedMax"] = maximum_val
 
+        //Create the same output for the line chart but for use in table form
+        result["table_data"] = []
+        
+        for (let idx = 0; idx < forecast_length;++idx){
+            let time_slice_performance = {}
+            time_slice_performance.cur_cost = result["data"]["datasets"][0]["data"][idx]
+            time_slice_performance.new_cost = result["data"]["datasets"][1]["data"][idx]
+            time_slice_performance.value = time_slice_performance.cur_cost - time_slice_performance.new_cost
+            time_slice_performance.time_increment = result["data"]["labels"][idx]
+            
+            result["table_data"].push(time_slice_performance)
+        }
+
 
         return result
     }

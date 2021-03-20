@@ -59,12 +59,15 @@ exports.getData = (req, res, next) => {
         } 
         let result = {
             meta: {},
-            graph_data: {}
+            graph_data: {},
+            table_data: []
         }
         let chart_data = time_save_functions.new_cost(data[0].inputs, req.query)
         
         result.meta = data
-        result.graph_data = chart_data
+        result.graph_data.data = chart_data.data
+        result.graph_data.options = chart_data.options
+        result.table_data = chart_data.table_data
 
         res.json(result)
         
