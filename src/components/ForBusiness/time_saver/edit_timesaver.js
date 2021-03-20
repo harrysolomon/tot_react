@@ -13,6 +13,7 @@ class EditTimeSaver extends Component {
           products: {},
           employees: {},
           cadences: {},
+          current_time_spent_period: {},
           data_loaded: false,
           navActive: "",
           location: this.props.location,
@@ -64,77 +65,98 @@ class EditTimeSaver extends Component {
                             <td key="name">
                                 
                                 <InputGroup>
-                                <FormControl
-                                type="text"
-                                name="name"
-                                value={item.name}
-                                onChange={this.handleChange.bind(this, idx, "name")}
-                                />
+                                    <FormControl
+                                    type="text"
+                                    name="name"
+                                    value={item.name}
+                                    onChange={this.handleChange.bind(this, idx, "name")}
+                                    />
                                 </InputGroup>
                             </td>
                             <td key="product">
                                 <InputGroup>
-                                <FormControl
-                                as="select"
-                                name="products"
-                                value={item.products._id}
-                                onChange={this.handleChange.bind(this, idx, "products")}>
-                                <option>{item.products.name || 'Choose...'}</option>
-                                {this.state.products.map((product) => {
-                                if(item.products._id === product._id){}
-                                else{
-                                return(
-                                    <option key={product._id} value={product._id}>{product.name}</option>)}})}
-                                </FormControl>
+                                    <FormControl
+                                    as="select"
+                                    name="products"
+                                    value={item.products._id}
+                                    onChange={this.handleChange.bind(this, idx, "products")}>
+                                    <option>{item.products.name || 'Choose...'}</option>
+                                    {this.state.products.map((product) => {
+                                    if(item.products._id === product._id){}
+                                    else{
+                                    return(
+                                        <option key={product._id} value={product._id}>{product.name}</option>)}})}
+                                    </FormControl>
                                 </InputGroup>
                             </td>
                             <td key="timespent">
-                                <InputGroup>
-                                <FormControl
-                                type="text"
-                                name="current_time_spent"
-                                value={item.current_time_spent}
-                                onChange={this.handleChange.bind(this, idx, "current_time_spent")}
-                                />
-                                    <InputGroup.Append>
-                                        <InputGroup.Text id="basic-addon1">Hrs</InputGroup.Text>
-                                    </InputGroup.Append>
-                                </InputGroup>
+                                <Row>
+                                    <InputGroup>
+                                        <Col md={6}>
+                                            <FormControl
+                                            type="text"
+                                            name="current_time_spent"
+                                            value={item.current_time_spent}
+                                            onChange={this.handleChange.bind(this, idx, "current_time_spent")}
+                                            />
+                                        </Col>
+                                        <Col md={6} key="current_time_spent_period">
+                                            <InputGroup.Append>
+                                                <InputGroup>
+                                                    <FormControl
+                                                    as="select"
+                                                    name="cadences"
+                                                    value={item.current_time_spent_period._id}
+                                                    onChange={this.handleChange.bind(this, idx, "current_time_spent_period")}>
+                                                        <React.Fragment>
+                                                            <option>{item.current_time_spent_period.abbr || 'Choose...'}</option>
+                                                            {this.state.cadences.map((cadence) => {
+                                                        if(item.current_time_spent_period._id === cadence._id){}
+                                                        else{
+                                                        return(
+                                                            <option key={cadence._id} value={cadence._id}>{cadence.abbr}</option>)}})}
+                                                        </React.Fragment>
+                                                    </FormControl>
+                                                </InputGroup>
+                                            </InputGroup.Append>
+                                        </Col>
+                                    </InputGroup>
+                                </Row>
                             </td>
                             <td key="employees">
                                 <InputGroup>
-                                <FormControl
-                                as="select"
-                                name="employees"
-                                value={item.employees._id}
-                                onChange={this.handleChange.bind(this, idx, "employees")}>
-                                <React.Fragment>
-                                    <option>{item.employees.name || 'Choose...'}</option>
-                                    {this.state.employees.map((employee) => {
-                                if(item.employees._id === employee._id){}
-                                else{
-                                return(
-                                    <option key={employee._id} value={employee._id}>{employee.name}</option>)}})}
-                                </React.Fragment>
-                                </FormControl>
+                                    <FormControl
+                                    as="select"
+                                    name="employees"
+                                    value={item.employees._id}
+                                    onChange={this.handleChange.bind(this, idx, "employees")}>
+                                        <React.Fragment>
+                                            <option>{item.employees.name || 'Choose...'}</option>
+                                            {this.state.employees.map((employee) => {
+                                        if(item.employees._id === employee._id){}
+                                        else{
+                                        return(
+                                            <option key={employee._id} value={employee._id}>{employee.name}</option>)}})}
+                                        </React.Fragment>
+                                    </FormControl>
                                 </InputGroup>
                             </td>
                             <td key="cadence">
                                 <InputGroup>
-                                <FormControl
-                                as="select"
-                                name="cadences"
-                                value={item.cadences._id}
-                                onChange={this.handleChange.bind(this, idx, "cadences")}>
-                                <React.Fragment>
-                                    <option>{item.cadences.name || 'Choose...'}</option>
-                                    {this.state.cadences.map((cadence) => {
-                                if(item.cadences._id === cadence._id){}
-                                else{
-                                return(
-                                    <option key={cadence._id} value={cadence._id}>{cadence.name}</option>)}})}
-                                </React.Fragment>
-                                </FormControl>
+                                    <FormControl
+                                    as="select"
+                                    name="cadences"
+                                    value={item.cadences._id}
+                                    onChange={this.handleChange.bind(this, idx, "cadences")}>
+                                        <React.Fragment>
+                                            <option>{item.cadences.name || 'Choose...'}</option>
+                                            {this.state.cadences.map((cadence) => {
+                                        if(item.cadences._id === cadence._id){}
+                                        else{
+                                        return(
+                                            <option key={cadence._id} value={cadence._id}>{cadence.name}</option>)}})}
+                                        </React.Fragment>
+                                    </FormControl>
                                 </InputGroup>
                             </td>
                             <td className="text-center" key="removebutton">
@@ -195,6 +217,7 @@ class EditTimeSaver extends Component {
             "name": "",
             "products": "",
             "current_time_spent":"",
+            "current_time_spent_period":"",
             "employees": "",
             "cadences":""
         }
@@ -211,19 +234,6 @@ class EditTimeSaver extends Component {
     onSubmitTask = (e) => {
         const schema = {}
         //this is tech debt. I need to remove values from the request and have it update on response
-        const values = [
-            {
-              "_id": "603bd2414e445958cf2de385",
-              "period": "hour",
-              "value": 50
-            },
-            {
-              "_id": "603bd2414e445958cf2de386",
-              "period": "quarter",
-              "value": 100
-            }]
-        schema.values = []
-        schema.values = values
         schema.name = this.state.calc_name
         schema.inputs = []
         this.state.rows.map((item, idx) => {
@@ -236,6 +246,7 @@ class EditTimeSaver extends Component {
             schema.inputs[idx].cadences = item.cadences 
             schema.inputs[idx].employees = item.employees
             schema.inputs[idx].current_time_spent = item.current_time_spent
+            schema.inputs[idx].current_time_spent_period = item.current_time_spent_period
             schema.inputs[idx].name = item.name
 
         })

@@ -39,33 +39,6 @@ class TimeSaverView extends Component {
       
     //creates the list of inputs that are displayed upfront to the user
     }
-   
-
-    inputPrepend(data_type){
-        const available_prepends = [""]
-
-        if(available_prepends.includes(data_type)){
-            return(
-                <InputGroup.Prepend>
-                    <InputGroup.Text id="basic-addon1">{data_type}</InputGroup.Text>
-                </InputGroup.Prepend>
-            )
-            
-        }
-    }
-
-    inputAppend(data_type){
-        const available_appends = ["Hrs"]
-
-        if(available_appends.includes(data_type)){
-            return(
-                <InputGroup.Append>
-                    <InputGroup.Text id="basic-addon1">{data_type}</InputGroup.Text>
-                </InputGroup.Append>
-            )
-            
-        }
-    }
 
     tableOption(){
         return(
@@ -109,7 +82,7 @@ class TimeSaverView extends Component {
                                             <span className="d-block h5 mb-0">{item.products.name} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                                         </td>   
                                         <td key="current_time_spent">
-                                            <span className="d-block h5 mb-0">{item.current_time_spent.value} / {item.current_time_spent.plural}<i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                            <span className="d-block h5 mb-0">{item.current_time_spent} / {item.current_time_spent_period.plural}<i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                                         </td>
                                         <td key="employees">
                                             <span className="d-block h5 mb-0">{item.employees.name}<i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
@@ -147,17 +120,6 @@ class TimeSaverView extends Component {
             paddingBottom: "20px"
           };
         return (
-            /*<LineChart 
-            data={this.state.data} 
-            options={this.state.options}
-            new_way = "New Service"
-            old_way = "Old Service"
-            style = {divStyle}
-            >
-
-            </LineChart>*/
-
-            //Removed the dataset key provider for a sec
             <Row>
                 <Col md={2} style={dropdownStyle}>
                     <InputGroup>

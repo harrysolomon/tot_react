@@ -13,7 +13,7 @@ class NewTimeSaver extends Component {
           products: {},
           employees: {},
           cadences: {},
-          spent_cadence: {},
+          current_time_spent_period: {},
           data_loaded: false,
           navActive: "",
           location: this.props.location,
@@ -127,18 +127,18 @@ class NewTimeSaver extends Component {
                                 onChange={this.handleChange.bind(this, idx, "current_time_spent")}
                                 />
                                 </Col>
-                                <Col md={6} key="spent_cadence">
+                                <Col md={6} key="current_time_spent_period">
                                  <InputGroup.Append>
                                  <InputGroup>
                                 <FormControl
                                 as="select"
                                 name="cadences"
-                                value={item.spent_cadence._id}
-                                onChange={this.handleChange.bind(this, idx, "spent_cadence")}>
+                                value={item.current_time_spent_period._id}
+                                onChange={this.handleChange.bind(this, idx, "current_time_spent_period")}>
                                 <React.Fragment>
-                                    <option>{item.spent_cadence.abbr || 'Choose...'}</option>
+                                    <option>{item.current_time_spent_period.abbr || 'Choose...'}</option>
                                     {this.state.cadences.map((cadence) => {
-                                if(item.spent_cadence._id === cadence._id){}
+                                if(item.current_time_spent_period._id === cadence._id){}
                                 else{
                                 return(
                                     <option key={cadence._id} value={cadence._id}>{cadence.abbr}</option>)}})}
@@ -249,7 +249,7 @@ class NewTimeSaver extends Component {
             "name": "",
             "products": "",
             "current_time_spent":"",
-            "spent_cadence": "",
+            "current_time_spent_period": "",
             "employees": "",
             "cadences":""
         }
@@ -276,9 +276,8 @@ class NewTimeSaver extends Component {
             schema.inputs[idx].products = item.products 
             schema.inputs[idx].cadences = item.cadences 
             schema.inputs[idx].employees = item.employees
-            schema.inputs[idx].current_time_spent = {}
-            schema.inputs[idx].current_time_spent = item.spent_cadence
-            schema.inputs[idx].current_time_spent.value = item.current_time_spent
+            schema.inputs[idx].current_time_spent = item.current_time_spent
+            schema.inputs[idx].current_time_spent_period = item.current_time_spent_period
             schema.inputs[idx].name = item.name
 
         })
@@ -305,7 +304,7 @@ class NewTimeSaver extends Component {
                     "employees": "",
                     "products": "",
                     "current_time_spent": "",
-                    "spent_cadence": "",
+                    "current_time_spent_period": "",
                     "name": "",
                     "_id": this.state.new_row_id
                 }]
