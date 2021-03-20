@@ -7,7 +7,9 @@ var TimeSaverSchema = new Schema(
     name: {type: String, required: true},
     values: [{
       period: {type: String, required: true},
-      value: {type: Number, required: true}
+      value: {type: Number, required: true},
+      new_cost: {type: Number, required: true},
+      cur_cost: {type: Number, required: true}
     }],
     inputs:[{
       cadences:{
