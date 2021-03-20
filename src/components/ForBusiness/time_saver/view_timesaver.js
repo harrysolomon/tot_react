@@ -23,6 +23,7 @@ class TimeSaverView extends Component {
           open: false,
           data: {},
           options: {},
+          tableData: [],
           location: this.props.location,
           match: this.props.match,
           calculate_button: false,
@@ -109,7 +110,7 @@ class TimeSaverView extends Component {
         return btoa(Math.random()).substring(0,12)
     } 
     
-    supSquad(){
+    lineGraphResults(){
         let lineStyle = {
             position: "relative", 
             height: "55vh"
@@ -160,18 +161,70 @@ class TimeSaverView extends Component {
         )
     }
 
+    tableResults(){
+        return(
+            <Col>
+                <Card>
+                    <Card.Header>
+                        <Col md={4}>
+                            <div>Results</div>
+                        </Col>
+                        <Col>
+                            
+                        </Col>
+                            
+                        <Col>
+                        </Col>
+                    </Card.Header>
+                    <Card.Body>
+                        <div className="table-responsive">
+                            <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
+                                <thead>
+                                    <tr>
+                                        <th> Time Period </th>
+                                        <th> Current Cost </th>
+                                        <th> New Cost </th>
+                                        <th> Value </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {this.state.tableData.map((row) => (
+                                    <tr key={row.time_increment}>
+                                        <td key="time_period">
+                                            <div className="media-body">
+                                                <span className="d-block h5 text-hover-primary mb-0">{row.time_increment} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                            </div>
+                                        </td>
+                                        <td key="cur_cost">
+                                            <span className="d-block h5 mb-0">${row.cur_cost} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                        </td>   
+                                        <td key="new_cost">
+                                            <span className="d-block h5 mb-0">${row.new_cost}<i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                        </td>
+                                        <td key="value">
+                                            <span className="d-block h5 mb-0">${row.value}<i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                        </td>
+                                    </tr>))}
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </Card.Body>
+                </Card>
+            </Col>
+        )
+    }
+
+
+
    // this function determines the content to display based on the active nav 
     contentDisplay(){
         if(this.state.active_key === '' || this.state.active_key === "form"){
             return(this.tableOption())
         } else if (this.state.active_key === "graph"){
-            return(this.supSquad())
+            return(this.lineGraphResults())
         } else {
-            return(
-                <div>
-                    Not Built Yet
-                </div>
-            )
+            return(this.tableResults())
         }
     }
 
@@ -230,7 +283,8 @@ class TimeSaverView extends Component {
             table_nav: false,
             calc_name: data1.meta[0].name,
             data: data1.graph_data.data,
-            options: data1.graph_data.options
+            options: data1.graph_data.options,
+            tableData: data1.table_data
         }))
     }
 
