@@ -17,7 +17,14 @@ var TimeSaverSchema = new Schema(
         period:{type: String, required: true},
         name:{type: String, required: true}
       },
-    current_time_spent:{type: Number, required: true},
+    current_time_spent:{
+      _id: {type: Schema.Types.ObjectId, ref: 'CadenceSchema', required: true},
+      value: {type: Number, required: true},
+      period:{type: String, required: true},
+      name: {type: String, required: true},
+      plural: {type: String, required: true},
+      abbr: {type: String, required: true}
+    },
     name: {type: String, required: true},
     employees:{
         _id: {type: Schema.Types.ObjectId, ref: 'TimeSaverEmployeeSchema', required: true},
