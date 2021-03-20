@@ -24,19 +24,19 @@ module.exports = {
             for (let i = 0;i < req.length;++i){
                 
                 if(req[i].products.time_unit === "pct"){
-                    time_save_convert = req[i].current_time_spent.value * (req[i].products.time_save / 100)
+                    time_save_convert = req[i].current_time_spent * (req[i].products.time_save / 100)
                 } else {
-                    time_save_convert = req[i].products.time_save * date_dict[req[i].products.time_unit][req[i].current_time_spent.period]
+                    time_save_convert = req[i].products.time_save * date_dict[req[i].products.time_unit][req[i].current_time_spent_period.period]
                 }
 
                 //calculates cost of employee to do the task once
-                let cur_cost_per_task = req[i].employees.cost * req[i].current_time_spent.value * date_dict[req[i].current_time_spent.period][req[i].employees.period]
+                let cur_cost_per_task = req[i].employees.cost * req[i].current_time_spent * date_dict[req[i].current_time_spent_period.period][req[i].employees.period]
                 //calculate cost of employee to do the task for an entire time increment
                 let cur_cost_per_period = cur_cost_per_task * date_dict[interval[interval_idx]][req[i].cadences.period]
                 //cost of the product for the entire time increment
                 let product_cost_rate = req[i].products.cost * date_dict[interval[interval_idx]][req[i].products.period]
                 //cost of employee to do the task once now with the product
-                let new_cost_per_task = (req[i].employees.cost * (req[i].current_time_spent.value - time_save_convert) * date_dict[req[i].current_time_spent.period][req[i].employees.period])
+                let new_cost_per_task = (req[i].employees.cost * (req[i].current_time_spent - time_save_convert) * date_dict[req[i].current_time_spent_period.period][req[i].employees.period])
                 //cost of employee to do the task the number of times within the time increment with the help of the product
                 let new_cost_per_period = new_cost_per_task * date_dict[interval[interval_idx]][req[i].cadences.period] + product_cost_rate
                 console.log("new_cost", result.period, new_cost_per_period)
