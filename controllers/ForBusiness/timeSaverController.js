@@ -8,7 +8,7 @@ var cost_per_period = require('../../functions/time_saver_cost_per_period')
 
 exports.createData = (req, res) => {
     
-    let chart_data = time_save_functions.new_cost(req.body.inputs,req.query)
+    //let chart_data = time_save_functions.new_cost(req.body.inputs,req.query)
     
     intervals = ['year','month','quarter','week','day']
     req.body["values"] = []
@@ -26,8 +26,8 @@ exports.createData = (req, res) => {
         console.log("saved successfully")
         req.body["_id"] = data._id
 
-        req.body["data"] = chart_data["data"]
-        req.body["options"] = chart_data["options"]
+        //req.body["data"] = chart_data["data"]
+        //req.body["options"] = chart_data["options"]
 
         res.json(req.body)
     })
