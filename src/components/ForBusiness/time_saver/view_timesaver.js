@@ -1,6 +1,4 @@
-import React, { Component, useState } from "react";
-import { Link } from 'react-router-dom';
-import { Line } from 'react-chartjs-2';
+import React, { Component } from "react";
 import { Button, Card, FormControl, InputGroup, FormGroup, FormLabel, Container, Row, Col, Nav, Navbar} from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import _ from 'lodash'
@@ -149,9 +147,11 @@ class TimeSaverView extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="chart-container" style={lineStyle}>
-                                    <Line data={this.state.data} options={this.state.options}/>
-                                </div>
+                                    <LineChart 
+                                    style={lineStyle}
+                                    data={this.state.data} 
+                                    options={this.state.options}
+                                    />
                             </div>
                         </div>
                     </div>
@@ -219,7 +219,7 @@ class TimeSaverView extends Component {
 
    // this function determines the content to display based on the active nav 
     contentDisplay(){
-        if(this.state.active_key === '' || this.state.active_key === "form"){
+        if(this.state.active_key === "form"){
             return(this.tableOption())
         } else if (this.state.active_key === "graph"){
             return(this.lineGraphResults())
