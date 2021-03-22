@@ -4,6 +4,7 @@ var cost_per_period = require('../functions/time_saver_cost_per_period')
 module.exports = {
     new_cost: function(req, query){
 
+        let date_dict = schemas.date_dictionary()
         let interval = []
         
         if(query.hasOwnProperty('period')) {
@@ -34,9 +35,10 @@ module.exports = {
         }
 
         let result = schemas.line_chart_schema()
+        let period_abbr = date_dict[interval[0]]["abbr"]
 
         for (let increment = 1; increment <= forecast_length;++increment){
-            result["data"]["labels"].push("Q"+increment)
+            result["data"]["labels"].push(period_abbr+increment)
         }
 
         final_cur_employee_cost_array.reduce( (prev, curr,i) =>  result["data"]["datasets"][0]["data"][i] = Math.round(prev + curr), 0)
