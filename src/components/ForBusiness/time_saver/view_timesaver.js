@@ -6,32 +6,29 @@ import LineChart from '../../library/line_chart'
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 
-const the_columns = [
-    "Name","Product","Current Time Spent", "Employee","Cadence"
-]
-
 class TimeSaverView extends Component {
     constructor(props) {
       super(props);
       this.state = {
           rows: [],
-          columns: the_columns,
           calc_name: "",
           data_loaded: false,
-          open: false,
           data: {},
           options: {},
           tableData: [],
+          cadences: {},
           location: this.props.location,
           match: this.props.match,
-          calculate_button: false,
           input_nav: false,
           graph_nav: true,
           table_nav: true,
           active_key: "graph",
-          new_row_id: 1,
           redirect: false,
-          redirect_id: ""
+          redirect_id: "",
+          time_increment_input: "",
+          time_increment_req: "quarter",
+          num_periods_input: "",
+          num_periods_req: "8"
 
       };
       this.activeNav = this.activeNav.bind(this)
@@ -104,31 +101,14 @@ class TimeSaverView extends Component {
         this.setState({ active_key: eventKey})
     }
 
-    datasetKeyProvider=()=>{ 
-        return btoa(Math.random()).substring(0,12)
-    } 
-    
     lineGraphResults(){
         let lineStyle = {
             position: "relative", 
             height: "55vh"
           };
 
-          let dropdownStyle = {
-            paddingLeft: "15px",
-            paddingBottom: "20px"
-          };
         return (
             <Row>
-                <Col md={2} style={dropdownStyle}>
-                    <InputGroup>
-                    <FormControl
-                    as="select"
-                    name="employees">
-                        <option>Something</option>
-                    </FormControl>
-                    </InputGroup>
-                </Col>
                 <Col md={12}>
                     <div className="card">
                         <div className="tab-content" id="navTabContent1">
@@ -215,7 +195,61 @@ class TimeSaverView extends Component {
         )
     }
 
+    handleChange = (e) => {
+        console.log(e.target.value === '')
+        let path = 'http://localhost:3000/timesaver/' + this.state.match.params.timesaverId +'?'
+        if(e.target.name === "time_increment"){
+            let increment = this.state.cadences.find(cadence => e.target.value === cadence._id)
+            let params = "period=" + increment["period"] + "&range=" + this.state.num_periods_req
 
+            Promise.all([
+                fetch(path + params)
+            ])
+            .then(([res1]) => Promise.all([res1.json()]))
+            .then(([data1]) => this.setState({
+                rows: data1.meta[0].inputs,
+                data_loaded: true,
+                graph_nav: false,
+                table_nav: false,
+                calc_name: data1.meta[0].name,
+                data: data1.graph_data.data,
+                options: data1.graph_data.options,
+                tableData: data1.table_data
+            }))
+            this.setState({ 
+                time_increment_input: increment["name"],
+                time_increment_req: increment["period"]
+            })
+        } else if(e.target.value === ''){
+            console.log("sup yall")
+            this.setState({
+                num_periods_input: e.target.value,
+                num_periods_req: e.target.value
+            })
+        } else {
+            let params = "period=" + this.state.time_increment_req + "&range=" + e.target.value
+
+            Promise.all([
+                fetch(path + params)
+            ])
+            .then(([res1]) => Promise.all([res1.json()]))
+            .then(([data1]) => this.setState({
+                rows: data1.meta[0].inputs,
+                data_loaded: true,
+                graph_nav: false,
+                table_nav: false,
+                calc_name: data1.meta[0].name,
+                data: data1.graph_data.data,
+                options: data1.graph_data.options,
+                tableData: data1.table_data
+            }))
+
+            this.setState({
+                num_periods_input: e.target.value,
+                num_periods_req: e.target.value
+            })
+        }
+    }
 
    // this function determines the content to display based on the active nav 
     contentDisplay(){
@@ -228,76 +262,46 @@ class TimeSaverView extends Component {
         }
     }
 
-    onSubmitTask = (e) => {
-        const schema = {}
-        schema.name = this.state.calc_name
-        schema.inputs = []
-        this.state.rows.map((item, idx) => {
-            schema.inputs[idx] = {}
-            
-            if(typeof item._id === "string") {
-                schema["_id"] = item._id
-            }
-            schema.inputs[idx].products = item.products 
-            schema.inputs[idx].cadences = item.cadences 
-            schema.inputs[idx].employees = item.employees
-            schema.inputs[idx].current_time_spent = item.current_time_spent
-            schema.inputs[idx].name = item.name
-
-        })
-        //this will create a new record so should only be run for new calculators
-        if(this.state.match.params.timesaverId === 'new'){
-            const requestOptions = {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(schema)
-            };
-
-            Promise.all([
-                fetch('http://localhost:3000/timesaver',requestOptions)
-            ])
-            .then(([res1]) => Promise.all([res1.json()]))
-            .then(([data1]) => this.setState({
-                data: data1["data"],
-                options: data1["options"],
-                rows: data1["inputs"],
-                graph_nav: false,
-                table_nav: false,
-                active_key: "graph",
-                redirect: true,
-                redirect_id: data1["_id"]
-            }))
-        }
-    }
-
     componentDidMount() {
-        let path = 'http://localhost:3000/timesaver/' + this.state.match.params.timesaverId
+        
+        let path = 'http://localhost:3000/timesaver/' + this.state.match.params.timesaverId +'?'
+        let params = "period=quarter&range=8"
         Promise.all([
-            fetch(path)
+            fetch(path + params),
+            fetch('http://localhost:3000/cadences/list')
         ])
-        .then(([res1]) => Promise.all([res1.json()]))
-        .then(([data1]) => this.setState({
+        .then(([res1,res2]) => Promise.all([res1.json(),res2.json()]))
+        .then(([data1,data2]) => this.setState({
             rows: data1.meta[0].inputs,
+            cadences: data2,
             data_loaded: true,
             graph_nav: false,
             table_nav: false,
             calc_name: data1.meta[0].name,
             data: data1.graph_data.data,
             options: data1.graph_data.options,
-            tableData: data1.table_data
+            tableData: data1.table_data,
+            time_increment_input: "Quarterly",
+            time_increment_req: "quarter",
+            num_periods_req: 8,
+            num_periods_input: 8
         }))
     }
 
 
 render() {
     const { redirect } = this.state;
+    const dropdownStyle = {
+        paddingLeft: "15px",
+        paddingBottom: "2px",
+        paddingTop: "2px"
+      };
     if(this.state.data_loaded) {
         if (redirect) {
             let path = "/timesaver/"+this.state.redirect_id
             return <Redirect to={path}/>;
         }
 
-        console.log(this.state.rows)
         const tabStyle = {
             paddingTop: "0px 0"
           };
@@ -324,27 +328,59 @@ render() {
             </div>
             <Row>
                 <Col md={4} style={tabStyle}>
-                <div className="tab-content" id="navTabContent4">
-                    <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
-                        <Nav variant="tabs" activeKey={this.state.active_key} onSelect={this.activeNav}>
-                            <Nav.Item>
-                                <Nav.Link eventKey="graph" disabled={this.state.graph_nav}>Graph</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link eventKey="spreadsheet" disabled={this.state.table_nav}>Table</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link eventKey="form" disabled={this.state.input_nav}>Inputs</Nav.Link>
-                            </Nav.Item>
-                        </Nav>
+                    <div className="tab-content" id="navTabContent4">
+                        <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
+                            <Nav variant="tabs" activeKey={this.state.active_key} onSelect={this.activeNav}>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="graph" disabled={this.state.graph_nav}>Graph</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="spreadsheet" disabled={this.state.table_nav}>Table</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="form" disabled={this.state.input_nav}>Inputs</Nav.Link>
+                                </Nav.Item>
+                            </Nav>
+                        </div>
                     </div>
-                </div>
+                </Col>
+                <Col md={4}></Col>
+                <Col md={2} style={dropdownStyle}>
+                <FormGroup key="time_increment">
+                    <label>Time Increment</label>
+                    <InputGroup>
+                        <FormControl
+                        as="select"
+                        name="time_increment"
+                        value={this.state.time_increment_input}
+                        onChange={this.handleChange.bind(this)}>
+                            <React.Fragment>
+                                <option>{this.state.time_increment_input}</option>
+                                {this.state.cadences.map((cadence) => {
+                                if(this.state.time_increment_input === cadence.name){}
+                                else{
+                                return(
+                                    <option key={cadence._id} value={cadence._id}>{cadence.name}</option>)}})}
+                            </React.Fragment>
+                        </FormControl>
+                    </InputGroup>
+                </FormGroup>
+                </Col>
+                <Col md={2}>
+                    <FormGroup key="num_period">
+                        <label>Number of Periods</label>
+                        <InputGroup>
+                            <FormControl
+                            type="text"
+                            name="num_period"
+                            value={this.state.num_periods_input}
+                            onChange={this.handleChange.bind(this)}
+                            />
+                        </InputGroup>
+                    </FormGroup>
                 </Col>
             </Row>
-            <Row>
                 {this.contentDisplay()}
-                  
-            </Row>
         </div>
         );
     } else {

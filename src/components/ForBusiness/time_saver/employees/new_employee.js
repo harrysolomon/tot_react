@@ -3,6 +3,7 @@ import { Button, FormControl, InputGroup, FormGroup, Row, Col } from "react-boot
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 
+const num_only_inputs = ["cost"]
 const the_units = [
     {
       "_id": "1",
@@ -50,7 +51,8 @@ class NewEmployee extends Component {
               department:"",
               cost:"",
               period:""
-          }]
+          }],
+          regexp : /^[0-9\b]+$/
 
       };
       
@@ -59,9 +61,17 @@ class NewEmployee extends Component {
 
     handleChange = (e) => {
         let values = [...this.state.request]
+        //Handle change for dropdown
         if(e.target.type === "select-one"){
             values[0][e.target.name] = this.state.units.find(unit => e.target.value === unit._id)
             this.setState({ values })
+        //Handle change for number only inputs
+        } else if(num_only_inputs.includes(e.target.name)){
+            let num_input = e.target.value
+            if(num_input === '' || this.state.regexp.test(num_input))
+            values[0][e.target.name] = e.target.value
+            this.setState({ values })
+        //Handle change for string input
         } else {
             values[0][e.target.name] = e.target.value
             this.setState({ values })
@@ -187,7 +197,7 @@ class NewEmployee extends Component {
                     <Col md={2}>
                     </Col>
                     <Col md={2}>
-                        <Button href="for-business/timesaver" variant="outline-secondary" block>Close</Button>
+                        <Button href="/for-business/timesaver" variant="outline-secondary" block>Close</Button>
                     </Col>
                     <Col md={2}>
                         <Button variant="primary" block onClick={this.onSubmitTask}>Submit</Button>

@@ -4,6 +4,7 @@ import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 
+const num_only_inputs = ["current_time_spent"]
 class NewTimeSaver extends Component {
     constructor(props) {
       super(props);
@@ -21,38 +22,12 @@ class NewTimeSaver extends Component {
           calculate_button: false,
           new_row_id: 1,
           redirect: false,
-          redirect_id: ""
+          redirect_id: "",
+          regexp : /^[0-9\b]+$/
 
       };
       
     //creates the list of inputs that are displayed upfront to the user
-    }
-   
-
-    inputPrepend(data_type){
-        const available_prepends = [""]
-
-        if(available_prepends.includes(data_type)){
-            return(
-                <InputGroup.Prepend>
-                    <InputGroup.Text id="basic-addon1">{data_type}</InputGroup.Text>
-                </InputGroup.Prepend>
-            )
-            
-        }
-    }
-
-    inputAppend(data_type){
-        const available_appends = ["Hrs"]
-
-        if(available_appends.includes(data_type)){
-            return(
-                <InputGroup.Append>
-                    <InputGroup.Text id="basic-addon1">{data_type}</InputGroup.Text>
-                </InputGroup.Append>
-            )
-            
-        }
     }
 
 
@@ -92,101 +67,99 @@ class NewTimeSaver extends Component {
                             <td key="name">
                                 
                                 <InputGroup>
-                                <FormControl
-                                type="text"
-                                name="name"
-                                value={item.name}
-                                onChange={this.handleChange.bind(this, idx, "name")}
-                                />
+                                    <FormControl
+                                    type="text"
+                                    name="name"
+                                    value={item.name}
+                                    onChange={this.handleChange.bind(this, idx, "name")}
+                                    />
                                 </InputGroup>
                             </td>
                             <td key="product">
                                 <InputGroup>
-                                <FormControl
-                                as="select"
-                                name="products"
-                                value={item.products._id}
-                                onChange={this.handleChange.bind(this, idx, "products")}>
-                                <option>{item.products.name || 'Choose...'}</option>
-                                {this.state.products.map((product) => {
-                                if(item.products._id === product._id){}
-                                else{
-                                return(
-                                    <option key={product._id} value={product._id}>{product.name}</option>)}})}
-                                </FormControl>
+                                    <FormControl
+                                    as="select"
+                                    name="products"
+                                    value={item.products._id}
+                                    onChange={this.handleChange.bind(this, idx, "products")}>
+                                    <option>{item.products.name || 'Choose...'}</option>
+                                    {this.state.products.map((product) => {
+                                    if(item.products._id === product._id){}
+                                    else{
+                                    return(
+                                        <option key={product._id} value={product._id}>{product.name}</option>)}})}
+                                    </FormControl>
                                 </InputGroup>
                             </td>
                             <td key="timespent">
                                 <Row>
-                                <InputGroup>
-                                <Col md={6}>
-                                <FormControl
-                                type="text"
-                                name="current_time_spent"
-                                value={item.current_time_spent}
-                                onChange={this.handleChange.bind(this, idx, "current_time_spent")}
-                                />
-                                </Col>
-                                <Col md={6} key="current_time_spent_period">
-                                 <InputGroup.Append>
-                                 <InputGroup>
-                                <FormControl
-                                as="select"
-                                name="cadences"
-                                value={item.current_time_spent_period._id}
-                                onChange={this.handleChange.bind(this, idx, "current_time_spent_period")}>
-                                <React.Fragment>
-                                    <option>{item.current_time_spent_period.abbr || 'Choose...'}</option>
-                                    {this.state.cadences.map((cadence) => {
-                                if(item.current_time_spent_period._id === cadence._id){}
-                                else{
-                                return(
-                                    <option key={cadence._id} value={cadence._id}>{cadence.abbr}</option>)}})}
-                                </React.Fragment>
-                                </FormControl>
-                                </InputGroup>
-                                </InputGroup.Append>
-                                </Col>
-                                </InputGroup>
-
-                                
+                                    <InputGroup>
+                                        <Col md={6}>
+                                            <FormControl
+                                            type="text"
+                                            name="current_time_spent"
+                                            value={item.current_time_spent}
+                                            onChange={this.handleChange.bind(this, idx, "current_time_spent")}
+                                            />
+                                        </Col>
+                                        <Col md={6} key="current_time_spent_period">
+                                            <InputGroup.Append>
+                                                <InputGroup>
+                                                    <FormControl
+                                                    as="select"
+                                                    name="cadences"
+                                                    value={item.current_time_spent_period._id}
+                                                    onChange={this.handleChange.bind(this, idx, "current_time_spent_period")}>
+                                                        <React.Fragment>
+                                                            <option>{item.current_time_spent_period.abbr || 'Choose...'}</option>
+                                                            {this.state.cadences.map((cadence) => {
+                                                        if(item.current_time_spent_period._id === cadence._id){}
+                                                        else{
+                                                        return(
+                                                            <option key={cadence._id} value={cadence._id}>{cadence.abbr}</option>)}})}
+                                                        </React.Fragment>
+                                                    </FormControl>
+                                                </InputGroup>
+                                            </InputGroup.Append>
+                                        </Col>
+                                    </InputGroup>
                                 </Row>
                                 
                             </td>
                             <td key="employees">
                                 <InputGroup>
-                                <FormControl
-                                as="select"
-                                name="employees"
-                                value={item.employees._id}
-                                onChange={this.handleChange.bind(this, idx, "employees")}>
-                                <React.Fragment>
-                                    <option>{item.employees.name || 'Choose...'}</option>
-                                    {this.state.employees.map((employee) => {
-                                if(item.employees._id === employee._id){}
-                                else{
-                                return(
-                                    <option key={employee._id} value={employee._id}>{employee.name}</option>)}})}
-                                </React.Fragment>
-                                </FormControl>
+                                    <FormControl
+                                    as="select"
+                                    name="employees"
+                                    value={item.employees._id}
+                                    onChange={this.handleChange.bind(this, idx, "employees")}>
+                                        <React.Fragment>
+                                            <option>{item.employees.name || 'Choose...'}</option>
+                                            {this.state.employees.map((employee) => {
+                                        if(item.employees._id === employee._id){}
+                                        else{
+                                        return(
+                                            <option key={employee._id} value={employee._id}>{employee.name}</option>)}})}
+                                        </React.Fragment>
+                                    </FormControl>
                                 </InputGroup>
                             </td>
                             <td key="cadence">
                                 <InputGroup>
-                                <FormControl
-                                as="select"
-                                name="cadences"
-                                value={item.cadences._id}
-                                onChange={this.handleChange.bind(this, idx, "cadences")}>
-                                <React.Fragment>
-                                    <option>{item.cadences.name || 'Choose...'}</option>
-                                    {this.state.cadences.map((cadence) => {
-                                if(item.cadences._id === cadence._id){}
-                                else{
-                                return(
-                                    <option key={cadence._id} value={cadence._id}>{cadence.name}</option>)}})}
-                                </React.Fragment>
-                                </FormControl>
+                                    <FormControl
+                                    as="select"
+                                    name="cadences"
+                                    value={item.cadences._id}
+                                    onChange={this.handleChange.bind(this, idx, "cadences")}>
+                                        <React.Fragment>
+                                            <option>{item.cadences.name || 'Choose...'}</option>
+                                            {this.state.cadences.map((cadence) => {
+                                        if(item.cadences._id === cadence._id){}
+                                        else{
+                                        return(
+                                            <option key={cadence._id} value={cadence._id}>{cadence.name}</option>)}})}
+                                        </React.Fragment>
+                                    </FormControl>
                                 </InputGroup>
                             </td>
                             <td className="text-center" key="removebutton">
@@ -210,20 +183,27 @@ class NewTimeSaver extends Component {
         )}
         
     handleChange = (row, field, event) => {
-        console.log(this.state[event.target.name])
-        console.log("these are the inputs to the equation", row, field)
-        console.log("these are the event attributes", event.target.name, event.target.value)
+
         let values = [...this.state.rows];
+        
+        //Handle change for the select dropdown
         if(event.target.type === "select-one"){
             values[row][field] = this.state[event.target.name].find(product => event.target.value === product._id)
             this.setState({ values });
 
+        //Handle change for inputs that must be numbers
+        } else if(num_only_inputs.includes(field)){
+            let num_input = event.target.value
+            if(num_input === '' || this.state.regexp.test(num_input)){
+                values[row][field] = event.target.value;
+                this.setState({ values });
+                
+            }
+        //Handle change for inputs that are strings
         } else {
             values[row][field] = event.target.value;
             this.setState({ values });
         }
-
-        //console.log(this.state.rows)
         
     }
 

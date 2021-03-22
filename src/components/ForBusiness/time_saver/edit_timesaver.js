@@ -4,6 +4,8 @@ import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 
+const num_only_inputs = ["current_time_spent"]
+
 class EditTimeSaver extends Component {
     constructor(props) {
       super(props);
@@ -21,7 +23,8 @@ class EditTimeSaver extends Component {
           calculate_button: false,
           new_row_id: 1,
           redirect: false,
-          redirect_id: ""
+          redirect_id: "",
+          regexp : /^[0-9\b]+$/
 
       };
       
@@ -182,16 +185,25 @@ class EditTimeSaver extends Component {
     handleChange = (row, field, event) => {
         
         let values = [...this.state.rows];
+        
+        //Handle change for the select dropdown
         if(event.target.type === "select-one"){
             values[row][field] = this.state[event.target.name].find(product => event.target.value === product._id)
             this.setState({ values });
 
+        //Handle change for inputs that must be numbers
+        } else if(num_only_inputs.includes(field)){
+            let num_input = event.target.value
+            if(num_input === '' || this.state.regexp.test(num_input)){
+                values[row][field] = event.target.value;
+                this.setState({ values });
+                
+            }
+        //Handle change for inputs that are strings
         } else {
             values[row][field] = event.target.value;
             this.setState({ values });
         }
-
-        //console.log(this.state.rows)
         
     }
 
