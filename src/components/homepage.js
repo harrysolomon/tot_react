@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { config } from './constants'
+
 
 const card_data = [
     {
@@ -25,7 +27,8 @@ class Homepage extends Component {
     }
 
 render() {
-  return (
+    console.log(config)
+    return (
     <Container fluid="true">
         <div className="page-header">
             <div className ="row align-items-center">
