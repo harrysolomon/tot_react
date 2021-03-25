@@ -1,7 +1,7 @@
 //This is where I will put all of the api calls based on environment
 const prod = {
     url: {
-     API_URL: 'https://ro-why.herokuapp.com/'
+     API_URL: 'https://ro-why-api.herokuapp.com/'
     }
 };
 const dev = {

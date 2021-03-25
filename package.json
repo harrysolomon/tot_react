@@ -22,12 +22,13 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-select": "^4.1.0",
+    "serve": "^11.3.2",
     "uniqid": "^5.2.0"
   },
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
+    "start": "serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
