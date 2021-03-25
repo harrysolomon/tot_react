@@ -1,11 +1,19 @@
 import React, { Component, useState } from "react";
-import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col } from "react-bootstrap";
+import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col, OverlayTrigger, Tooltip } from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import { XSquareFill } from 'react-bootstrap-icons'
+import { XSquareFill, InfoCircle } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 import { config } from '../../constants'
 
 const num_only_inputs = ["current_time_spent"]
+
+const col_header_definitions = {
+    "name": "Name of the task performed",
+    "product": "What product or service best resembles this task?",
+    "current_time_spent": "How much time is currently being spent on this task?",
+    "employee": "Title of employee who performs this task",
+    "cadence": "How often is the employee repeating this task?"
+}
 
 class NewTimeSaver extends Component {
     constructor(props) {
@@ -25,7 +33,8 @@ class NewTimeSaver extends Component {
           new_row_id: 1,
           redirect: false,
           redirect_id: "",
-          regexp : /^[0-9\b]+$/
+          regexp : /^[0-9\b]+$/,
+          col_header_definitions
 
       };
       
@@ -33,6 +42,32 @@ class NewTimeSaver extends Component {
     }
 
 
+    /*theInfo(col_header){
+        
+        const col_header_definitions = {
+            "name": "sup",
+            "product": "What product or service best resembles this task?",
+            "current_time_spent": "How much time is currently being spent on this task?",
+            "employee": "Title of employee who performs this task",
+            "cadence": "How often is the employee repeating this task?"
+        }
+
+        console.log(col_header_definitions.name)
+        
+        
+        return(
+                <OverlayTrigger
+                key={col_header}
+                placement="top"
+                overlay={
+                    <Tooltip id={col_header}>
+                    {col_header_definitions.col_header}
+                    </Tooltip>
+                }
+                >
+                <Button size="sm" variant="link"><InfoCircle/></Button>
+                </OverlayTrigger>)
+    }*/
     tableOption(){
         return(
             <Col>
@@ -54,11 +89,71 @@ class NewTimeSaver extends Component {
                         <thead>
                             <tr>
                             <th className="text-center align-middle"> # </th>
-                            <th className="text-center"> Name </th>
-                            <th className="text-center"> Product </th>
-                            <th className="text-center"> Current Time Spent </th>
-                            <th className="text-center"> Employee </th>
-                            <th className="text-center"> Cadence </th>
+                            <th className="text-center"> Name
+                                <OverlayTrigger
+                                    key="name"
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip id="name">
+                                        {col_header_definitions.name}
+                                        </Tooltip>
+                                    }
+                                    >
+                                    <Button size="sm" variant="link"><InfoCircle/></Button>
+                                </OverlayTrigger>
+                            </th>
+                            <th className="text-center"> Product 
+                                <OverlayTrigger
+                                    key="name"
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip id="name">
+                                        {col_header_definitions.product}
+                                        </Tooltip>
+                                    }
+                                    >
+                                    <Button size="sm" variant="link"><InfoCircle/></Button>
+                                </OverlayTrigger>
+                            </th>
+                            <th className="text-center"> Current Time Spent
+                                <OverlayTrigger
+                                    key="name"
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip id="name">
+                                        {col_header_definitions.current_time_spent}
+                                        </Tooltip>
+                                    }
+                                    >
+                                    <Button size="sm" variant="link"><InfoCircle/></Button>
+                                </OverlayTrigger>
+                            </th>
+                            <th className="text-center"> Employee
+                                <OverlayTrigger
+                                    key="name"
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip id="name">
+                                        {col_header_definitions.employee}
+                                        </Tooltip>
+                                    }
+                                    >
+                                    <Button size="sm" variant="link"><InfoCircle/></Button>
+                                </OverlayTrigger> 
+                            </th>
+                            <th className="text-center"> Cadence
+                                <OverlayTrigger
+                                    key="name"
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip id="name">
+                                        {col_header_definitions.cadence}
+                                        </Tooltip>
+                                    }
+                                    >
+                                    <Button size="sm" variant="link"><InfoCircle/></Button>
+                                </OverlayTrigger>  
+                            </th>
                             <th />
                             </tr>
                         </thead>
