@@ -3,8 +3,10 @@ import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col } from "reac
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
+import { config } from '../../constants'
 
 const num_only_inputs = ["current_time_spent"]
+
 class NewTimeSaver extends Component {
     constructor(props) {
       super(props);
@@ -13,7 +15,7 @@ class NewTimeSaver extends Component {
           calc_name: "",
           products: {},
           employees: {},
-          cadences: {},
+          cadences: [],
           current_time_spent_period: {},
           data_loaded: false,
           navActive: "",
@@ -269,7 +271,7 @@ class NewTimeSaver extends Component {
         };
 
         Promise.all([
-            fetch('http://localhost:3000/timesaver',requestOptions)
+            fetch(config.url.API_URL + 'timesaver',requestOptions)
         ])
         .then(([res1]) => Promise.all([res1.json()]))
         .then(([data1]) => this.setState({
@@ -303,9 +305,9 @@ class NewTimeSaver extends Component {
 
 
         Promise.all([
-            fetch('http://localhost:3000/cadences/list'),
-            fetch('http://localhost:3000/timesaver/product/list',productRequestOptions),
-            fetch('http://localhost:3000/timesaver/employee/list',employeeRequestOptions)
+            fetch(config.url.API_URL + 'cadences/list'),
+            fetch(config.url.API_URL + 'timesaver/product/list',productRequestOptions),
+            fetch(config.url.API_URL + 'timesaver/employee/list',employeeRequestOptions)
         ])
         .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
         .then(([data1, data2, data3]) => this.setState({

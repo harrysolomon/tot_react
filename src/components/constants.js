@@ -1,13 +1,12 @@
 //This is where I will put all of the api calls based on environment
 const prod = {
     url: {
-     API_URL: 'https://myapp.herokuapp.com',
-     API_URL_USERS: 'https://myapp.herokuapp.com/users'
+     API_URL: 'https://ro-why.herokuapp.com/'
     }
 };
 const dev = {
     url: {
-     API_URL: 'http://localhost:3000'
+     API_URL: 'http://localhost:3000/'
     }
 };
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, FormControl, InputGroup, FormGroup, Row, Col } from "react-bootstrap";
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
+import { config } from '../../../constants'
 
 const num_only_inputs = ["cost"]
 const the_units = [
@@ -94,7 +95,7 @@ class NewEmployee extends Component {
         };
 
         Promise.all([
-            fetch('http://localhost:3000/timesaver/employee',requestOptions)
+            fetch(config.url.API_URL + 'timesaver/employee',requestOptions)
         ])
         .then(([res1]) => Promise.all([res1.json()]))
         .then(([data1]) => this.setState({

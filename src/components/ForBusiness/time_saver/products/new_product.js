@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, FormControl, InputGroup, FormGroup, Row, Col } from "react-bootstrap";
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
+import { config } from '../../../constants'
 
 const num_only_inputs = ["cost","time_save"]
 
@@ -99,7 +100,7 @@ class NewProduct extends Component {
         };
 
         Promise.all([
-            fetch('http://localhost:3000/timesaver/product',requestOptions)
+            fetch(config.url.API_URL + 'timesaver/product',requestOptions)
         ])
         .then(([res1]) => Promise.all([res1.json()]))
         .then(([data1]) => this.setState({

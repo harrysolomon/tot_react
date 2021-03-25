@@ -3,6 +3,7 @@ import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col } from "reac
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
+import { config } from '../../constants'
 
 const num_only_inputs = ["current_time_spent"]
 
@@ -264,7 +265,7 @@ class EditTimeSaver extends Component {
         })
 
         //this will be the put route instead for the edit mode
-        let path = 'http://localhost:3000/timesaver/edit/' + this.state.match.params.timesaverId 
+        let path = config.url.API_URL + 'timesaver/edit/' + this.state.match.params.timesaverId 
         const requestOptions = {
             method: "PUT",
             headers: { 'Content-Type': 'application/json' },
@@ -283,7 +284,7 @@ class EditTimeSaver extends Component {
 
     componentDidMount() {
         console.log(this.state.match)
-        let path = 'http://localhost:3000/timesaver/' + this.state.match.params.timesaverId
+        let path = config.url.API_URL + 'timesaver/' + this.state.match.params.timesaverId
         
         const productRequestOptions = {
             method: "POST",
@@ -300,9 +301,9 @@ class EditTimeSaver extends Component {
 
         Promise.all([
             fetch(path),
-            fetch('http://localhost:3000/cadences/list'),
-            fetch('http://localhost:3000/timesaver/product/list',productRequestOptions),
-            fetch('http://localhost:3000/timesaver/employee/list',employeeRequestOptions)
+            fetch(config.url.API_URL + 'cadences/list'),
+            fetch(config.url.API_URL + 'timesaver/product/list',productRequestOptions),
+            fetch(config.url.API_URL + 'timesaver/employee/list',employeeRequestOptions)
         ])
         .then(([res1, res2, res3, res4]) => Promise.all([res1.json(),res2.json(),res3.json(),res4.json()]))
         .then(([data1, data2, data3, data4]) => this.setState({

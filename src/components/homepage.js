@@ -27,7 +27,7 @@ class Homepage extends Component {
     }
 
 render() {
-    console.log(config)
+    console.log(config.url.API_URL)
     return (
     <Container fluid="true">
         <div className="page-header">

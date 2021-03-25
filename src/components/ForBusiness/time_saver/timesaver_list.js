@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Card, Row, Col, Nav, Button} from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import { config } from '../../constants'
 
 const the_columns = [
     "Name","Client","Created Time", "Value"
@@ -286,9 +287,9 @@ class ROIList extends Component {
         };
         
         Promise.all([
-            fetch('http://localhost:3000/timesaver/calculator/list'),
-            fetch('http://localhost:3000/timesaver/product/list',productRequestOptions),
-            fetch('http://localhost:3000/timesaver/employee/list',employeeRequestOptions)
+            fetch(config.url.API_URL + 'timesaver/calculator/list'),
+            fetch(config.url.API_URL + 'timesaver/product/list',productRequestOptions),
+            fetch(config.url.API_URL + 'timesaver/employee/list',employeeRequestOptions)
         ])
         .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
         .then(([data1, data2, data3]) => this.setState({

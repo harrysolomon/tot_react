@@ -5,6 +5,7 @@ import _ from 'lodash'
 import LineChart from '../../library/line_chart'
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
+import { config } from '../../constants'
 
 class TimeSaverView extends Component {
     constructor(props) {
@@ -197,7 +198,7 @@ class TimeSaverView extends Component {
 
     handleChange = (e) => {
         console.log(e.target.value === '')
-        let path = 'http://localhost:3000/timesaver/' + this.state.match.params.timesaverId +'?'
+        let path = config.url.API_URL + 'timesaver/' + this.state.match.params.timesaverId +'?'
         if(e.target.name === "time_increment"){
             let increment = this.state.cadences.find(cadence => e.target.value === cadence._id)
             let params = "period=" + increment["period"] + "&range=" + this.state.num_periods_req
@@ -264,11 +265,11 @@ class TimeSaverView extends Component {
 
     componentDidMount() {
         
-        let path = 'http://localhost:3000/timesaver/' + this.state.match.params.timesaverId +'?'
+        let path = config.url.API_URL + 'timesaver/' + this.state.match.params.timesaverId +'?'
         let params = "period=quarter&range=8"
         Promise.all([
             fetch(path + params),
-            fetch('http://localhost:3000/cadences/list')
+            fetch(config.url.API_URL + 'cadences/list')
         ])
         .then(([res1,res2]) => Promise.all([res1.json(),res2.json()]))
         .then(([data1,data2]) => this.setState({

@@ -5,6 +5,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
+import { config } from '../constants'
 
 class ForPeople extends Component {
     constructor(props) {
@@ -17,7 +18,7 @@ class ForPeople extends Component {
     }
 
 componentDidMount() {
-    axios.get(`http://localhost:3000/forpeople`)
+    axios.get(config.url.API_URL + 'forpeople')
       .then(res => {
         const tiles = res.data;
         this.setState({ tiles });
