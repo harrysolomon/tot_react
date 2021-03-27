@@ -4,6 +4,7 @@ import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 import { config } from '../../constants'
+import { cadences } from '../../cadences'
 
 const num_only_inputs = ["current_time_spent"]
 
@@ -15,7 +16,7 @@ class EditTimeSaver extends Component {
           calc_name: "",
           products: {},
           employees: {},
-          cadences: {},
+          cadences: cadences,
           current_time_spent_period: {},
           data_loaded: false,
           navActive: "",
@@ -301,17 +302,15 @@ class EditTimeSaver extends Component {
 
         Promise.all([
             fetch(path),
-            fetch(config.url.API_URL + 'cadences/list'),
             fetch(config.url.API_URL + 'timesaver/product/list',productRequestOptions),
             fetch(config.url.API_URL + 'timesaver/employee/list',employeeRequestOptions)
         ])
-        .then(([res1, res2, res3, res4]) => Promise.all([res1.json(),res2.json(),res3.json(),res4.json()]))
-        .then(([data1, data2, data3, data4]) => this.setState({
+        .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
+        .then(([data1, data2, data3]) => this.setState({
             rows: data1.meta[0].inputs,
             calc_name: data1.meta[0].name,
-            products: data3,
-            employees: data4,
-            cadences: data2, 
+            products: data2,
+            employees: data3,
             data_loaded: true
         }))
     }

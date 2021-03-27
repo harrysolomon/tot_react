@@ -6,6 +6,7 @@ import LineChart from '../../library/line_chart'
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 import { config } from '../../constants'
+import { cadences } from '../../cadences'
 
 class TimeSaverView extends Component {
     constructor(props) {
@@ -17,7 +18,7 @@ class TimeSaverView extends Component {
           data: {},
           options: {},
           tableData: [],
-          cadences: {},
+          cadences: cadences,
           location: this.props.location,
           match: this.props.match,
           input_nav: false,
@@ -79,7 +80,7 @@ class TimeSaverView extends Component {
                                             <span className="d-block h5 mb-0">{item.products.name} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                                         </td>   
                                         <td key="current_time_spent">
-                                            <span className="d-block h5 mb-0">{item.current_time_spent} / {item.current_time_spent_period.plural}<i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                            <span className="d-block h5 mb-0">{item.current_time_spent} {item.current_time_spent_period.plural} per {item.cadences.period}<i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                                         </td>
                                         <td key="employees">
                                             <span className="d-block h5 mb-0">{item.employees.name}<i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
@@ -269,12 +270,10 @@ class TimeSaverView extends Component {
         let params = "period=quarter&range=8"
         Promise.all([
             fetch(path + params),
-            fetch(config.url.API_URL + 'cadences/list')
         ])
-        .then(([res1,res2]) => Promise.all([res1.json(),res2.json()]))
-        .then(([data1,data2]) => this.setState({
+        .then(([res1]) => Promise.all([res1.json()]))
+        .then(([data1]) => this.setState({
             rows: data1.meta[0].inputs,
-            cadences: data2,
             data_loaded: true,
             graph_nav: false,
             table_nav: false,

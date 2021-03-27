@@ -1,9 +1,10 @@
 import React, { Component, useState } from "react";
-import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col, OverlayTrigger, Tooltip, Form } from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import { XSquareFill, InfoCircle } from 'react-bootstrap-icons'
+import { XSquareFill, InfoCircle, Slash } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 import { config } from '../../constants'
+import { cadences } from '../../cadences'
 
 const num_only_inputs = ["current_time_spent"]
 
@@ -15,6 +16,10 @@ const col_header_definitions = {
     "cadence": "How often is the employee repeating this task?"
 }
 
+const inputStyle = {
+    paddingLeft: "0px 0"
+  };
+
 class NewTimeSaver extends Component {
     constructor(props) {
       super(props);
@@ -23,7 +28,7 @@ class NewTimeSaver extends Component {
           calc_name: "",
           products: {},
           employees: {},
-          cadences: [],
+          cadences: cadences,
           current_time_spent_period: {},
           data_loaded: false,
           navActive: "",
@@ -42,32 +47,6 @@ class NewTimeSaver extends Component {
     }
 
 
-    /*theInfo(col_header){
-        
-        const col_header_definitions = {
-            "name": "sup",
-            "product": "What product or service best resembles this task?",
-            "current_time_spent": "How much time is currently being spent on this task?",
-            "employee": "Title of employee who performs this task",
-            "cadence": "How often is the employee repeating this task?"
-        }
-
-        console.log(col_header_definitions.name)
-        
-        
-        return(
-                <OverlayTrigger
-                key={col_header}
-                placement="top"
-                overlay={
-                    <Tooltip id={col_header}>
-                    {col_header_definitions.col_header}
-                    </Tooltip>
-                }
-                >
-                <Button size="sm" variant="link"><InfoCircle/></Button>
-                </OverlayTrigger>)
-    }*/
     tableOption(){
         return(
             <Col>
@@ -189,9 +168,9 @@ class NewTimeSaver extends Component {
                                 </InputGroup>
                             </td>
                             <td key="timespent">
-                                <Row>
-                                    <InputGroup>
-                                        <Col md={6}>
+                                <Form>
+                                <Form.Row>
+                                        <Col md={3  }>
                                             <FormControl
                                             type="text"
                                             name="current_time_spent"
@@ -199,28 +178,42 @@ class NewTimeSaver extends Component {
                                             onChange={this.handleChange.bind(this, idx, "current_time_spent")}
                                             />
                                         </Col>
-                                        <Col md={6} key="current_time_spent_period">
-                                            <InputGroup.Append>
-                                                <InputGroup>
-                                                    <FormControl
-                                                    as="select"
-                                                    name="cadences"
-                                                    value={item.current_time_spent_period._id}
-                                                    onChange={this.handleChange.bind(this, idx, "current_time_spent_period")}>
-                                                        <React.Fragment>
-                                                            <option>{item.current_time_spent_period.abbr || 'Choose...'}</option>
-                                                            {this.state.cadences.map((cadence) => {
-                                                        if(item.current_time_spent_period._id === cadence._id){}
-                                                        else{
-                                                        return(
-                                                            <option key={cadence._id} value={cadence._id}>{cadence.abbr}</option>)}})}
-                                                        </React.Fragment>
-                                                    </FormControl>
-                                                </InputGroup>
-                                            </InputGroup.Append>
+                                        <Col md={4} key="current_time_spent_period">
+                                                <FormControl
+                                                as="select"
+                                                name="cadences"
+                                                value={item.current_time_spent_period._id}
+                                                onChange={this.handleChange.bind(this, idx, "current_time_spent_period")}>
+                                                    <React.Fragment>
+                                                        <option>{item.current_time_spent_period.abbr || 'Choose...'}</option>
+                                                        {this.state.cadences.map((cadence) => {
+                                                    if(item.current_time_spent_period._id === cadence._id){}
+                                                    else{
+                                                    return(
+                                                        <option key={cadence._id} value={cadence._id}>{cadence.abbr}</option>)}})}
+                                                    </React.Fragment>
+                                                </FormControl>
                                         </Col>
-                                    </InputGroup>
-                                </Row>
+                                        <div style={{textAlign: 'bottom'}}>per</div>
+                                        
+                                        <Col md={4}>
+                                                <FormControl
+                                                as="select"
+                                                name="cadences"
+                                                value={item.cadences._id}
+                                                onChange={this.handleChange.bind(this, idx, "cadences")}>
+                                                    <React.Fragment>
+                                                        <option>{item.cadences.name || 'Choose...'}</option>
+                                                        {this.state.cadences.map((cadence) => {
+                                                    if(item.cadences._id === cadence._id){}
+                                                    else{
+                                                    return(
+                                                        <option key={cadence._id} value={cadence._id}>{cadence.name}</option>)}})}
+                                                    </React.Fragment>
+                                                </FormControl>
+                                        </Col>
+                                </Form.Row>
+                                </Form>
                                 
                             </td>
                             <td key="employees">
@@ -241,7 +234,7 @@ class NewTimeSaver extends Component {
                                     </FormControl>
                                 </InputGroup>
                             </td>
-                            <td key="cadence">
+                            {/*<td key="cadence">
                                 <InputGroup>
                                     <FormControl
                                     as="select"
@@ -258,7 +251,7 @@ class NewTimeSaver extends Component {
                                         </React.Fragment>
                                     </FormControl>
                                 </InputGroup>
-                            </td>
+                                        </td>*/}
                             <td className="text-center" key="removebutton">
                                 <Button
                                 variant="outline-danger"
@@ -320,7 +313,6 @@ class NewTimeSaver extends Component {
         //so the way this would work is assigning this variable to the data returned from the DB? 
         //Or will that ruin assignment?
         //Or we would have to do a post for every row added.
-        
         const new_row = {
             "_id": this.state.new_row_id +1,
             "name": "",
@@ -400,16 +392,16 @@ class NewTimeSaver extends Component {
 
 
         Promise.all([
-            fetch(config.url.API_URL + 'cadences/list'),
+            //fetch(config.url.API_URL + 'cadences/list'),
             fetch(config.url.API_URL + 'timesaver/product/list',productRequestOptions),
             fetch(config.url.API_URL + 'timesaver/employee/list',employeeRequestOptions)
         ])
-        .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
-        .then(([data1, data2, data3]) => this.setState({
+        .then(([res1, res2]) => Promise.all([res1.json(),res2.json()]))
+        .then(([data1, data2]) => this.setState({
             rows: the_rows,
-            products: data2,
-            employees: data3,
-            cadences: data1, 
+            products: data1,
+            employees: data2,
+            //cadences: data1, 
             data_loaded: true
         }))
     }
@@ -422,7 +414,7 @@ render() {
             let path = "/for-business/timesaver/"+this.state.redirect_id
             return <Redirect to={{pathname: path}}/>;
         }
-        console.log(this.state.rows)
+        //console.log(cadence)
     return( 
         
         <div className="container-fluid">

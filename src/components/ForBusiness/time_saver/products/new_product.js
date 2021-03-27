@@ -3,46 +3,15 @@ import { Button, FormControl, InputGroup, FormGroup, Row, Col } from "react-boot
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 import { config } from '../../../constants'
+import { cadences } from '../../../cadences'
 
 const num_only_inputs = ["cost","time_save"]
 
-const the_units = [
-    {
-      "_id": "1",
-      "cost": "Daily",
-      "time_unit": "Days",
-      "period": "day"
-    },
-    {
-        "_id": "2",
-        "cost": "Hourly",
-        "time_unit": "Hours",
-        "period": "hour"
-    },
-    {
-        "_id": "3",
-        "cost": "Weekly",
-        "time_unit": "Weeks",
-        "period": "week"
-    },
-    {
-        "_id": "4",
-        "cost": "Monthly",
-        "time_unit": "Months",
-        "period": "month"
-    },
-    {
-        "_id": "5",
-        "cost": "Annually",
-        "time_unit": "Years",
-        "period": "year"
-    }
-  ]
 class NewProduct extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          units: the_units,
+          units: cadences,
           data_loaded: false,
           location: this.props.location,
           match: this.props.match,
@@ -189,12 +158,12 @@ class NewProduct extends Component {
                                 value={this.state.request[0].period._id}
                                 onChange={this.handleChange.bind(this)}>
                                     <React.Fragment>
-                                        <option>{this.state.request[0].period.cost || 'Choose...'}</option>
+                                        <option>{this.state.request[0].period.name || 'Choose...'}</option>
                                         {this.state.units.map((unit) => {
                                         if(this.state.request[0].period._id === unit._id){}
                                         else{
                                         return(
-                                            <option key={unit._id} value={unit._id}>{unit.cost}</option>)}})}
+                                            <option key={unit._id} value={unit._id}>{unit.name}</option>)}})}
                                     </React.Fragment>
                                 </FormControl>
                             </InputGroup>
@@ -224,12 +193,12 @@ class NewProduct extends Component {
                                 value={this.state.request[0].time_unit._id}
                                 onChange={this.handleChange.bind(this)}>
                                     <React.Fragment>
-                                        <option>{this.state.request[0].time_unit.time_unit || 'Choose...'}</option>
+                                        <option>{this.state.request[0].time_unit.plural || 'Choose...'}</option>
                                         {this.state.units.map((unit) => {
                                         if(this.state.request[0].time_unit._id === unit._id){}
                                         else{
                                         return(
-                                            <option key={unit._id} value={unit._id}>{unit.time_unit}</option>)}})}
+                                            <option key={unit._id} value={unit._id}>{unit.plural}</option>)}})}
                                     </React.Fragment>
                                 </FormControl>
                             </InputGroup>
