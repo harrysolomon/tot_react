@@ -21,7 +21,7 @@ const the_cadences = [
         "period": "month",
         "plural": "Months",
         "abbr": "Mths",
-        "singular": "Week"
+        "singular": "Month"
     },
     {
         "_id": "4",

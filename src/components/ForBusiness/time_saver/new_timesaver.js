@@ -16,10 +16,6 @@ const col_header_definitions = {
     "cadence": "How often is the employee repeating this task?"
 }
 
-const inputStyle = {
-    paddingLeft: "0px 0"
-  };
-
 class NewTimeSaver extends Component {
     constructor(props) {
       super(props);
@@ -39,7 +35,6 @@ class NewTimeSaver extends Component {
           redirect: false,
           redirect_id: "",
           regexp : /^[0-9\b]+$/,
-          col_header_definitions
 
       };
       
@@ -120,19 +115,6 @@ class NewTimeSaver extends Component {
                                     <Button size="sm" variant="link"><InfoCircle/></Button>
                                 </OverlayTrigger> 
                             </th>
-                            <th className="text-center"> Cadence
-                                <OverlayTrigger
-                                    key="name"
-                                    placement="top"
-                                    overlay={
-                                        <Tooltip id="name">
-                                        {col_header_definitions.cadence}
-                                        </Tooltip>
-                                    }
-                                    >
-                                    <Button size="sm" variant="link"><InfoCircle/></Button>
-                                </OverlayTrigger>  
-                            </th>
                             <th />
                             </tr>
                         </thead>
@@ -185,16 +167,18 @@ class NewTimeSaver extends Component {
                                                 value={item.current_time_spent_period._id}
                                                 onChange={this.handleChange.bind(this, idx, "current_time_spent_period")}>
                                                     <React.Fragment>
-                                                        <option>{item.current_time_spent_period.abbr || 'Choose...'}</option>
+                                                        <option>{item.current_time_spent_period.plural || 'Choose...'}</option>
                                                         {this.state.cadences.map((cadence) => {
                                                     if(item.current_time_spent_period._id === cadence._id){}
                                                     else{
                                                     return(
-                                                        <option key={cadence._id} value={cadence._id}>{cadence.abbr}</option>)}})}
+                                                        <option key={cadence._id} value={cadence._id}>{cadence.plural}</option>)}})}
                                                     </React.Fragment>
                                                 </FormControl>
                                         </Col>
-                                        <div style={{textAlign: 'bottom'}}>per</div>
+                                        <Col md={1}>
+                                        <div className="h-100 d-flex align-items-center">per</div>
+                                        </Col>
                                         
                                         <Col md={4}>
                                                 <FormControl
@@ -203,12 +187,12 @@ class NewTimeSaver extends Component {
                                                 value={item.cadences._id}
                                                 onChange={this.handleChange.bind(this, idx, "cadences")}>
                                                     <React.Fragment>
-                                                        <option>{item.cadences.name || 'Choose...'}</option>
+                                                        <option>{item.cadences.singular || 'Choose...'}</option>
                                                         {this.state.cadences.map((cadence) => {
                                                     if(item.cadences._id === cadence._id){}
                                                     else{
                                                     return(
-                                                        <option key={cadence._id} value={cadence._id}>{cadence.name}</option>)}})}
+                                                        <option key={cadence._id} value={cadence._id}>{cadence.singular}</option>)}})}
                                                     </React.Fragment>
                                                 </FormControl>
                                         </Col>
@@ -234,24 +218,6 @@ class NewTimeSaver extends Component {
                                     </FormControl>
                                 </InputGroup>
                             </td>
-                            {/*<td key="cadence">
-                                <InputGroup>
-                                    <FormControl
-                                    as="select"
-                                    name="cadences"
-                                    value={item.cadences._id}
-                                    onChange={this.handleChange.bind(this, idx, "cadences")}>
-                                        <React.Fragment>
-                                            <option>{item.cadences.name || 'Choose...'}</option>
-                                            {this.state.cadences.map((cadence) => {
-                                        if(item.cadences._id === cadence._id){}
-                                        else{
-                                        return(
-                                            <option key={cadence._id} value={cadence._id}>{cadence.name}</option>)}})}
-                                        </React.Fragment>
-                                    </FormControl>
-                                </InputGroup>
-                                        </td>*/}
                             <td className="text-center" key="removebutton">
                                 <Button
                                 variant="outline-danger"
@@ -392,7 +358,6 @@ class NewTimeSaver extends Component {
 
 
         Promise.all([
-            //fetch(config.url.API_URL + 'cadences/list'),
             fetch(config.url.API_URL + 'timesaver/product/list',productRequestOptions),
             fetch(config.url.API_URL + 'timesaver/employee/list',employeeRequestOptions)
         ])
@@ -401,7 +366,6 @@ class NewTimeSaver extends Component {
             rows: the_rows,
             products: data1,
             employees: data2,
-            //cadences: data1, 
             data_loaded: true
         }))
     }
@@ -414,7 +378,7 @@ render() {
             let path = "/for-business/timesaver/"+this.state.redirect_id
             return <Redirect to={{pathname: path}}/>;
         }
-        //console.log(cadence)
+        console.log(this.state.cadences)
     return( 
         
         <div className="container-fluid">

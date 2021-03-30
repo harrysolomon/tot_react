@@ -1,12 +1,20 @@
 import React, { Component } from "react";
-import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col } from "react-bootstrap";
+import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col, OverlayTrigger, Tooltip, Form } from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import { XSquareFill } from 'react-bootstrap-icons'
+import { XSquareFill, InfoCircle } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 import { config } from '../../constants'
 import { cadences } from '../../cadences'
 
 const num_only_inputs = ["current_time_spent"]
+
+const col_header_definitions = {
+    "name": "Name of the task performed",
+    "product": "What product or service best resembles this task?",
+    "current_time_spent": "How much time is currently being spent on this task?",
+    "employee": "Title of employee who performs this task",
+    "cadence": "How often is the employee repeating this task?"
+}
 
 class EditTimeSaver extends Component {
     constructor(props) {
@@ -55,11 +63,58 @@ class EditTimeSaver extends Component {
                         <thead>
                             <tr>
                             <th className="text-center align-middle"> # </th>
-                            <th className="text-center"> Name </th>
-                            <th className="text-center"> Product </th>
-                            <th className="text-center"> Current Time Spent </th>
-                            <th className="text-center"> Employee </th>
-                            <th className="text-center"> Cadence </th>
+                            <th className="text-center"> Name
+                                <OverlayTrigger
+                                    key="name"
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip id="name">
+                                        {col_header_definitions.name}
+                                        </Tooltip>
+                                    }
+                                    >
+                                    <Button size="sm" variant="link"><InfoCircle/></Button>
+                                </OverlayTrigger>
+                            </th>
+                            <th className="text-center"> Product 
+                                <OverlayTrigger
+                                    key="name"
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip id="name">
+                                        {col_header_definitions.product}
+                                        </Tooltip>
+                                    }
+                                    >
+                                    <Button size="sm" variant="link"><InfoCircle/></Button>
+                                </OverlayTrigger>
+                            </th>
+                            <th className="text-center"> Current Time Spent
+                                <OverlayTrigger
+                                    key="name"
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip id="name">
+                                        {col_header_definitions.current_time_spent}
+                                        </Tooltip>
+                                    }
+                                    >
+                                    <Button size="sm" variant="link"><InfoCircle/></Button>
+                                </OverlayTrigger>
+                            </th>
+                            <th className="text-center"> Employee
+                                <OverlayTrigger
+                                    key="name"
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip id="name">
+                                        {col_header_definitions.employee}
+                                        </Tooltip>
+                                    }
+                                    >
+                                    <Button size="sm" variant="link"><InfoCircle/></Button>
+                                </OverlayTrigger> 
+                            </th>
                             <th />
                             </tr>
                         </thead>
@@ -95,9 +150,9 @@ class EditTimeSaver extends Component {
                                 </InputGroup>
                             </td>
                             <td key="timespent">
-                                <Row>
-                                    <InputGroup>
-                                        <Col md={6}>
+                                <Form>
+                                <Form.Row>
+                                        <Col md={3  }>
                                             <FormControl
                                             type="text"
                                             name="current_time_spent"
@@ -105,28 +160,45 @@ class EditTimeSaver extends Component {
                                             onChange={this.handleChange.bind(this, idx, "current_time_spent")}
                                             />
                                         </Col>
-                                        <Col md={6} key="current_time_spent_period">
-                                            <InputGroup.Append>
-                                                <InputGroup>
-                                                    <FormControl
-                                                    as="select"
-                                                    name="cadences"
-                                                    value={item.current_time_spent_period._id}
-                                                    onChange={this.handleChange.bind(this, idx, "current_time_spent_period")}>
-                                                        <React.Fragment>
-                                                            <option>{item.current_time_spent_period.abbr || 'Choose...'}</option>
-                                                            {this.state.cadences.map((cadence) => {
-                                                        if(item.current_time_spent_period._id === cadence._id){}
-                                                        else{
-                                                        return(
-                                                            <option key={cadence._id} value={cadence._id}>{cadence.abbr}</option>)}})}
-                                                        </React.Fragment>
-                                                    </FormControl>
-                                                </InputGroup>
-                                            </InputGroup.Append>
+                                        <Col md={4} key="current_time_spent_period">
+                                                <FormControl
+                                                as="select"
+                                                name="cadences"
+                                                value={item.current_time_spent_period._id}
+                                                onChange={this.handleChange.bind(this, idx, "current_time_spent_period")}>
+                                                    <React.Fragment>
+                                                        <option>{this.state.cadences.find(cadence => item.current_time_spent_period._id === cadence._id).plural || 'Choose...'}</option>
+                                                        {this.state.cadences.map((cadence) => {
+                                                    if(item.current_time_spent_period._id === cadence._id){}
+                                                    else{
+                                                    return(
+                                                        <option key={cadence._id} value={cadence._id}>{cadence.plural}</option>)}})}
+                                                    </React.Fragment>
+                                                </FormControl>
                                         </Col>
-                                    </InputGroup>
-                                </Row>
+                                        <Col md={1}>
+                                        <div className="h-100 d-flex align-items-center">per</div>
+                                        </Col>
+                                        
+                                        <Col md={4}>
+                                                <FormControl
+                                                as="select"
+                                                name="cadences"
+                                                value={item.cadences._id}
+                                                onChange={this.handleChange.bind(this, idx, "cadences")}>
+                                                    <React.Fragment>
+                                                        <option>{this.state.cadences.find(cadence => item.cadences._id === cadence._id).singular || 'Choose...'}</option>
+                                                        {this.state.cadences.map((cadence) => {
+                                                    if(item.cadences._id === cadence._id){}
+                                                    else{
+                                                    return(
+                                                        <option key={cadence._id} value={cadence._id}>{cadence.singular}</option>)}})}
+                                                    </React.Fragment>
+                                                </FormControl>
+                                        </Col>
+                                </Form.Row>
+                                </Form>
+                                
                             </td>
                             <td key="employees">
                                 <InputGroup>
@@ -142,24 +214,6 @@ class EditTimeSaver extends Component {
                                         else{
                                         return(
                                             <option key={employee._id} value={employee._id}>{employee.name}</option>)}})}
-                                        </React.Fragment>
-                                    </FormControl>
-                                </InputGroup>
-                            </td>
-                            <td key="cadence">
-                                <InputGroup>
-                                    <FormControl
-                                    as="select"
-                                    name="cadences"
-                                    value={item.cadences._id}
-                                    onChange={this.handleChange.bind(this, idx, "cadences")}>
-                                        <React.Fragment>
-                                            <option>{item.cadences.name || 'Choose...'}</option>
-                                            {this.state.cadences.map((cadence) => {
-                                        if(item.cadences._id === cadence._id){}
-                                        else{
-                                        return(
-                                            <option key={cadence._id} value={cadence._id}>{cadence.name}</option>)}})}
                                         </React.Fragment>
                                     </FormControl>
                                 </InputGroup>
