@@ -1,5 +1,13 @@
 const the_cadences = [
     {
+        "_id": "6",
+        "name": "Hourly",
+        "period": "hour",
+        "plural": "Hours",
+        "abbr": "Hrs",
+        "singular": "Hour"
+    },
+    {
         "_id": "1",
         "name": "Daily",
         "period": "day",
@@ -38,14 +46,6 @@ const the_cadences = [
         "plural": "Years",
         "abbr": "Yrs",
         "singular": "Year"
-    },
-    {
-        "_id": "6",
-        "name": "Hourly",
-        "period": "hour",
-        "plural": "Hours",
-        "abbr": "Hrs",
-        "singular": "Hour"
     }
 ]
 

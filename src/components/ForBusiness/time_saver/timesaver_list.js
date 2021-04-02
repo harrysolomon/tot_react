@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Card, Row, Col, Nav, Button} from "react-bootstrap";
+import { Card, Row, Col, Nav, Button, FormControl} from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { config } from '../../constants'
+import { cadences } from '../../cadences'
 
 const the_columns = [
     "Name","Client","Created Time", "Value"
@@ -22,6 +23,7 @@ class ROIList extends Component {
       this.state = {
           columns: the_columns,
           rows: [],
+          cadences: cadences,
           product_cols: the_product_cols,
           product_list: [],
           employee_cols: the_employee_cols,
@@ -30,7 +32,8 @@ class ROIList extends Component {
           open: false,
           search_result: [],
           search_detail: [],
-          navActive: ""
+          navActive: "",
+          value_period: cadences.find(cadence => cadence.period === "year")
       };
       this.activeNav = this.activeNav.bind(this)
     }
@@ -54,6 +57,7 @@ class ROIList extends Component {
                     </Col>
                 </Card.Header>
                 <Card.Body>
+                    <Row>
                     <Col md={4}>
                         <div className="form-group w-md-50">
                             <div className="input-group input-group-merge">
@@ -66,6 +70,24 @@ class ROIList extends Component {
                             </div>
                         </div>
                     </Col>
+                    <Col md={6}></Col>
+                    <Col md={2}>
+                        <FormControl
+                        as="select"
+                        name="cadences"
+                        value={this.state.value_period._id}
+                        onChange={this.handleChange.bind(this)}>
+                            <React.Fragment>
+                                <option>{this.state.value_period.singular || 'Choose...'}</option>
+                                {this.state.cadences.map((cadence) => {
+                            if(this.state.value_period._id === cadence._id){}
+                            else{
+                            return(
+                                <option key={cadence._id} value={cadence._id}>{cadence.singular}</option>)}})}
+                            </React.Fragment>
+                        </FormControl>
+                    </Col>
+                    </Row>
                     <div className="table-responsive">
                         <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
                             <thead className="thead-light">
@@ -93,7 +115,9 @@ class ROIList extends Component {
                                     <span className="d-block h5 mb-0">{item.createdAt} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                                 </td>
                                 <td>
-                                    <span className="d-block h5 mb-0">{item.values[0].value} / {item.values[0].period} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+
+                                    <span className="d-block h5 mb-0">${item.values.find(value => this.state.value_period.period === value.period).value} / {this.state.value_period.singular}</span>
+
                                 </td>
                                 </tr>))}
                                 
@@ -262,6 +286,14 @@ class ROIList extends Component {
         this.setState({ navActive: eventKey})
     }
 
+    handleChange = (e) => {
+        console.log(e.target)
+        this.setState({
+            value_period: this.state.cadences.find(cadence => e.target.value === cadence._id)
+        })
+        
+    }
+
    // this function determines the content to display based on the active nav 
     contentDisplay(){
         if(this.state.navActive === '' || this.state.navActive === "calculators"){
@@ -306,7 +338,6 @@ class ROIList extends Component {
 render() {
     //console.log(this.state.form_inputs.push(this.state.unchanged_inputs))
     if(this.state.data_loaded) {
-        console.log(this.state)
     return( 
         
         <div className="container-fluid">
