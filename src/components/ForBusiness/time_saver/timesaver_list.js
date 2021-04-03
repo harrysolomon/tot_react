@@ -306,22 +306,11 @@ class ROIList extends Component {
     }
 
     componentDidMount(){
-        const productRequestOptions = {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(["_id", "name", "cost", "period", "time_save", "time_unit","description"])
-        };
-
-        const employeeRequestOptions = {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(["_id", "name", "cost", "period","department"])
-        };
         
         Promise.all([
             fetch(config.url.API_URL + 'timesaver/calculator/list'),
-            fetch(config.url.API_URL + 'timesaver/product/list',productRequestOptions),
-            fetch(config.url.API_URL + 'timesaver/employee/list',employeeRequestOptions)
+            fetch(config.url.API_URL + 'timesaver/product/list'),
+            fetch(config.url.API_URL + 'timesaver/employee/list')
         ])
         .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
         .then(([data1, data2, data3]) => this.setState({

@@ -5,16 +5,9 @@ import { XSquareFill, InfoCircle } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 import { config } from '../../constants'
 import { cadences } from '../../cadences'
+import { definitions } from '../../definitions'
 
 const num_only_inputs = ["current_time_spent"]
-
-const col_header_definitions = {
-    "name": "Name of the task performed",
-    "product": "What product or service best resembles this task?",
-    "current_time_spent": "How much time is currently being spent on this task?",
-    "employee": "Title of employee who performs this task",
-    "cadence": "How often is the employee repeating this task?"
-}
 
 class EditTimeSaver extends Component {
     constructor(props) {
@@ -69,7 +62,7 @@ class EditTimeSaver extends Component {
                                     placement="top"
                                     overlay={
                                         <Tooltip id="name">
-                                        {col_header_definitions.name}
+                                        {definitions.name}
                                         </Tooltip>
                                     }
                                     >
@@ -78,11 +71,11 @@ class EditTimeSaver extends Component {
                             </th>
                             <th className="text-center"> Product 
                                 <OverlayTrigger
-                                    key="name"
+                                    key="product"
                                     placement="top"
                                     overlay={
-                                        <Tooltip id="name">
-                                        {col_header_definitions.product}
+                                        <Tooltip id="product">
+                                        {definitions.product}
                                         </Tooltip>
                                     }
                                     >
@@ -91,11 +84,11 @@ class EditTimeSaver extends Component {
                             </th>
                             <th className="text-center"> Current Time Spent
                                 <OverlayTrigger
-                                    key="name"
+                                    key="time_spent"
                                     placement="top"
                                     overlay={
-                                        <Tooltip id="name">
-                                        {col_header_definitions.current_time_spent}
+                                        <Tooltip id="time_spent">
+                                        {definitions.current_time_spent}
                                         </Tooltip>
                                     }
                                     >
@@ -104,11 +97,11 @@ class EditTimeSaver extends Component {
                             </th>
                             <th className="text-center"> Employee
                                 <OverlayTrigger
-                                    key="name"
+                                    key="employee"
                                     placement="top"
                                     overlay={
-                                        <Tooltip id="name">
-                                        {col_header_definitions.employee}
+                                        <Tooltip id="employee">
+                                        {definitions.employee}
                                         </Tooltip>
                                     }
                                     >
@@ -340,24 +333,11 @@ class EditTimeSaver extends Component {
     componentDidMount() {
         console.log(this.state.match)
         let path = config.url.API_URL + 'timesaver/' + this.state.match.params.timesaverId
-        
-        const productRequestOptions = {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(["_id", "name", "cost", "period", "time_save", "time_unit"])
-        };
-
-        const employeeRequestOptions = {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(["_id", "name", "cost", "period"])
-        };
-
 
         Promise.all([
             fetch(path),
-            fetch(config.url.API_URL + 'timesaver/product/list',productRequestOptions),
-            fetch(config.url.API_URL + 'timesaver/employee/list',employeeRequestOptions)
+            fetch(config.url.API_URL + 'timesaver/product/list'),
+            fetch(config.url.API_URL + 'timesaver/employee/list')
         ])
         .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
         .then(([data1, data2, data3]) => this.setState({

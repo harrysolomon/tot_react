@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { Button, Card, FormControl, InputGroup, FormGroup, FormLabel, Container, Row, Col, Nav, Navbar} from "react-bootstrap";
+import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col, Nav, Tooltip, OverlayTrigger} from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import _ from 'lodash'
 import LineChart from '../../library/line_chart'
-import { XSquareFill } from 'react-bootstrap-icons'
+import { XSquareFill, InfoCircle } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
 import { config } from '../../constants'
 import { cadences } from '../../cadences'
+import { definitions } from '../../definitions'
 
 class TimeSaverView extends Component {
     constructor(props) {
@@ -61,10 +62,58 @@ class TimeSaverView extends Component {
                             <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
                                 <thead>
                                     <tr>
-                                        <th> Name </th>
-                                        <th> Product </th>
-                                        <th> Current Time Spent </th>
-                                        <th> Employee </th>
+                                        <th> Name 
+                                            <OverlayTrigger
+                                                key="name"
+                                                placement="top"
+                                                overlay={
+                                                    <Tooltip id="name">
+                                                    {definitions.name}
+                                                    </Tooltip>
+                                                }
+                                                >
+                                                <Button size="sm" variant="link"><InfoCircle/></Button>
+                                            </OverlayTrigger>
+                                        </th>
+                                        <th> Product 
+                                            <OverlayTrigger
+                                                key="product"
+                                                placement="top"
+                                                overlay={
+                                                    <Tooltip id="product">
+                                                    {definitions.product}
+                                                    </Tooltip>
+                                                }
+                                                >
+                                                <Button size="sm" variant="link"><InfoCircle/></Button>
+                                            </OverlayTrigger>
+                                        </th>
+                                        <th> Current Time Spent 
+                                            <OverlayTrigger
+                                                key="time_spent"
+                                                placement="top"
+                                                overlay={
+                                                    <Tooltip id="time_spent">
+                                                    {definitions.current_time_spent}
+                                                    </Tooltip>
+                                                }
+                                                >
+                                                <Button size="sm" variant="link"><InfoCircle/></Button>
+                                            </OverlayTrigger>
+                                        </th>
+                                        <th> Employee 
+                                            <OverlayTrigger
+                                                key="name"
+                                                placement="top"
+                                                overlay={
+                                                    <Tooltip id="name">
+                                                    {definitions.employee}
+                                                    </Tooltip>
+                                                }
+                                                >
+                                                <Button size="sm" variant="link"><InfoCircle/></Button>
+                                            </OverlayTrigger>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
