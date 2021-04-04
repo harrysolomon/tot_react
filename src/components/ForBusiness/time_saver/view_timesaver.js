@@ -31,7 +31,8 @@ class TimeSaverView extends Component {
           time_increment_input: "",
           time_increment_req: "quarter",
           num_periods_input: "",
-          num_periods_req: "8"
+          num_periods_req: "8",
+          summary: {}
 
       };
       this.activeNav = this.activeNav.bind(this)
@@ -146,6 +147,69 @@ class TimeSaverView extends Component {
                 </Card>
             </Col>
         )}
+    
+    summary(){
+        return(
+            <Card>
+                <Card.Body>
+                    <p className="lead">Current Cost</p>
+                    <p>
+                        <span class="text-dark font-weight-bold">{this.state.summary.name}&nbsp;</span>
+                        takes&nbsp;
+                        <span class="text-dark font-weight-bold">{this.state.summary.current_time_spent}&nbsp;{this.state.summary.current_time_spent_period}&nbsp;</span>
+                        to perform.
+                    </p> 
+                    <p>
+                        The&nbsp; 
+                        <span class="text-dark font-weight-bold">{this.state.summary.employee}&nbsp;</span> 
+                        who is performing the task costs&nbsp; 
+                        <span class="text-dark font-weight-bold">${this.state.summary.employee_rate} per {this.state.summary.current_time_spent_period}</span>
+                    </p>
+                    <p>
+                        Current cost per task is&nbsp; 
+                        <span class="text-dark font-weight-bold">(${this.state.summary.employee_rate} x {this.state.summary.current_time_spent}) = ${this.state.summary.cur_cost_per_task}</span>
+                    </p>
+                    <p>
+                        Since the task will be performed&nbsp; 
+                        <span class="text-dark font-weight-bold">{this.state.summary.tasks_in_period}&nbsp;</span>
+                        times in a {this.state.summary.time_increment}, cost per {this.state.summary.time_increment} is&nbsp;
+                        <span class="text-dark font-weight-bold">(${this.state.summary.cur_cost_per_task} x {this.state.summary.tasks_in_period}) = ${this.state.summary.cur_cost_per_period}</span>
+                    </p>
+                    
+                    <p className="lead">New Cost</p>
+                    <p>
+                        The&nbsp; 
+                        <span class="text-dark font-weight-bold">{this.state.summary.product}&nbsp;</span>
+                        reduces time spent by&nbsp;
+                        <span class="text-dark font-weight-bold">{this.state.summary.product_time_save_pct}%&nbsp;</span>
+                        and costs&nbsp;
+                        <span class="text-dark font-weight-bold">${this.state.summary.product_cost_per_task}&nbsp;</span>
+                        per task
+                    </p>
+                    <p>
+                        New cost per task is&nbsp; 
+                        <span class="text-dark font-weight-bold">(${this.state.summary.cur_cost_per_task} x {this.state.summary.new_task_time_pct}%) + ${this.state.summary.product_cost_per_task} = ${this.state.summary.new_cost_per_task}</span>
+                    </p>
+                    <p>
+                        Since the task will be performed&nbsp;
+                        <span class="text-dark font-weight-bold">{this.state.summary.tasks_in_period}&nbsp;</span> 
+                        times in a {this.state.summary.time_increment} the new cost per {this.state.summary.time_increment} is&nbsp;
+                        <span class="text-dark font-weight-bold">(${this.state.summary.new_cost_per_task} x {this.state.summary.tasks_in_period}) = ${this.state.summary.new_cost_per_period}</span>
+                    </p>
+                    
+                    <p className="lead">Value</p>
+                    <p>
+                        Total value per task is&nbsp; 
+                        <span class="text-dark font-weight-bold">(${this.state.summary.cur_cost_per_task} - ${this.state.summary.new_cost_per_task}) = ${this.state.summary.value_per_task}</span>
+                    </p>
+                    <p>
+                        Total value per period is&nbsp; 
+                        <span class="text-dark font-weight-bold">(${this.state.summary.cur_cost_per_period} - ${this.state.summary.new_cost_per_period}) = ${this.state.summary.value_per_period}</span>
+                    </p>
+                </Card.Body>
+            </Card>
+        )
+    }
 
     //this function determines the active nav
     activeNav(eventKey){
@@ -308,6 +372,8 @@ class TimeSaverView extends Component {
             return(this.tableOption())
         } else if (this.state.active_key === "graph"){
             return(this.lineGraphResults())
+        } else if (this.state.active_key === "summary"){
+            return(this.summary())
         } else {
             return(this.tableResults())
         }
@@ -333,7 +399,8 @@ class TimeSaverView extends Component {
             time_increment_input: "Quarterly",
             time_increment_req: "quarter",
             num_periods_req: 8,
-            num_periods_input: 8
+            num_periods_input: 8,
+            summary: data1.meta[0].values.find(value => "quarter" === value.period).per_task[0]
         }))
     }
 
@@ -355,7 +422,7 @@ render() {
             paddingTop: "0px 0"
           };
 
-    console.log(this.state.cadences.find(cadence => this.state.rows[0].cadences._id === cadence._id).singular)
+    console.log(this.state.summary)
     return( 
         
         <div className="container-fluid">
@@ -387,6 +454,9 @@ render() {
                                 </Nav.Item>
                                 <Nav.Item>
                                     <Nav.Link eventKey="spreadsheet" disabled={this.state.table_nav}>Table</Nav.Link>
+                                </Nav.Item>
+                                <Nav.Item>
+                                    <Nav.Link eventKey="summary" disabled={this.state.table_nav}>Summary</Nav.Link>
                                 </Nav.Item>
                                 <Nav.Item>
                                     <Nav.Link eventKey="form" disabled={this.state.input_nav}>Inputs</Nav.Link>

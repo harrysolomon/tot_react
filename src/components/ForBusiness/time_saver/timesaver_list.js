@@ -281,6 +281,40 @@ class ROIList extends Component {
         )
     }
 
+    gettingStarted(){
+            return(
+                <Col>
+                <Card>
+                    <Card.Header style={{width: "1306px",height:"74.5px"}}>
+                        <Col md={4}>
+                            <div>Getting Started</div>
+                        </Col>
+                        <Col>
+                            
+                        </Col>
+            
+                    </Card.Header>
+                    <Card.Body>
+                        <p className="lead">Step 1: Gather the following information from the client:</p>
+                        <dl className="row">
+                            <dt className="col-sm-2">Client Tasks</dt>
+                            <dd className="col-sm-9">The set of tasks they are responsible for that they wish to make more efficient</dd>
+                            <dt className="col-sm-2">Time Spent</dt>
+                            <dd className="col-sm-9">Amount of time the task takes and how often they must perform the task</dd>
+                            <dt className="col-sm-2">Employee Responsible</dt>
+                            <dd className="col-sm-9">The tile of the employee responsible for performing the task</dd>
+                        </dl>
+                        <p></p>
+                        <p className="lead">Step 2: Map each task to a product that your company provides</p>
+                        <iframe src="https://giphy.com/embed/1rVNFK2XoM0j5pQxos" width="480" height="160" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/1rVNFK2XoM0j5pQxos">via GIPHY</a></p>
+                        <p></p>
+                        <p className="lead">Step 3: Profit</p>
+                    </Card.Body>
+                    </Card>
+                </Col>
+        )
+    }
+
     //this function determines the active nav
     activeNav(eventKey){
         this.setState({ navActive: eventKey})
@@ -300,8 +334,10 @@ class ROIList extends Component {
             return(this.tableOption())
         } else if (this.state.navActive === "products"){
             return(this.productList())
-        } else {
+        } else if (this.state.navActive === "clients") {
             return(this.employeeList())
+        } else {
+            return(this.gettingStarted())
         }
     }
 
@@ -336,7 +372,7 @@ render() {
                 <div className="splitted-content-fluid content-space">
                 <a href="/"><h3 className="page-header-title text-left align-middle">ROY</h3></a>
                 <div className="row justify-content-lg-left">
-                <Col md={4}>
+                <Col md={6}>
                 <div className="tab-content" id="navTabContent4">
                     <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
                         <Nav variant="tabs" defaultActiveKey="calculators" onSelect={this.activeNav}>
@@ -348,6 +384,9 @@ render() {
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link eventKey="clients">Employees</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="getting_started">Getting Started</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </div>
