@@ -156,7 +156,7 @@ class TimeSaverView extends Component {
                     <p>
                         <span class="text-dark font-weight-bold">{this.state.summary.name}&nbsp;</span>
                         takes&nbsp;
-                        <span class="text-dark font-weight-bold">{this.state.summary.current_time_spent}&nbsp;{this.state.summary.current_time_spent_period}&nbsp;</span>
+                        <span class="text-dark font-weight-bold">{this.state.summary.current_time_spent}&nbsp;{this.state.cadences.find(cadence => this.state.summary.current_time_spent_period === cadence.period).plural}&nbsp;</span>
                         to perform.
                     </p> 
                     <p>
@@ -203,7 +203,7 @@ class TimeSaverView extends Component {
                         <span class="text-dark font-weight-bold">(${this.state.summary.cur_cost_per_task} - ${this.state.summary.new_cost_per_task}) = ${this.state.summary.value_per_task}</span>
                     </p>
                     <p>
-                        Total value per period is&nbsp; 
+                        Total value per {this.state.summary.time_increment} is&nbsp; 
                         <span class="text-dark font-weight-bold">(${this.state.summary.cur_cost_per_period} - ${this.state.summary.new_cost_per_period}) = ${this.state.summary.value_per_period}</span>
                     </p>
                 </Card.Body>
@@ -329,14 +329,15 @@ class TimeSaverView extends Component {
                 calc_name: data1.meta[0].name,
                 data: data1.graph_data.data,
                 options: data1.graph_data.options,
-                tableData: data1.table_data
+                tableData: data1.table_data,
+                summary: data1.meta[0].values.find(value => increment["period"] === value.period).per_task[0]
             }))
             this.setState({ 
                 time_increment_input: increment["name"],
                 time_increment_req: increment["period"]
             })
         } else if(e.target.value === ''){
-            console.log("sup yall")
+            //avoid calling api when periods is blank
             this.setState({
                 num_periods_input: e.target.value,
                 num_periods_req: e.target.value
@@ -422,7 +423,7 @@ render() {
             paddingTop: "0px 0"
           };
 
-    console.log(this.state.summary)
+    console.log(this.state) 
     return( 
         
         <div className="container-fluid">
