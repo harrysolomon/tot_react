@@ -12,6 +12,7 @@ import EditTimeSaver from './components/ForBusiness/time_saver/edit_timesaver'
 import NewProduct from './components/ForBusiness/time_saver/products/new_product'
 import NewEmployee from './components/ForBusiness/time_saver/employees/new_employee'
 import App from './components/hooks/testing_hooks'
+import NewTimeSaverFunc from './components/ForBusiness/time_saver/new_timesaver_functional'
 
 
 ReactDOM.render(
@@ -31,7 +32,7 @@ ReactDOM.render(
         <Route exact path="/for-business/timesaver/:timesaverId" component={TimeSaverView} />
         <Route exact path="/for-business/timesaver/:timesaverId/edit" component={EditTimeSaver} />
       </Switch>
-      <Route exact path="/testing-hooks" component={App} />
+      <Route exact path="/testing-hooks" component={NewTimeSaverFunc} />
       
     </div>
   </Router>,

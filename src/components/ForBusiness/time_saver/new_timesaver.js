@@ -153,7 +153,7 @@ class NewTimeSaver extends Component {
                             <td key="timespent">
                                 <Form>
                                 <Form.Row>
-                                        <Col md={3  }>
+                                        <Col md={3}>
                                             <FormControl
                                             type="text"
                                             name="current_time_spent"
