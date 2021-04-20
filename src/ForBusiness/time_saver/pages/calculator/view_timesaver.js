@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col, Nav, Tooltip, OverlayTrigger} from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import _ from 'lodash'
-import LineChart from '../../library/line_chart'
+import LineChart from '../../../../library/line_chart'
 import { XSquareFill, InfoCircle } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
-import { config } from '../../constants'
-import { cadences } from '../../cadences'
-import { definitions } from '../../definitions'
+import { config } from '../../../../constants'
+import { cadences } from '../../../../cadences'
+import { definitions } from '../../../../definitions'
 
 class TimeSaverView extends Component {
     constructor(props) {

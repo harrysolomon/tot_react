@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Button, FormControl, InputGroup, FormGroup, Row, Col } from "react-bootstrap";
 import { XSquareFill } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
-import { config } from '../../../constants'
-import { cadences } from '../../../cadences'
+import { config } from '../../../../constants'
+import { cadences } from '../../../../cadences'
 
 const num_only_inputs = ["cost"]
 

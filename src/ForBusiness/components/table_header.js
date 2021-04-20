@@ -1,5 +1,5 @@
 import React from 'react'
-import { ColInfo } from '../../hooks/columnInfo'
+import { ColInfo } from './columnInfo'
 
 function TableHeader(props) {
     const headers = props.headers

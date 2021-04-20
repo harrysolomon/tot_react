@@ -1,11 +1,11 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { Button, Card, FormControl, InputGroup, FormGroup, Row, Col, OverlayTrigger, Tooltip, Form } from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import { XSquareFill, InfoCircle, Slash } from 'react-bootstrap-icons'
+import { XSquareFill, InfoCircle } from 'react-bootstrap-icons'
 import { Redirect } from 'react-router'
-import { config } from '../../constants'
-import { cadences } from '../../cadences'
-import { definitions } from '../../definitions'
+import { config } from '../../../../constants'
+import { cadences } from '../../../../cadences'
+import { definitions } from '../../../../definitions'
 
 const num_only_inputs = ["current_time_spent"]
 

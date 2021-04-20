@@ -1,18 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import ForPeople from './components/ForPeople/forPeople';
-import BachelorsDegree from './components/ForPeople/bachelors_degree';
-import NewTimeSaver from './components/ForBusiness/time_saver/new_timesaver';
-import ROIList from './components/ForBusiness/time_saver/timesaver_list';
-import Homepage from './components/homepage';
-import ForBusiness from './components/ForBusiness/forBusiness';
-import TimeSaverView from './components/ForBusiness/time_saver/view_timesaver'
-import EditTimeSaver from './components/ForBusiness/time_saver/edit_timesaver'
-import NewProduct from './components/ForBusiness/time_saver/products/new_product'
-import NewEmployee from './components/ForBusiness/time_saver/employees/new_employee'
-import App from './components/hooks/testing_hooks'
-import NewTimeSaverFunc from './components/ForBusiness/time_saver/new_timesaver_functional'
+import ForPeople from './ForPeople/forPeople';
+import BachelorsDegree from './ForPeople/bachelors_degree';
+import NewTimeSaver from './ForBusiness/time_saver/pages/calculator/new_timesaver';
+import ROIList from './ForBusiness/time_saver/pages/calculator/timesaver_list';
+import Homepage from './homepage';
+import ForBusiness from './ForBusiness/forBusiness';
+import TimeSaverView from './ForBusiness/time_saver/pages/calculator/view_timesaver'
+import EditTimeSaver from './ForBusiness/time_saver/pages/calculator/edit_timesaver'
+import NewProduct from './ForBusiness/time_saver/pages/products/new_product'
+import NewEmployee from './ForBusiness/time_saver/pages/employees/new_employee'
+import NewTimeSaverFunc from './ForBusiness/time_saver/pages/calculator/new_timesaver_functional'
 
 
 ReactDOM.render(

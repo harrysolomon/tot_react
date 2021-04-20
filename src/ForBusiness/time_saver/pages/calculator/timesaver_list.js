@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Card, Row, Col, Nav, Button, FormControl} from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import { config } from '../../constants'
-import { cadences } from '../../cadences'
+import { config } from '../../../../constants'
+import { cadences } from '../../../../cadences'
 
 const the_columns = [
-    "Name","Client","Created Time", "Value"
+    "Name","Client","Created Time", "Value"         
 ]
 
 const the_product_cols = [
