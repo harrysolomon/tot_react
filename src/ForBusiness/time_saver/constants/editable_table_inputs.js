@@ -6,7 +6,7 @@ export const timesaver_rows = [
         "current_time_spent": "",
         "current_time_spent_period": "",
         "name": "",
-        "_id": 1
+        "id": 1
     }
 ];
 

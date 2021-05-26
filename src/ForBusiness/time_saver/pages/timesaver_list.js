@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Card, Row, Col, Nav, Button, FormControl} from "react-bootstrap";
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import { config } from '../../../../constants'
-import { cadences } from '../../../../cadences'
+import { config } from '../../../constants'
+import { cadences } from '../../../cadences'
 
 const the_columns = [
-    "Name","Client","Created Time", "Value"         
+    "Name","Client","Created","Updated"
 ]
 
 const the_product_cols = [
@@ -23,7 +23,7 @@ class ROIList extends Component {
       this.state = {
           columns: the_columns,
           rows: [],
-          cadences: cadences,
+          cadences: [],
           product_cols: the_product_cols,
           product_list: [],
           employee_cols: the_employee_cols,
@@ -57,6 +57,7 @@ class ROIList extends Component {
                     </Col>
                 </Card.Header>
                 <Card.Body>
+                    {/* removing search and value dropdown capabilities for now
                     <Row>
                     <Col md={4}>
                         <div className="form-group w-md-50">
@@ -87,7 +88,8 @@ class ROIList extends Component {
                             </React.Fragment>
                         </FormControl>
                     </Col>
-                    </Row>
+
+                    </Row>*/}
                     <div className="table-responsive">
                         <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
                             <thead className="thead-light">
@@ -104,20 +106,18 @@ class ROIList extends Component {
                                     <a className="media align-items-center" href={"/for-business/timesaver/"+item._id}>
                                     <div className="media-body">
                                         <span className="d-block h5 text-hover-primary mb-0">{item.name} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
-                                        <span className="d-block font-size-sm text-body">Harrison Solomon</span>
+                                        <span className="d-block font-size-sm text-body">{item.username}</span>
                                     </div>
                                     </a>
                                 </td>
                                 <td>
-                                    <span className="d-block h5 mb-0">Test Client <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                    <span className="d-block h5 mb-0">{item.client_name} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                                 </td>
                                 <td>
-                                    <span className="d-block h5 mb-0">{item.createdAt} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
+                                    <span className="d-block h5 mb-0">{item.created_at} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                                 </td>
                                 <td>
-
-                                    <span className="d-block h5 mb-0">${item.values.find(value => this.state.value_period.period === value.period).value} / {this.state.value_period.singular}</span>
-
+                                    <span className="d-block h5 mb-0">{item.updated_at} <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i></span>
                                 </td>
                                 </tr>))}
                                 
@@ -150,7 +150,7 @@ class ROIList extends Component {
                     </Col>
                 </Card.Header>
                 <Card.Body>
-                <Col md={4} key="search">
+                {/* <Col md={4} key="search">
                 <div className="form-group w-md-50">
                             <div className="input-group input-group-merge">
                                 <input type="text" className="js-form-search form-control" placeholder="Search..."></input>
@@ -161,7 +161,7 @@ class ROIList extends Component {
                                 </a>
                             </div>
                         </div>
-                        </Col>
+                        </Col> */}
                     <div className="table-responsive">
                         <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
                             <thead className="thead-light">
@@ -189,7 +189,7 @@ class ROIList extends Component {
                                 </span>
                             </td>
                             <td key="cost">
-                                <span className="d-block h5 mb-0">${item.cost} / {item.period} 
+                                <span className="d-block h5 mb-0">${item.cost} / {this.state.cadences.find(cadence => cadence.id === item.period).singular} 
                                     <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
                                 </span>
                             </td>
@@ -226,7 +226,7 @@ class ROIList extends Component {
                     </Col>
                 </Card.Header>
                 <Card.Body>
-                <Col md={4}>
+                {/* <Col md={4}>
                 <div className="form-group w-md-50">
                             <div className="input-group input-group-merge">
                                 <input type="text" className="js-form-search form-control" placeholder="Search..."></input>
@@ -237,7 +237,7 @@ class ROIList extends Component {
                                 </a>
                             </div>
                         </div>
-                        </Col>
+                        </Col> */}
                     <div className="table-responsive">
                         <table className="table table-lg table-borderless table-thead-bordered table-nowrap table-align-middle">
                             <thead className="thead-light">
@@ -265,7 +265,7 @@ class ROIList extends Component {
                                 </span>
                             </td>
                             <td key="cost">
-                                <span className="d-block h5 mb-0">${item.cost} / {item.period} 
+                                <span className="d-block h5 mb-0">${item.cost} / {this.state.cadences.find(cadence => cadence.id === item.period).singular}
                                     <i className="tio-verified text-primary" data-toggle="tooltip" data-placement="top" title="Top endorsed"></i>
                                 </span>
                             </td>
@@ -344,16 +344,18 @@ class ROIList extends Component {
     componentDidMount(){
         
         Promise.all([
-            fetch(config.url.API_URL + 'timesaver/calculator/list'),
-            fetch(config.url.API_URL + 'timesaver/product/list'),
-            fetch(config.url.API_URL + 'timesaver/employee/list')
+            fetch(config.url.API_URL + '2/1/calculator/list'),
+            fetch(config.url.API_URL + '2/1/product/list'),
+            fetch(config.url.API_URL + '2/1/worker/list'),
+            fetch(config.url.API_URL + 'cadence')
         ])
-        .then(([res1, res2, res3]) => Promise.all([res1.json(),res2.json(),res3.json()]))
-        .then(([data1, data2, data3]) => this.setState({
+        .then(([res1, res2, res3, res4]) => Promise.all([res1.json(),res2.json(),res3.json(), res4.json()]))
+        .then(([data1, data2, data3, data4]) => this.setState({
             rows: data1,
             product_list: data2,
             employee_list: data3,
-            data_loaded: true
+            data_loaded: true,
+            cadences: data4
         }))
 
     }

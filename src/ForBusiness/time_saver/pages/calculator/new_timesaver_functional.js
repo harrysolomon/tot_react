@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { config } from '../../../../constants'
-import { cadences } from '../../../../cadences'
+//import { cadences } from '../../../../cadences'
 import TableHeader from '../../../components/table_header'
 import { Row, Col, Button, Card, FormGroup, InputGroup, FormControl } from 'react-bootstrap'
 import { XSquareFill } from 'react-bootstrap-icons'
-import { useFetch } from '../../hooks/useFetchHook';
+import { useFetchProduct, useFetchWorker, useFetchCadences } from '../../hooks/useFetchHook';
 import { useUpdateSingleInput } from '../../hooks/useForm'
 import EditableTable from '../../../components/editableTable'
 import { timesaver_rows, timesaver_cells } from '../../constants/editable_table_inputs'
@@ -22,22 +22,29 @@ const NewTimeSaverFunc = () => {
         "current_time_spent": "",
         "current_time_spent_period": "",
         "name": "",
-        "_id": 1
+        "id": 1
     }
     
     const [tableBody, setTableBody] = useState(timesaver_rows)
     const [values, handleChange] = useUpdateSingleInput({name: ""})
 
-    const { data1, data2, loading } = useFetch('timesaver/product/list','timesaver/employee/list');
+    const { cadences, cadencesLoading } = useFetchCadences('cadence');
+    const { product, productLoading } = useFetchProduct('2/1/product/list');
+    const { worker, workerLoading } = useFetchWorker('2/1/worker/list');
 
-    const { submittedValues } = useGatherCalculatorInputs(values.name,tableBody, cadences, data1, data2, loading)
-
-    const [newCalculator, setNewCalculator] = useState({redirect: false, newCalculatorId: null})
+    const completeLoading = (cadencesLoading || productLoading || workerLoading)
+    console.log(" individuals", cadencesLoading, productLoading, workerLoading)
+    console.log("complete", completeLoading)
     
-    timesaver_cells[3].inputs[0].select.options = data1
-    timesaver_cells[1].inputs[0].select.options = data2
+
+    timesaver_cells[1].inputs[0].select.options = worker
+    timesaver_cells[3].inputs[0].select.options = product
     timesaver_cells[2].inputs[1].select.options = cadences
     timesaver_cells[2].inputs[3].select.options = cadences
+
+    const { submittedValues } = useGatherCalculatorInputs(values.name,tableBody, cadences, product, worker, completeLoading)
+
+    const [newCalculator, setNewCalculator] = useState({redirect: false, newCalculatorId: null})
 
     const handleAddRow = (e) => {
         //this is not being done right
@@ -46,8 +53,8 @@ const NewTimeSaverFunc = () => {
             let newArray = [...tableBody, newRow]
             setTableBody(newArray)
         } else {
-            let new_id = (tableBody[tableBody.length - 1]._id) + 1
-            newRow._id = new_id
+            let new_id = (tableBody[tableBody.length - 1].id) + 1
+            newRow.id = new_id
             let newArray = [...tableBody, newRow]
             setTableBody(newArray)
         }
@@ -55,15 +62,14 @@ const NewTimeSaverFunc = () => {
     }
 
     const handleArrayChange = (e) => {
-        let elementsIndex = tableBody.findIndex(value => value._id == e.target.id )
+        let elementsIndex = tableBody.findIndex(value => value.id == e.target.id )
         let newArray = [...tableBody]
             newArray[elementsIndex][e.target.name] = e.target.value
             setTableBody(newArray)
     }
 
     const handleRemoveSpecificRow = (e) => {
-        console.log("remove row target", e.target)
-        let elementsIndex = tableBody.findIndex(value => value._id == e.target.id )
+        let elementsIndex = tableBody.findIndex(value => value.id == e.target.id )
         const smallerTable = [...tableBody];
         smallerTable.splice(elementsIndex, 1);
         setTableBody(smallerTable);
@@ -81,7 +87,7 @@ const NewTimeSaverFunc = () => {
         ])
             .then(([res]) => Promise.all([res.json()]))
             .then(([data]) => {
-                setNewCalculator({ redirect: true, newCalculatorId: data._id })
+                setNewCalculator({ redirect: true, newCalculatorId: data.id })
             });
     }
         
@@ -122,7 +128,7 @@ const NewTimeSaverFunc = () => {
                     </Col>
                 </Row>
                 <Row>
-                    {loading? <div></div>:<Col>
+                    {completeLoading? <div></div>:<Col>
                         <Card>
                             <Card.Header>
                                 <Col>Inputs</Col>
@@ -136,7 +142,10 @@ const NewTimeSaverFunc = () => {
                             </Card.Header>
                             <Card.Body>
                                 <table className="table table-bordered table-hover" id="tab_logic">
-                                    <TableHeader headers={headers} />
+                                    <TableHeader 
+                                        headers={headers} 
+                                        text="center"
+                                    />
                                     <EditableTable 
                                     table={tableBody}  
                                     section={timesaver_cells} 

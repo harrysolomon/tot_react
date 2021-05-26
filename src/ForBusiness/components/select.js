@@ -2,29 +2,28 @@ import React from 'react'
 import { InputGroup, FormControl } from 'react-bootstrap'
 
 function Select(props) {
-    const _id = props._id
+    const id = props.id
     const name = props.name
     const options = props.options
     const onChange = props.onChange
     const selectedValue = props.selectedValue
     const optionName = props.optionName
-
-
+    console.log("the options are ", options, "the name is ", name)
     return(
         <InputGroup>
             <FormControl
             as="select"
             name={name}
-            id={_id}
+            id={id}
             onChange={onChange}>
                 <React.Fragment>
-                {selectedValue === '' ?
+                {selectedValue === "" ?
                 <option>Choose...</option> : 
-                <option>{options.find(option => option._id === selectedValue)[optionName]}</option>}
+                <option>{options.find(option => option.id === parseInt(selectedValue))[optionName]}</option>}
                     {options.map((option) => {
-                        if(option._id !== selectedValue)
+                        if(option.id !== parseInt(selectedValue))
                         return(
-                    <option key={option._id} value={option._id}>{option[optionName]}</option>)})}
+                    <option key={option.id} value={option.id}>{option[optionName]}</option>)})}
                 </React.Fragment>
             </FormControl>
         </InputGroup>

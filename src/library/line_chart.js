@@ -18,8 +18,7 @@ render(){
     } 
     
     return(
-        <div class="chart-container" style={this.props.style}>
-
+        <div className="chart-container" style={this.props.style}>
             <Line data={this.props.data} datasetKeyProvider={datasetKeyProvider} options={this.props.options}/>
         </div>
     )

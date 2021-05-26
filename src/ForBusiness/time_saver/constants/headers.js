@@ -25,3 +25,26 @@ export const headers = [
         "tooltip": false
     }
 ];
+
+export const timeSaverTableHeaders = [
+    {
+        "name": "Time Increment",
+        "definition": "A specific period of time",
+        "tooltip": true
+    },
+    {
+        "name": "Value",
+        "definition": "The return on your investment",
+        "tooltip": true
+    },
+    {
+        "name": "Current Cost",
+        "definition": "The amount of money it costs to perform these tasks without adding new products",
+        "tooltip": true
+    },
+    {
+        "name": "New Cost",
+        "definition": "The expected amount of money it will cost to perform these tasks by adding new products",
+        "tooltip": true
+    },
+]

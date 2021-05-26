@@ -1,6 +1,6 @@
 const the_cadences = [
     {
-        "_id": "6",
+        "id": "6",
         "name": "Hourly",
         "period": "hour",
         "plural": "Hours",
@@ -8,7 +8,7 @@ const the_cadences = [
         "singular": "Hour"
     },
     {
-        "_id": "1",
+        "id": "1",
         "name": "Daily",
         "period": "day",
         "plural": "Days",
@@ -16,7 +16,7 @@ const the_cadences = [
         "singular": "Day"
     },
     {
-        "_id": "2",
+        "id": "2",
         "name": "Weekly",
         "period": "week",
         "plural": "Weeks",
@@ -24,7 +24,7 @@ const the_cadences = [
         "singular": "Week"
     },
     {
-        "_id": "3",
+        "id": "3",
         "name": "Monthly",
         "period": "month",
         "plural": "Months",
@@ -32,7 +32,7 @@ const the_cadences = [
         "singular": "Month"
     },
     {
-        "_id": "4",
+        "id": "4",
         "name": "Quarterly",
         "period": "quarter",
         "plural": "Quarters",
@@ -40,7 +40,7 @@ const the_cadences = [
         "singular": "Quarter"
     },
     {
-        "_id": "5",
+        "id": "5",
         "name": "Annually",
         "period": "year",
         "plural": "Years",

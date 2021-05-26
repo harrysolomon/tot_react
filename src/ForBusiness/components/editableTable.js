@@ -11,10 +11,11 @@ const EditableTable = (props) => {
 
     const inputType = (cell,row) => {
         if(cell.type === "select") {
+            console.log("the selected value is ", row[cell.name], "the row is ", row, "the cell is ", cell)
             return (
                 <Select 
                     name={cell.name}
-                    _id={row._id}
+                    id={row.id}
                     onChange={onChange}
                     selectedValue={row[cell.name]}
                     options={cell.select.options}
@@ -27,7 +28,7 @@ const EditableTable = (props) => {
                     <FormControl
                         type="text"
                         name={cell.name}
-                        id={row._id}
+                        id={row.id}
                         value={row[cell.name]}
                         onChange={onChange}
                     />
@@ -43,7 +44,7 @@ const EditableTable = (props) => {
     return(
         <tbody>
             {table.map((row) =>
-                <tr key={row._id}> 
+                <tr key={row.id}> 
                         {section.map((cells) =>
                             <td key={cells.name}>
                         
@@ -64,7 +65,7 @@ const EditableTable = (props) => {
                         )}
                         <td className="text-center" key="removebutton">
                             <Button
-                                id={row._id}
+                                id={row.id}
                                 variant="outline-danger"
                                 size="sm"
                                 onClick={removeRow}
