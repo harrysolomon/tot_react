@@ -1,19 +1,17 @@
 import React, { useState } from 'react'
-import Select from '../../../components/select'
+import Select from '../../../../components/select'
 import { Row, Col, Button, Card, FormGroup, InputGroup, FormControl, Nav, Spinner } from 'react-bootstrap'
 import { XSquareFill } from 'react-bootstrap-icons'
-import { useFetchProduct, useFetchWorker, useFetchCadences, useFetchCalculator, useFetchCalculatorInputs } from '../../hooks/useFetchHook';
-import { useUpdateSingleInput } from '../../hooks/useForm'
-import EditableTable from '../../../components/editableTable'
-import { timesaver_rows, timesaver_cells } from '../../constants/editable_table_inputs'
-import { headers, timeSaverTableHeaders } from '../../constants/headers'
-import { useGatherCalculatorInputs } from '../../hooks/useGatherCalculatorInputs'
+import { useFetchProduct, useFetchWorker, useFetchCadences, useFetchCalculator, useFetchCalculatorInputs } from '../../../hooks/useFetchHook';
+import { useUpdateSingleInput } from '../../../hooks/useForm'
+import { timeSaverTableHeaders } from '../../../constants/headers'
 import { useParams } from 'react-router-dom'
-import LineChart from '../../../../library/line_chart'
-import Table from '../../../components/table'
+import Table from '../../../../components/table'
+import Tabs from '../../../../components/tabs'
+import { timeSaverTabs } from '../../../constants/tabs'
 //import { useCreateRedirect } from '../../hooks/useCreateRedirect'
 
-const ViewTimeSaverFunc = () => {
+const TableTimeSaver = () => {
     const params = useParams()
     console.log(params)
     const tabStyle = {
@@ -26,20 +24,11 @@ const ViewTimeSaverFunc = () => {
         paddingTop: "2px"
     };
 
-    const lineStyle = {
-        position: "relative", 
-        height: "55vh"
-    };
+    const tableColumns = ["time_increment","value_per_period","current_cost_per_period","new_cost_per_period"]
 
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
       }
-
-    const tabUrlMapping = {
-            graph: "trend",
-            table: "table",
-            summary: "summary"
-        }
     
     const filter_dimension = 'calculator_id'
     const filter_value = 1
@@ -55,67 +44,11 @@ const ViewTimeSaverFunc = () => {
     const { cadences, cadencesLoading } = useFetchCadences('cadence');
     const { product, productLoading } = useFetchProduct('2/1/product/list');
     const { worker, workerLoading } = useFetchWorker('2/1/worker/list');
-    const { calculator, calculatorLoading } = useFetchCalculator(`2/1/calculator/${params.timesaverId}/${tabUrlMapping[params.timesaverTab]}?${query_params}`);
+    const { calculator, calculatorLoading } = useFetchCalculator(`2/1/calculator/${params.timesaverId}/table?${query_params}`);
     const { calculatorInputs, calculatorInputsLoading } = useFetchCalculatorInputs('2/1/calculator/1/inputs');
     
 
     const completeLoading = (cadencesLoading || productLoading || workerLoading || calculatorLoading || calculatorInputsLoading)
-
-    const content_display = (page) => {
-        console.log("the page is", page)
-        if (page === "graph") {
-            return(
-                    <div className="tab-content" id="navTabContent1">
-                        <div className="tab-pane fade p-4 show active" id="nav-result1" role="tabpanel" aria-labelledby="nav-resultTab1">
-                            <div className="row align-items-sm-center mb-4">
-                                <div className="col-sm mb-3 mb-sm-0"></div>
-                                <div className="col-sm-auto">
-                                    <div className="row font-size-sm">
-                                        <div className="col-auto">
-                                            <span className="legend-indicator bg-primary"></span> New Cost
-                                        </div>
-                            
-                                        <div className="col-auto">
-                                            <span className="legend-indicator bg-info"></span> Old Cost
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <LineChart 
-                                style={lineStyle}
-                                data={calculator.data} 
-                                options={calculator.options}
-                            />
-                        </div>
-                    </div>
-            )
-
-        } else if (page === "table") {
-            const columns = ["time_increment","value_per_period","current_cost_per_period","new_cost_per_period"]
-            console.log("the calculator is", calculator)
-            console.log("the headers are", timeSaverTableHeaders)
-
-            calculator.map((row) => {
-                console.log("the row is", row)
-                columns.map((col) => {
-                    console.log("the columns is", col)
-                    console.log("the value is", row[col])
-                })
-            })
-
-            return(
-                <Table 
-                    headers={timeSaverTableHeaders}
-                    tableBody={calculator}
-                    expectedColumns={columns}
-                    text="left"
-                />
-            )
-
-        }
-
-
-    }
 
         
         return(
@@ -144,24 +77,12 @@ const ViewTimeSaverFunc = () => {
                 </div>
                     <Row>
                     <Col md={4} style={tabStyle}>
-                        <div className="tab-content" id="navTabContent4">
-                            <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
-                                <Nav variant="tabs" activeKey={params.timesaverTab}>
-                                    <Nav.Item>
-                                        <Nav.Link href={`/for-business/timesaver/${params.timesaverId}/graph`} eventKey="graph" >Graph</Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Nav.Link href={`/for-business/timesaver/${params.timesaverId}/table`} eventKey="table">Table</Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Nav.Link eventKey="summary">Summary</Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item>
-                                        <Nav.Link eventKey="form">Inputs</Nav.Link>
-                                    </Nav.Item>
-                                </Nav>
-                            </div>
-                        </div>
+                        <Tabs
+                            tabs={timeSaverTabs}
+                            activeKey="table"
+                            baseUrl='for-business/timesaver'
+                            reportId={params.timesaverId}
+                        />
                     </Col>
                     <Col md={4}></Col>
                     <Col md={2} style={dropdownStyle}>
@@ -197,12 +118,17 @@ const ViewTimeSaverFunc = () => {
                         <Card>
                             <Card.Header>
                                     <Col md={4}>
-                                        <div>{capitalizeFirstLetter(params.timesaverTab)}</div>
+                                        <div>Table</div>
                                     </Col>
                                     <Col md={8}></Col>
                             </Card.Header>
                             {calculatorLoading? <Spinner animation="border" variant="primary" />: 
-                            content_display(params.timesaverTab)
+                                <Table 
+                                    headers={timeSaverTableHeaders}
+                                    tableBody={calculator}
+                                    expectedColumns={tableColumns}
+                                    text="left"
+                                />
                             }
                         </Card>
                     </Col>
@@ -212,4 +138,4 @@ const ViewTimeSaverFunc = () => {
         )
 };
 
-export default ViewTimeSaverFunc
+export default TableTimeSaver

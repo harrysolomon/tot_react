@@ -8,7 +8,7 @@ import { useFetchProduct, useFetchWorker, useFetchCadences } from '../../hooks/u
 import { useUpdateSingleInput } from '../../hooks/useForm'
 import EditableTable from '../../../components/editableTable'
 import { timesaver_rows, timesaver_cells } from '../../constants/editable_table_inputs'
-import { headers } from '../../constants/headers'
+import { newTimeSaverHeaders } from '../../constants/headers'
 import { useGatherCalculatorInputs } from '../../hooks/useGatherCalculatorInputs'
 import { Redirect } from 'react-router'
 //import { useCreateRedirect } from '../../hooks/useCreateRedirect'
@@ -143,7 +143,7 @@ const NewTimeSaverFunc = () => {
                             <Card.Body>
                                 <table className="table table-bordered table-hover" id="tab_logic">
                                     <TableHeader 
-                                        headers={headers} 
+                                        headers={newTimeSaverHeaders} 
                                         text="center"
                                     />
                                     <EditableTable 
