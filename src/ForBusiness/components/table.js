@@ -6,6 +6,7 @@ const Table = (props) => {
     const tableBody = props.tableBody
     const headers = props.headers
     const expectedColumns = props.expectedColumns
+   
     
     return(
         <div className="table-responsive">
@@ -29,6 +30,5 @@ const Table = (props) => {
         </div>
     )
 }
-                            
 
 export default Table

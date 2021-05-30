@@ -103,3 +103,20 @@ export const useFetchCalculatorInputs = (calculatorInputsUrl) => {
 
     return state;
 }
+
+export const useFetchTimeSaverList = (timeSaverListUrl) => {
+    const [state, setState] = useState({ timeSaverList: null, timeSaverListLoading: true})
+
+    useEffect(() => {
+        setState({ timeSaverList: null, timeSaverListLoading: true});
+        Promise.all([
+            fetch(config.url.API_URL + timeSaverListUrl)  
+        ])
+            .then(([x1]) => Promise.all([x1.json()]))
+            .then(([y1]) => {
+                setState({ timeSaverList: y1, timeSaverListLoading: false})
+            });
+    },[timeSaverListUrl]);
+
+    return state;
+}

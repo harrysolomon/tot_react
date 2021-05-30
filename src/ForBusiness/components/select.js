@@ -8,7 +8,7 @@ function Select(props) {
     const onChange = props.onChange
     const selectedValue = props.selectedValue
     const optionName = props.optionName
-    console.log("the options are ", options, "the name is ", name)
+
     return(
         <InputGroup>
             <FormControl

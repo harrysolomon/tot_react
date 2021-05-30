@@ -66,7 +66,7 @@ const SummaryTimeSaver = () => {
                         <div className="col-sm mb-2 mb-sm-0">
                             <div className="text-right">
                                 <Button 
-                                    href="/for-business/timesaver"
+                                    href="/for-business/timesaver/calculator_list"
                                     variant="outline-primary"
                                 >
                                     <XSquareFill/>
@@ -82,7 +82,7 @@ const SummaryTimeSaver = () => {
                             tabs={timeSaverTabs}
                             activeKey="summary"
                             baseUrl='for-business/timesaver'
-                            reportId={params.timesaverId}
+                            id={params.timesaverId}
                         />
                     </Col>
                     <Col md={4}></Col>

@@ -69,5 +69,82 @@ export const timeSaverTableHeaders = [
         "name": "New Cost",
         "definition": "The expected amount of money it will cost to perform these tasks by adding new products",
         "tooltip": true
+    }
+]
+
+export const timeSaverCalculatorListHeaders = [
+    {
+        "name": "Name",
+        "definition": "",
+        "tooltip": false
     },
+    {
+        "name": "Created By",
+        "definition": "",
+        "tooltip": false
+    },
+    {
+        "name": "Client",
+        "definition": "",
+        "tooltip": false
+    },
+    {
+        "name": "Created Time",
+        "definition": "",
+        "tooltip": false
+    }
+
+]
+
+export const timeSaverProductListHeaders = [
+    {
+        "name": "Name",
+        "definition": "",
+        "tooltip": false
+    },
+    {
+        "name": "Description",
+        "definition": "",
+        "tooltip": false
+    },
+    {
+        "name": "Time Savings",
+        "definition": "",
+        "tooltip": false
+    },
+    {
+        "name": "Cost",
+        "definition": "",
+        "tooltip": false
+    },
+    {
+        "name": "Created At",
+        "definition": "",
+        "tooltip": false
+    }
+
+]
+
+export const timeSaverEmployeeListHeaders = [
+    {
+        "name": "Name",
+        "definition": "",
+        "tooltip": false
+    },
+    {
+        "name": "Department",
+        "definition": "",
+        "tooltip": false
+    },
+    {
+        "name": "Salary",
+        "definition": "",
+        "tooltip": false
+    },
+    {
+        "name": "Created At",
+        "definition": "",
+        "tooltip": false
+    }
+
 ]

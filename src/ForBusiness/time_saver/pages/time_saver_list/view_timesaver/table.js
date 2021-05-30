@@ -12,8 +12,9 @@ import { timeSaverTabs } from '../../../constants/tabs'
 //import { useCreateRedirect } from '../../hooks/useCreateRedirect'
 
 const TableTimeSaver = () => {
+    
     const params = useParams()
-    console.log(params)
+
     const tabStyle = {
         paddingTop: "0px 0"
     };
@@ -25,10 +26,6 @@ const TableTimeSaver = () => {
     };
 
     const tableColumns = ["time_increment","value_per_period","current_cost_per_period","new_cost_per_period"]
-
-    const capitalizeFirstLetter = (string) => {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-      }
     
     const filter_dimension = 'calculator_id'
     const filter_value = 1
@@ -36,9 +33,6 @@ const TableTimeSaver = () => {
 
     const [cadenceKey, handleCadenceKeyChange] = useUpdateSingleInput({cadence_key: "1"})
     const [forecastPeriod, handleForecastPeriodChange] = useUpdateSingleInput({forecast_period: "8"})
-
-    console.log(cadenceKey)
-
     const query_params = `filter_dimension=${filter_dimension}&filter_value=${filter_value}&dimensions=${dimensions}&cadence_key=${cadenceKey.cadence_key}&forecast_period=${forecastPeriod.forecast_period}`
     
     const { cadences, cadencesLoading } = useFetchCadences('cadence');
@@ -46,9 +40,6 @@ const TableTimeSaver = () => {
     const { worker, workerLoading } = useFetchWorker('2/1/worker/list');
     const { calculator, calculatorLoading } = useFetchCalculator(`2/1/calculator/${params.timesaverId}/table?${query_params}`);
     const { calculatorInputs, calculatorInputsLoading } = useFetchCalculatorInputs('2/1/calculator/1/inputs');
-    
-
-    const completeLoading = (cadencesLoading || productLoading || workerLoading || calculatorLoading || calculatorInputsLoading)
 
         
         return(
@@ -65,7 +56,7 @@ const TableTimeSaver = () => {
                         <div className="col-sm mb-2 mb-sm-0">
                             <div className="text-right">
                                 <Button 
-                                    href="/for-business/timesaver"
+                                    href="/for-business/timesaver/calculator_list"
                                     variant="outline-primary"
                                 >
                                     <XSquareFill/>
@@ -81,7 +72,7 @@ const TableTimeSaver = () => {
                             tabs={timeSaverTabs}
                             activeKey="table"
                             baseUrl='for-business/timesaver'
-                            reportId={params.timesaverId}
+                            id={params.timesaverId}
                         />
                     </Col>
                     <Col md={4}></Col>
