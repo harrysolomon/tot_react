@@ -28,7 +28,7 @@ const InputsTimeSaver = () => {
     const { cadences, cadencesLoading } = useFetchCadences('cadence');
     const { product, productLoading } = useFetchProduct('2/1/product/list');
     const { worker, workerLoading } = useFetchWorker('2/1/worker/list');
-    const { calculatorInputs, calculatorInputsLoading } = useFetchCalculatorInputs('2/1/calculator/1/inputs');
+    const { calculatorInputs, calculatorInputsLoading } = useFetchCalculatorInputs(`2/1/calculator/${params.timesaverId}/inputs`);
 
         
         return(

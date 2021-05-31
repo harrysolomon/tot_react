@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { config } from '../../../../constants'
 //import { cadences } from '../../../../cadences'
 import TableHeader from '../../../components/table_header'
-import { Row, Col, Button, Card, FormGroup, InputGroup, FormControl } from 'react-bootstrap'
+import { Row, Col, Button, Card, FormGroup, InputGroup, FormControl, Spinner } from 'react-bootstrap'
 import { XSquareFill } from 'react-bootstrap-icons'
 import { useFetchProduct, useFetchWorker, useFetchCadences } from '../../hooks/useFetchHook';
 import { useUpdateSingleInput } from '../../hooks/useForm'
@@ -16,9 +16,9 @@ import { Redirect } from 'react-router'
 const NewTimeSaverFunc = () => {
 
     const newRow = {
-        "cadences": "",
-        "employees": "",
-        "products": "",
+        "cadence": "",
+        "time_saver_worker_id": "",
+        "time_saver_product_id": "",
         "current_time_spent": "",
         "current_time_spent_period": "",
         "name": "",
@@ -33,16 +33,15 @@ const NewTimeSaverFunc = () => {
     const { worker, workerLoading } = useFetchWorker('2/1/worker/list');
 
     const completeLoading = (cadencesLoading || productLoading || workerLoading)
-    console.log(" individuals", cadencesLoading, productLoading, workerLoading)
-    console.log("complete", completeLoading)
-    
 
     timesaver_cells[1].inputs[0].select.options = worker
     timesaver_cells[3].inputs[0].select.options = product
     timesaver_cells[2].inputs[1].select.options = cadences
     timesaver_cells[2].inputs[3].select.options = cadences
 
-    const { submittedValues } = useGatherCalculatorInputs(values.name,tableBody, cadences, product, worker, completeLoading)
+    console.log("the request will be", tableBody)
+
+    //const { submittedValues } = useGatherCalculatorInputs(values.name,tableBody, cadences, product, worker, completeLoading)
 
     const [newCalculator, setNewCalculator] = useState({redirect: false, newCalculatorId: null})
 
@@ -76,23 +75,46 @@ const NewTimeSaverFunc = () => {
     };
 
     const handleSubmit = (e) => {
+        
+        const timeSaverTaskRequest = {}
+        timeSaverTaskRequest.tasks = tableBody
+        timeSaverTaskRequest.report = {
+            "name": values.name,
+            "description": "",
+            "notes": "",
+            "created_by": 2
+        }
+        timeSaverTaskRequest.calculator = {
+            "name": values.name,
+            "description": "",
+            "notes": ""
+        }
+
+        timeSaverTaskRequest.tasks.map((task, task_index) => {
+            timeSaverTaskRequest.tasks[task_index].cadence = parseInt(task.cadence)
+            timeSaverTaskRequest.tasks[task_index].time_saver_worker_id = parseInt(task.time_saver_worker_id)
+            timeSaverTaskRequest.tasks[task_index].time_saver_product_id = parseInt(task.time_saver_product_id)
+            timeSaverTaskRequest.tasks[task_index].current_time_spent = parseInt(task.current_time_spent)
+            timeSaverTaskRequest.tasks[task_index].current_time_spent_period = parseInt(task.current_time_spent_period)
+        })
+
         const requestOptions = {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(submittedValues)
+            body: JSON.stringify(timeSaverTaskRequest)
         };
             
         Promise.all([
-            fetch(config.url.API_URL + 'timesaver', requestOptions)
+            fetch(config.url.API_URL + '2/1/calculator/create', requestOptions)
         ])
             .then(([res]) => Promise.all([res.json()]))
             .then(([data]) => {
-                setNewCalculator({ redirect: true, newCalculatorId: data.id })
+                setNewCalculator({ redirect: true, newCalculatorId: data.calculator[0].id })
             });
     }
         
         return(
-            newCalculator.redirect ? <Redirect to={{pathname: "/for-business/timesaver/"+newCalculator.newCalculatorId}}/> :
+            newCalculator.redirect ? <Redirect to={{pathname: `/for-business/timesaver/${newCalculator.newCalculatorId}/graph` }}/> :
             <div className="container-fluid">
                 <div className="page-header">
                     <div className ="row align-items-bottom">
@@ -128,7 +150,8 @@ const NewTimeSaverFunc = () => {
                     </Col>
                 </Row>
                 <Row>
-                    {completeLoading? <div></div>:<Col>
+                    {completeLoading? <Spinner animation="border" variant="primary" />:
+                    <Col>
                         <Card>
                             <Card.Header>
                                 <Col>Inputs</Col>

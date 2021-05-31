@@ -1,8 +1,8 @@
 export const timesaver_rows = [
     {
-        "cadences": "",
-        "employees": "",
-        "products": "",
+        "cadence": "",
+        "time_saver_worker_id": "",
+        "time_saver_product_id": "",
         "current_time_spent": "",
         "current_time_spent_period": "",
         "name": "",
@@ -26,10 +26,10 @@ export const timesaver_cells = [
     },
     {
         multiInput: false,
-        name: "employees",
+        name: "time_saver_worker_id",
         inputs: [
             {
-                name: "employees",
+                name: "time_saver_worker_id",
                 type: "select",
                 isParent: true,
                 size: 2,
@@ -68,7 +68,7 @@ export const timesaver_cells = [
                 size: 1
             },
             {
-                name: "cadences",
+                name: "cadence",
                 type: "select",
                 isParent: false,
                 size: 4,
@@ -81,10 +81,10 @@ export const timesaver_cells = [
     },
     {
         multiInput: false,
-        name: "products",
+        name: "time_saver_product_id",
         inputs: [
             {
-                name: "products",
+                name: "time_saver_product_id",
                 type: "select",
                 isParent: true,
                 size: 2,

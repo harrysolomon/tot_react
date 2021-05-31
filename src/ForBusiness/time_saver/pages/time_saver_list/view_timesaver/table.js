@@ -28,18 +28,16 @@ const TableTimeSaver = () => {
     const tableColumns = ["time_increment","value_per_period","current_cost_per_period","new_cost_per_period"]
     
     const filter_dimension = 'calculator_id'
-    const filter_value = 1
     const dimensions = 'calculator_id%2Ccalculator_name'
 
     const [cadenceKey, handleCadenceKeyChange] = useUpdateSingleInput({cadence_key: "1"})
     const [forecastPeriod, handleForecastPeriodChange] = useUpdateSingleInput({forecast_period: "8"})
-    const query_params = `filter_dimension=${filter_dimension}&filter_value=${filter_value}&dimensions=${dimensions}&cadence_key=${cadenceKey.cadence_key}&forecast_period=${forecastPeriod.forecast_period}`
+    const query_params = `filter_dimension=${filter_dimension}&filter_value=${params.timesaverId}&dimensions=${dimensions}&cadence_key=${cadenceKey.cadence_key}&forecast_period=${forecastPeriod.forecast_period}`
     
     const { cadences, cadencesLoading } = useFetchCadences('cadence');
-    const { product, productLoading } = useFetchProduct('2/1/product/list');
-    const { worker, workerLoading } = useFetchWorker('2/1/worker/list');
+
     const { calculator, calculatorLoading } = useFetchCalculator(`2/1/calculator/${params.timesaverId}/table?${query_params}`);
-    const { calculatorInputs, calculatorInputsLoading } = useFetchCalculatorInputs('2/1/calculator/1/inputs');
+    const { calculatorInputs, calculatorInputsLoading } = useFetchCalculatorInputs(`2/1/calculator/${params.timesaverId}/inputs`);
 
         
         return(

@@ -11,7 +11,6 @@ const EditableTable = (props) => {
 
     const inputType = (cell,row) => {
         if(cell.type === "select") {
-            console.log("the selected value is ", row[cell.name], "the row is ", row, "the cell is ", cell)
             return (
                 <Select 
                     name={cell.name}

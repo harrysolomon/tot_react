@@ -16,12 +16,6 @@ const TimeSaverCalculatorList = () => {
         paddingTop: "0px 0"
     };
 
-    const dropdownStyle = {
-        paddingLeft: "15px",
-        paddingBottom: "2px",
-        paddingTop: "2px"
-    };
-
     const tableColumns = ["name","username","client_name","created_at"]
     
     const { timeSaverList, timeSaverListLoading } = useFetchTimeSaverList('2/1/calculator/list');
@@ -62,7 +56,7 @@ const TimeSaverCalculatorList = () => {
                                 <Col md={4}/>
                                 <Col md={4}>
                                     <div className="text-right">
-                                        <Button href={"/for-business/timesaver/new"}> Create New </Button>
+                                        <Button href={"/for-business/timesaver/calculator/new"}> Create New </Button>
                                     </div>
                                 </Col>
                             </Card.Header>
@@ -72,6 +66,9 @@ const TimeSaverCalculatorList = () => {
                                     tableBody={timeSaverList}
                                     expectedColumns={tableColumns}
                                     text="left"
+                                    baseUrl="for-business/timesaver"
+                                    addUrlParams="/graph"
+                                    hyperlinkedCol="name"
                                 />
                             }
                         </Card>
