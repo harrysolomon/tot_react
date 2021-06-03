@@ -3,15 +3,11 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ForPeople from './ForPeople/forPeople';
 import BachelorsDegree from './ForPeople/bachelors_degree';
-import NewTimeSaver from './ForBusiness/time_saver/pages/calculator/new_timesaver';
-import ROIList from './ForBusiness/time_saver/pages/timesaver_list';
 import Homepage from './homepage';
 import ForBusiness from './ForBusiness/forBusiness';
 import TimeSaverView from './ForBusiness/time_saver/pages/calculator/view_timesaver'
-import EditTimeSaver from './ForBusiness/time_saver/pages/calculator/edit_timesaver'
-import NewProduct from './ForBusiness/time_saver/pages/products/new_product'
-import NewEmployee from './ForBusiness/time_saver/pages/employees/new_employee'
-import NewTimeSaverFunc from './ForBusiness/time_saver/pages/calculator/new_timesaver_functional'
+import NewTimeSaverCalculator from './ForBusiness/time_saver/pages/time_saver_list/new_timesaver'
+import EditTimeSaverCalculator from './ForBusiness/time_saver/pages/time_saver_list/edit_timesaver'
 import LineChartTimeSaver from './ForBusiness/time_saver/pages/time_saver_list/view_timesaver/line_chart'
 import TableTimeSaver from './ForBusiness/time_saver/pages/time_saver_list/view_timesaver/table'
 import InputsTimeSaver from './ForBusiness/time_saver/pages/time_saver_list/view_timesaver/inputs'
@@ -38,7 +34,7 @@ ReactDOM.render(
         <Route exact path="/for-business/:calculatorType/product_list" component={TimeSaverProductList} />
         <Route exact path="/for-business/:calculatorType/employee_list" component={TimeSaverEmployeeList} />
         <Route exact path="/for-business/:calculatorType/getting_started" component={TimeSaverGettingStarted} />
-        <Route path="/for-business/timesaver/calculator/new" component={NewTimeSaverFunc} />
+        <Route path="/for-business/timesaver/calculator/new" component={NewTimeSaverCalculator} />
         <Route path="/for-business/timesaver/product/new" component={NewTimeSaverProduct} />
         <Route path="/for-business/timesaver/employee/new" component={NewTimeSaverEmployee} />
         <Route exact path="/for-business/timesaver/:timesaverId" component={TimeSaverView} />
@@ -46,9 +42,8 @@ ReactDOM.render(
         <Route exact path="/for-business/timesaver/:timesaverId/table" component={TableTimeSaver} />
         <Route exact path="/for-business/timesaver/:timesaverId/inputs" component={InputsTimeSaver} />
         <Route exact path="/for-business/timesaver/:timesaverId/summary" component={SummaryTimeSaver} />
-        <Route exact path="/for-business/timesaver/:timesaverId/edit" component={EditTimeSaver} />
+        <Route exact path="/for-business/timesaver/:timesaverId/edit" component={EditTimeSaverCalculator} />
       </Switch>
-      <Route exact path="/testing-hooks" component={NewTimeSaverFunc} />
       
     </div>
   </Router>,

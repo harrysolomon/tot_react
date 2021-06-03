@@ -9,6 +9,7 @@ const EditableTable = (props) => {
     const onChange = props.onChange
     const removeRow = props.removeRow
 
+    console.log("the table is", table)
     const inputType = (cell,row) => {
         if(cell.type === "select") {
             return (

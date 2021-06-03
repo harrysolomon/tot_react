@@ -23,7 +23,7 @@ const InputsTimeSaver = () => {
         paddingTop: "2px"
     };
 
-    const tableColumns = ["time_saver_name","employee_name","current_time_spent","product_name"]
+    const tableColumns = ["name","employee_name","current_time_spent_detail","product_name"]
     
     const { cadences, cadencesLoading } = useFetchCadences('cadence');
     const { product, productLoading } = useFetchProduct('2/1/product/list');
@@ -78,7 +78,7 @@ const InputsTimeSaver = () => {
                                 <Col md={4}/>
                                 <Col md={4}>
                                     <div className="text-right">
-                                        <Button href={"/for-business/timesaver/"}> Edit </Button>
+                                        <Button href={`/for-business/timesaver/${params.timesaverId}/edit`}> Edit </Button>
                                     </div>
                                 </Col>
                             </Card.Header>

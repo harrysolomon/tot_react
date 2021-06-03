@@ -13,7 +13,7 @@ export const Tabs = (props) => {
             <div className="tab-pane fade p-4 show active" id="nav-result4" role="tabpanel" aria-labelledby="nav-resultTab4">
                 <Nav variant="tabs" activeKey={activeKey}>
                     {tabs.map((tab) => 
-                        <Nav.Item>
+                        <Nav.Item key={tab.eventKey}>
                             <Nav.Link href={`/${baseUrl}/${id}/${tab.eventKey}`} eventKey={tab.eventKey}>{tab.name}</Nav.Link>
                         </Nav.Item>
                     )}

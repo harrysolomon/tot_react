@@ -9,11 +9,10 @@ import { useUpdateSingleInput } from '../../hooks/useForm'
 import EditableTable from '../../../components/editableTable'
 import { timesaver_rows, timesaver_cells } from '../../constants/editable_table_inputs'
 import { newTimeSaverHeaders } from '../../constants/headers'
-import { useGatherCalculatorInputs } from '../../hooks/useGatherCalculatorInputs'
 import { Redirect } from 'react-router'
 //import { useCreateRedirect } from '../../hooks/useCreateRedirect'
 
-const NewTimeSaverFunc = () => {
+const NewTimeSaverCalculator = () => {
 
     const newRow = {
         "cadence": "",
@@ -124,7 +123,7 @@ const NewTimeSaverFunc = () => {
                         <div className="col-sm mb-2 mb-sm-0">
                             <div className="text-right">
                                 <Button 
-                                    href="/for-business/timesaver"
+                                    href="/for-business/timesaver/calculator_list"
                                     variant="outline-primary"
                                 >
                                     <XSquareFill/>
@@ -185,5 +184,5 @@ const NewTimeSaverFunc = () => {
         )
 };
 
-export default NewTimeSaverFunc
+export default NewTimeSaverCalculator
 
