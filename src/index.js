@@ -5,7 +5,6 @@ import ForPeople from './ForPeople/forPeople';
 import BachelorsDegree from './ForPeople/bachelors_degree';
 import Homepage from './homepage';
 import ForBusiness from './ForBusiness/forBusiness';
-import TimeSaverView from './ForBusiness/time_saver/pages/calculator/view_timesaver'
 import NewTimeSaverCalculator from './ForBusiness/time_saver/pages/time_saver_list/new_timesaver'
 import EditTimeSaverCalculator from './ForBusiness/time_saver/pages/time_saver_list/edit_timesaver'
 import LineChartTimeSaver from './ForBusiness/time_saver/pages/time_saver_list/view_timesaver/line_chart'
@@ -18,6 +17,7 @@ import TimeSaverEmployeeList from './ForBusiness/time_saver/pages/time_saver_lis
 import TimeSaverGettingStarted from './ForBusiness/time_saver/pages/time_saver_list/getting_started'
 import NewTimeSaverProduct from './ForBusiness/time_saver/pages/time_saver_list/add_product'
 import NewTimeSaverEmployee from './ForBusiness/time_saver/pages/time_saver_list/add_employee'
+import MessingDesigns from './ForBusiness/time_saver/pages/time_saver_list/messing_designs'
 
 
 ReactDOM.render(
@@ -37,12 +37,12 @@ ReactDOM.render(
         <Route path="/for-business/timesaver/calculator/new" component={NewTimeSaverCalculator} />
         <Route path="/for-business/timesaver/product/new" component={NewTimeSaverProduct} />
         <Route path="/for-business/timesaver/employee/new" component={NewTimeSaverEmployee} />
-        <Route exact path="/for-business/timesaver/:timesaverId" component={TimeSaverView} />
         <Route exact path="/for-business/timesaver/:timesaverId/graph" component={LineChartTimeSaver} />
         <Route exact path="/for-business/timesaver/:timesaverId/table" component={TableTimeSaver} />
         <Route exact path="/for-business/timesaver/:timesaverId/inputs" component={InputsTimeSaver} />
         <Route exact path="/for-business/timesaver/:timesaverId/summary" component={SummaryTimeSaver} />
         <Route exact path="/for-business/timesaver/:timesaverId/edit" component={EditTimeSaverCalculator} />
+        <Route exact path="/for-business/timesaver/testing-designs" component={MessingDesigns} />
       </Switch>
       
     </div>
