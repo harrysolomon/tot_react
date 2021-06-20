@@ -67,7 +67,7 @@ const TimeSaverCalculatorList = () => {
                                     expectedColumns={tableColumns}
                                     text="left"
                                     baseUrl="for-business/timesaver"
-                                    addUrlParams="/graph"
+                                    addUrlParams="/overview"
                                     hyperlinkedCol="name"
                                 />
                             }

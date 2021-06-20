@@ -37,7 +37,7 @@ ReactDOM.render(
         <Route path="/for-business/timesaver/calculator/new" component={NewTimeSaverCalculator} />
         <Route path="/for-business/timesaver/product/new" component={NewTimeSaverProduct} />
         <Route path="/for-business/timesaver/employee/new" component={NewTimeSaverEmployee} />
-        <Route exact path="/for-business/timesaver/:timesaverId/graph" component={LineChartTimeSaver} />
+        <Route exact path="/for-business/timesaver/:timesaverId/overview" component={LineChartTimeSaver} />
         <Route exact path="/for-business/timesaver/:timesaverId/table" component={TableTimeSaver} />
         <Route exact path="/for-business/timesaver/:timesaverId/inputs" component={InputsTimeSaver} />
         <Route exact path="/for-business/timesaver/:timesaverId/summary" component={SummaryTimeSaver} />

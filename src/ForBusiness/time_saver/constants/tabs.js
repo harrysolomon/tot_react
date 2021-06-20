@@ -1,7 +1,7 @@
 export const timeSaverTabs = [
     {
-        eventKey: "graph",
-        name: "Graph" 
+        eventKey: "overview",
+        name: "Overview" 
     },
     {
         eventKey: "table",
